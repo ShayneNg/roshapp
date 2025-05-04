@@ -1,5 +1,9 @@
 node_modules
 
+# Ignore shadcn-svelte UI components (optional)
+src/lib/components/ui
+
+
 # Output
 .output
 .vercel
@@ -15,7 +19,7 @@ Thumbs.db
 # Env
 .env
 .env.*
-!.env.example
+.env.example
 !.env.test
 
 # Vite

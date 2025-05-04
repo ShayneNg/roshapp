@@ -5,7 +5,7 @@
 	let { form }: { form: ActionData } = $props();
 </script>
 
-<h1>Login/Register</h1>
+<h1 class="text-orange-500 font-bold underline text-3xl mb-6">Login/Register</h1>
 <form method="post" action="?/login" use:enhance>
 	<label>
 		Username
