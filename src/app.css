@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
+/* These imports are handled by the Tailwind configuration */
 
 @layer base {
     :root {
@@ -74,7 +72,7 @@
    
   @layer base {
     * {
-      @apply border-border;
+      border-color: hsl(var(--border));
     }
     body {
       @apply bg-background text-foreground;
