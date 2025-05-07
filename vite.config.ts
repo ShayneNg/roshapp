@@ -11,6 +11,9 @@ export default defineConfig({
 		strictPort: true,
 		hmr: {
 			clientPort: 443
-		}
+		},
+		allowedHosts: [
+			'76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev'
+		]
 	}
 });
