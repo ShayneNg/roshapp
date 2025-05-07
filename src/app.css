@@ -3,70 +3,114 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 20 14.3% 4.1%;
-   
-      --muted: 60 4.8% 95.9%;
-      --muted-foreground: 25 5.3% 44.7%;
-   
-      --popover: 0 0% 100%;
-      --popover-foreground: 20 14.3% 4.1%;
-   
-      --card: 0 0% 100%;
-      --card-foreground: 20 14.3% 4.1%;
-   
-      --border: 20 5.9% 90%;
-      --input: 20 5.9% 90%;
-   
-      --primary: 24 9.8% 10%;
-      --primary-foreground: 60 9.1% 97.8%;
-   
-      --secondary: 60 4.8% 95.9%;
-      --secondary-foreground: 24 9.8% 10%;
-   
-      --accent: 60 4.8% 95.9%;
-      --accent-foreground: 24 9.8% 10%;
-   
-      --destructive: 0 72.2% 50.6%;
-      --destructive-foreground: 60 9.1% 97.8%;
-   
-      --ring: 20 14.3% 4.1%;
-   
-      --radius: 0.5rem;
-    }
-   
-    .dark {
-      --background: 20 14.3% 4.1%;
-      --foreground: 60 9.1% 97.8%;
-   
-      --muted: 12 6.5% 15.1%;
-      --muted-foreground: 24 5.4% 63.9%;
-   
-      --popover: 20 14.3% 4.1%;
-      --popover-foreground: 60 9.1% 97.8%;
-   
-      --card: 20 14.3% 4.1%;
-      --card-foreground: 60 9.1% 97.8%;
-   
-      --border: 12 6.5% 15.1%;
-      --input: 12 6.5% 15.1%;
-   
-      --primary: 60 9.1% 97.8%;
-      --primary-foreground: 24 9.8% 10%;
-   
-      --secondary: 12 6.5% 15.1%;
-      --secondary-foreground: 60 9.1% 97.8%;
-   
-      --accent: 12 6.5% 15.1%;
-      --accent-foreground: 60 9.1% 97.8%;
-   
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 60 9.1% 97.8%;
-   
-      --ring: 24 5.7% 82.9%;
-    }
+  :root {
+    /* === LIGHT MODE THEME (Paper-like) === */
+  
+    /* Main layout background and body text */
+    --background: 40 20% 96%;        /* Soft warm white — paper-like canvas */
+    --foreground: 240 10% 4%;        /* Dark gray (like #1f2937) — readable without harsh black */
+  
+    /* Card elements and containers */
+    --card: 40 20% 95%;              /* Slight contrast with background for elevation */
+    --card-foreground: 240 10% 4%;   /* Text on card background — flat dark gray */
+  
+    /* Navigation areas */
+    --sidebar: 40 20% 94%;           /* Slightly darker for clear separation */
+    --header: 40 20% 97%;            /* Slightly brighter — soft highlight for headers/nav */
+  
+    /* Structural elements */
+    --border: 240 6% 88%;            /* Very soft gray — used for dividing lines, borders */
+    --input: 240 6% 88%;             /* Matches border — fields sit flat with rest of UI */
+  
+    /* Subtle text and muted blocks */
+    --muted: 40 20% 92%;             /* Very soft gray — tag backgrounds, muted sections */
+    --muted-foreground: 240 4% 46%;  /* Medium gray — helper text, secondary labels */
+  
+    /* PRIMARY (your brand green, similar to #86bc87) */
+    --primary: 142 40% 60%;          /* Balanced green — friendly, soft, and flat */
+    --primary-foreground: 0 0% 98%;  /* Light off-white for buttons/labels on green bg */
+  
+    /* SECONDARY (complementary soft lavender) */
+    --secondary: 262 35% 65%;        /* Flat lavender — calming, friendly contrast to green */
+    --secondary-foreground: 240 10% 4%; /* Readable deep gray text on lavender bg */
+  
+    /* Accent support tones */
+    --accent: 142 30% 85%;           /* Soft tint of green for subtle highlights */
+    --accent-foreground: 142 60% 30%;/* Readable dark green text on accent bg */
+  
+    /* Error/destructive styling */
+    --destructive: 0 70% 55%;        /* Flat red — error states, destructive actions */
+    --destructive-foreground: 0 0% 98%; /* White text on red */
+  
+    /* Focus ring outlines */
+    --ring: 142 50% 40%;             /* Mid-green for focus rings — clean and accessible */
+  
+    --radius: 0.5rem;                /* Base border radius (cards, inputs, buttons) */
+  
+    /* Feedback tones for toasts, alerts, badges */
+    --success: 142 40% 65%;          /* Lighter green than primary — soft positive state */
+    --success-foreground: 0 0% 98%;  /* White text on success bg */
+  
+    --info: 210 40% 70%;             /* Cool flat blue — used for info messages */
+    --info-foreground: 240 10% 4%;   /* Deep gray — readable over blue bg */
+  
+    --warning: 38 100% 65%;          /* Flat amber — alerts, warnings */
+    --warning-foreground: 240 10% 4%;/* Deep gray text for legibility on amber */
   }
+  
+  .dark {
+    /* === DARK MODE THEME (Flat, Accessible) === */
+  
+    /* Main app shell and text */
+    --background: 240 10% 4%;        /* Deep cool gray — easier on the eyes than pure black */
+    --foreground: 0 0% 98%;          /* Soft white — readable and not blinding */
+  
+    /* Cards and containers */
+    --card: 240 6% 8%;               /* Slight elevation from background */
+    --card-foreground: 0 0% 98%;     /* Soft white on dark cards */
+  
+    /* Navigation areas */
+    --sidebar: 240 5% 6%;            /* Slightly darker to separate from content area */
+    --header: 240 5% 10%;            /* Matches card bg — clean visual hierarchy */
+  
+    /* Borders and inputs */
+    --border: 240 5% 15%;            /* Mid-gray — soft divider lines */
+    --input: 240 5% 15%;             /* Flat and neutral — blends with dark UI */
+  
+    /* Muted blocks and secondary content */
+    --muted: 240 4% 12%;             /* Slightly raised from background */
+    --muted-foreground: 240 6% 60%;  /* Light gray — ideal for helper text, tooltips */
+  
+    /* Brand primary (green) adapted for dark bg */
+    --primary: 142 40% 55%;          /* Slightly deeper green to contrast dark background */
+    --primary-foreground: 0 0% 98%;  /* White text on green */
+  
+    /* Secondary complementary (lavender) for dark UI */
+    --secondary: 262 35% 55%;        /* Richer lavender for contrast on dark */
+    --secondary-foreground: 0 0% 98%;/* White text on lavender */
+  
+    /* Accents for hover, subtle tags */
+    --accent: 142 30% 75%;           /* Soft flat green tint */
+    --accent-foreground: 142 60% 20%;/* Deeper green text */
+  
+    /* Error and destructive tones */
+    --destructive: 0 62% 40%;        /* Deep flat red — contrasts well in dark mode */
+    --destructive-foreground: 0 0% 98%; /* Light text for visibility */
+  
+    /* Ring/focus outline */
+    --ring: 142 50% 40%;             /* Flat green ring — works on dark bg */
+  
+    /* Feedback tones (dark variants) */
+    --success: 142 40% 50%;          /* Calmer green in dark mode */
+    --success-foreground: 0 0% 98%;
+  
+    --info: 210 40% 60%;             /* Flat cool blue for info states */
+    --info-foreground: 0 0% 98%;
+  
+    --warning: 38 100% 55%;          /* Slightly deeper amber for better contrast */
+    --warning-foreground: 0 0% 98%;
+  }
+}
    
   @layer base {
     * {
