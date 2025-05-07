@@ -1,24 +1,8 @@
-
-import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [
-		tailwindcss({
-			config: './tailwind.config.js',
-			mode: 'jit',
-		}), 
-		sveltekit()
-	],
-	css: {
-		postcss: {
-			plugins: [
-				require('tailwindcss'),
-				require('autoprefixer')
-			]
-		}
-	},
+	plugins: [sveltekit()],
 	server: {
 		host: '0.0.0.0',
 		port: 5173,
