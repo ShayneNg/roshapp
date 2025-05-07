@@ -14,7 +14,7 @@ export default defineConfig({
 		},
 		allowedHosts: [
 			'76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev'
-		]
+		],
 		watch: {
 			usePolling: true,
 			interval: 1000
