@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import logo from '/static/logo_1415.svg';
+  import logo from '/static/logo_1413.svg';
   export let width = "w-20";
   export let height = "h-20";
 
