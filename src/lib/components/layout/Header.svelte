@@ -17,10 +17,8 @@
 	<div class="corner">
 
 		<!-- App Logo -->
-		<a href="##" class="logo-only-screen">
 			<Logo />
 			<!-- <span class="font-bold text-xl">oshapp Inc.</span> -->
-		</a>
 		
 	</div>
 	
@@ -55,7 +53,7 @@
 		<!-- Search Icon Button -->
 				
 		<!-- Search Link -->
-        <a href="#" class="h-10 w-10 search-icon flex items-center justify-center transition-all duration-200 hover:border-2 hover:border-primary hover:rounded-md">
+        <a href="/" class="h-10 w-10 search-icon flex items-center justify-center transition-all duration-200 hover:border-2 hover:border-primary hover:rounded-md">
             <Binoculars class="h-5 w-5 text-muted-foreground transition-all duration-200 hover:fill-current hover:text-primary hover:border-primary"/>
         </a>
 
@@ -165,7 +163,7 @@
 	header {
 		@apply w-full h-14 sm:h-16 bg-header text-foreground px-4 flex items-center justify-between;
 
-		.search-container {
+		/* .search-container {
 			@apply md:w-[400px] flex-1 relative mr-4;
 		}
 
@@ -174,6 +172,6 @@
 		}
 		.logo-only-screen{
 			@apply sm:hidden justify-center flex-1 items-center mx-auto flex;
-		}
+		} */
 	}
 </style>
