@@ -163,15 +163,8 @@
 	header {
 		@apply w-full h-14 sm:h-16 bg-header text-foreground px-4 flex items-center justify-between;
 
-		/* .search-container {
-			@apply md:w-[400px] flex-1 relative mr-4;
-		}
-
 		.corner{
 			@apply flex items-center gap-2;
 		}
-		.logo-only-screen{
-			@apply sm:hidden justify-center flex-1 items-center mx-auto flex;
-		} */
 	}
 </style>
