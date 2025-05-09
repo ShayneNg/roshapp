@@ -1,7 +1,7 @@
 <script lang="ts">
   $: currentPath = $page.url.pathname;
   import { page } from '$app/stores';
-  import Logo from '$lib/customUI/Logo.svelte';
+  import Logo from '$lib/components/layout/Logo.svelte';
   
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { Button } from '$lib/components/ui/button';
@@ -59,7 +59,7 @@
   </nav>
 </aside>
 
-<style lang="scss">
+<style>
   aside {
     @apply fixed inset-y-0 left-0 z-40 hidden md:flex w-16 flex-col bg-sidebar text-foreground border-r border-border;
   }

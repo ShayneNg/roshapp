@@ -54,7 +54,8 @@
 		"drizzle-orm": "^0.40.0",
 		"lucide-svelte": "^0.507.0",
 		"mode-watcher": "0.5.1",
-		"postgres": "^3.4.5"
+		"postgres": "^3.4.5",
+		"sass-embedded": "^1.87.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
