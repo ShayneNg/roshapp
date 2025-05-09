@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import logo from '/logo_1413.svg?url';
   export let width = "w-20";
   export let height = "h-20";
+  const logo = '/logo_1413.svg';
 
   // Determine the href based on the current URL
   let href = '/app';  // default href
