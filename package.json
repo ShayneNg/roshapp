@@ -34,6 +34,7 @@
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
+		"lucide-svelte": "^0.507.0",
 		"postcss": "^8.5.3",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
@@ -52,7 +53,6 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"drizzle-orm": "^0.40.0",
-		"lucide-svelte": "^0.507.0",
 		"mode-watcher": "0.5.1",
 		"postgres": "^3.4.5",
 		"sass-embedded": "^1.87.0"
