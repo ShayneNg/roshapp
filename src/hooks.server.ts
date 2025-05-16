@@ -1,26 +1,19 @@
+// src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth.js';
+import { getSession } from '$lib/server/session';
 
-const handleAuth: Handle = async ({ event, resolve }) => {
-	const sessionToken = event.cookies.get(auth.sessionCookieName);
-
-	if (!sessionToken) {
-		event.locals.user = null;
-		event.locals.session = null;
-		return resolve(event);
+export const handle: Handle = async ({ event, resolve }) => {
+	// 1. Read session cookie
+	const sessionId = event.cookies.get('session_id');
+	if (sessionId) {
+		const user = getSession(sessionId);
+		if (user) {
+			event.locals.user = user;  // attach user to locals
+		}
 	}
 
-	const { session, user } = await auth.validateSessionToken(sessionToken);
+	// 2. Proceed to resolve the request
+	const response = await resolve(event);
 
-	if (session) {
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-	} else {
-		auth.deleteSessionTokenCookie(event);
-	}
-
-	event.locals.user = user;
-	event.locals.session = session;
-	return resolve(event);
+	return response;
 };
-
-export const handle: Handle = handleAuth;
