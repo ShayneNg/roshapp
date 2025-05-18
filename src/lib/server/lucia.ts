@@ -1,15 +1,13 @@
 
 // Import Lucia correctly based on the package version
 import { Lucia } from "lucia";
-import { sveltekit } from "lucia/middleware";
 import { dev } from "$app/environment";
 import { DrizzleAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "./db";
 import { users, sessions } from "./db/schema";
 
-export const auth = Lucia({
+export const auth = new Lucia({
   env: dev ? "DEV" : "PROD",
-  middleware: sveltekit(),
   adapter: DrizzleAdapter(db, {
     user: users,
     session: sessions
