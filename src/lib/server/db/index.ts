@@ -1,3 +1,6 @@
+// Database connection using postgres.js
+// This creates a singleton connection to PostgreSQL using DATABASE_URL from .env
+
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
