@@ -1,11 +1,23 @@
-// for information about these interfaces
+
+/// <reference types="lucia" />
 declare global {
 	namespace App {
 		interface Locals {
-			user: import('$lib/server/auth').SessionValidationResult['user'];
-			session: import('$lib/server/auth').SessionValidationResult['session'];
+			auth: import('lucia').AuthRequest;
+			user: import('lucia').User | null;
+			session: import('lucia').Session | null;
 		}
 	}
+}
+
+// Lucia type definitions
+declare namespace Lucia {
+	type Auth = import('$lib/server/lucia').Auth;
+	type DatabaseUserAttributes = {
+		username: string;
+		email: string;
+	};
+	type DatabaseSessionAttributes = {};
 }
 
 export {};

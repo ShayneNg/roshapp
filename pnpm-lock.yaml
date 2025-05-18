@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@lucia-auth/adapter-drizzle':
+        specifier: ^1.1.0
+        version: 1.1.0(drizzle-orm@0.40.1(gel@2.1.0)(postgres@3.4.5))(lucia@3.2.2)
       '@node-rs/argon2':
         specifier: ^2.0.2
         version: 2.0.2
@@ -20,6 +23,9 @@ importers:
       drizzle-orm:
         specifier: ^0.40.0
         version: 0.40.1(gel@2.1.0)(postgres@3.4.5)
+      lucia:
+        specifier: ^3.2.2
+        version: 3.2.2
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -689,6 +695,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@lucia-auth/adapter-drizzle@1.1.0':
+    resolution: {integrity: sha512-iCTnZWvfI5lLZOdUHZYiXA1jaspIFEeo2extLxQ3DjP3uOVys7IPwBi7zezLIRu9dhro4H4Kji+7gSYyjcef2A==}
+    peerDependencies:
+      drizzle-orm: '>= 0.29 <1'
+      lucia: 3.x
 
   '@melt-ui/svelte@0.76.2':
     resolution: {integrity: sha512-7SbOa11tXUS95T3fReL+dwDs5FyJtCEqrqG3inRziDws346SYLsxOQ6HmX+4BkIsQh1R8U3XNa+EMmdMt38lMA==}
@@ -2112,6 +2124,9 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
+  lucia@3.2.2:
+    resolution: {integrity: sha512-P1FlFBGCMPMXu+EGdVD9W4Mjm0DqsusmKgO7Xc33mI5X1bklmsQb0hfzPhXomQr9waWIBDsiOjvr1e6BTaUqpA==}
+
   lucide-svelte@0.507.0:
     resolution: {integrity: sha512-qJRbz1dWyTzV05VaXIKhPeQ6mGBTIbKI05YNymym6QZSsn/mt7P154qr4SfKl+SEJlOmYPbHVjK1D1qZwa3r3w==}
     peerDependencies:
@@ -3363,6 +3378,11 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.40.1(gel@2.1.0)(postgres@3.4.5))(lucia@3.2.2)':
+    dependencies:
+      drizzle-orm: 0.40.1(gel@2.1.0)(postgres@3.4.5)
+      lucia: 3.2.2
 
   '@melt-ui/svelte@0.76.2(svelte@5.28.2)':
     dependencies:
@@ -4684,6 +4704,11 @@ snapshots:
   lodash.merge@4.6.2: {}
 
   lru-cache@10.4.3: {}
+
+  lucia@3.2.2:
+    dependencies:
+      '@oslojs/crypto': 1.0.1
+      '@oslojs/encoding': 1.1.0
 
   lucide-svelte@0.507.0(svelte@5.28.2):
     dependencies:
