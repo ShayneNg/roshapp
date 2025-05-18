@@ -1,4 +1,9 @@
 // src/lib/server/session.ts
+//---------------------------------------------------------------------------
+// Session utility functions
+// createSession: creates and assigns session cookie
+// destroySession: invalidates session and removes cookie
+//---------------------------------------------------------------------------
 import { randomUUID } from 'crypto';
 import type { User } from '$lib/server/db/schema'; // your User type
 

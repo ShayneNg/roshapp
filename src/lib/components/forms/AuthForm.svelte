@@ -9,7 +9,7 @@
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
-  import { Toaster, toast } from '$lib/components/ui/sonner';
+  import { toast } from "svelte-sonner";
 
   // Auth providers (social buttons)
   import AuthOptions from '$lib/components/design/authOptions.svelte';
@@ -121,7 +121,7 @@
   <!-- Divider -->
   <div class="relative">
     <div class="absolute inset-0 flex items-center">
-      <span class="w-full border-t" />
+      <span class="w-full border-t"></span>
     </div>
     <div class="relative flex justify-center text-xs uppercase">
       <span class="bg-background text-muted-foreground px-2">
