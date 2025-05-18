@@ -20,9 +20,6 @@ importers:
       drizzle-orm:
         specifier: ^0.40.0
         version: 0.40.1(gel@2.1.0)(postgres@3.4.5)
-      mode-watcher:
-        specifier: 0.5.1
-        version: 0.5.1(svelte@5.28.2)
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -90,6 +87,9 @@ importers:
       lucide-svelte:
         specifier: ^0.507.0
         version: 0.507.0(svelte@5.28.2)
+      mode-watcher:
+        specifier: 0.5.1
+        version: 0.5.1(svelte@5.28.2)
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
@@ -108,6 +108,9 @@ importers:
       svelte-check:
         specifier: ^4.0.0
         version: 4.1.7(picomatch@4.0.2)(svelte@5.28.2)(typescript@5.8.3)
+      svelte-sonner:
+        specifier: ^1.0.1
+        version: 1.0.1(svelte@5.28.2)
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -2511,6 +2514,11 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
+  runed@0.26.0:
+    resolution: {integrity: sha512-qWFv0cvLVRd8pdl/AslqzvtQyEn5KaIugEernwg9G98uJVSZcs/ygvPBvF80LA46V8pwRvSKnaVLDI3+i2wubw==}
+    peerDependencies:
+      svelte: ^5.7.0
+
   rxjs@7.8.2:
     resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
 
@@ -2772,6 +2780,11 @@ packages:
     peerDependenciesMeta:
       svelte:
         optional: true
+
+  svelte-sonner@1.0.1:
+    resolution: {integrity: sha512-vz0eqcs9GNnJ2CTtTno7v/jSA0P3r+X+3y/hrJg+FPpB2rZCFywIKNKD3wiRI8449i3LXVcgQ+q5R5ocOd6ydA==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   svelte@5.28.2:
     resolution: {integrity: sha512-FbWBxgWOpQfhKvoGJv/TFwzqb4EhJbwCD17dB0tEpQiw1XyUEKZJtgm4nA4xq3LLsMo7hu5UY/BOFmroAxKTMg==}
@@ -4983,6 +4996,11 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
+  runed@0.26.0(svelte@5.28.2):
+    dependencies:
+      esm-env: 1.2.2
+      svelte: 5.28.2
+
   rxjs@7.8.2:
     dependencies:
       tslib: 2.8.1
@@ -5236,6 +5254,11 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.5.3)
       postcss-selector-parser: 7.1.0
     optionalDependencies:
+      svelte: 5.28.2
+
+  svelte-sonner@1.0.1(svelte@5.28.2):
+    dependencies:
+      runed: 0.26.0(svelte@5.28.2)
       svelte: 5.28.2
 
   svelte@5.28.2:

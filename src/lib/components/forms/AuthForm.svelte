@@ -2,11 +2,10 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { z } from 'zod';
-  import { superForm } from '@superforms/sveltekit';
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
-  import { toast } from '$lib/components/ui/toast';
+  import { Toaster } from '$lib/components/ui/sonner';
   import { goto } from '$app/navigation';
 
   export let type: 'login' | 'register';
@@ -45,15 +44,15 @@
 
       const result = await res.json();
 
-      if (res.ok) {
-        toast.success(result.message || `${type} successful`);
-        dispatch('success');
-        goto('/'); // or your dashboard route
-      } else {
-        toast.error(result.error || 'Something went wrong');
-      }
+      // if (res.ok) {
+      //   toast.success(result.message || `${type} successful`);
+      //   dispatch('success');
+      //   goto('/'); // or your dashboard route
+      // } else {
+      //   toast.error(result.error || 'Something went wrong');
+      // }
     } catch (err) {
-      toast.error('Server error');
+      // toast.error('Server error');
     } finally {
       loading = false;
     }
