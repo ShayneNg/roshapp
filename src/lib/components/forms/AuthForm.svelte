@@ -2,7 +2,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { z } from 'zod';
-  import { zodForm } from 'sveltekit-superforms/zod'; // Optional
+  import { superForm } from '@superforms/sveltekit';
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
