@@ -2,13 +2,13 @@
 // Import Lucia correctly based on the package version
 import { Lucia } from "lucia";
 import { dev } from "$app/environment";
-import { drizzle } from "@lucia-auth/adapter-drizzle/drizzle";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "./db";
 import { users, sessions } from "./db/schema";
 
 export const auth = new Lucia({
   env: dev ? "DEV" : "PROD",
-  adapter: drizzle(db, {
+  adapter: DrizzlePostgreSQLAdapter(db, {
     user: users,
     session: sessions
   }),
