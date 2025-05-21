@@ -1,14 +1,12 @@
 
-// Lucia authentication setup using Postgres adapter
-// This configures Lucia to use our Drizzle schema and connect via postgres.js
-
+// src/lib/server/auth.ts
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { db } from './db';
 import { users, sessions } from './db/schema';
 
-// Lucia instance
+// Create the Lucia authentication instance
 export const auth = new Lucia({
 	env: dev ? 'DEV' : 'PROD',
 	adapter: new DrizzlePostgreSQLAdapter(db, {
@@ -17,14 +15,19 @@ export const auth = new Lucia({
 	}),
 	middleware: 'sveltekit',
 	sessionCookie: {
-		name: 'session',
 		attributes: {
 			secure: !dev
 		}
+	},
+	getUserAttributes: (data) => {
+		return {
+			username: data.username,
+			email: data.email
+		};
 	}
 });
 
-// Lucia type registration
+// Lucia type declarations
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof auth;
