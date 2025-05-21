@@ -2,16 +2,16 @@
 // Lucia authentication setup using Postgres adapter
 // This configures Lucia to use our Drizzle schema and connect via postgres.js
 
-import lucia from 'lucia';
+import { Lucia } from 'lucia';;
 import { dev } from '$app/environment';
-import { drizzle } from '@lucia-auth/adapter-drizzle';
+import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { db } from './db';
 import { users, sessions } from './db/schema';
 
 // Lucia instance
-export const auth = lucia({
+export const auth = new Lucia({
 	env: dev ? 'DEV' : 'PROD',
-	adapter: drizzle(db, {
+	adapter: DrizzlePostgreSQLAdapter(db, {
 		user: users,
 		session: sessions
 	}),
