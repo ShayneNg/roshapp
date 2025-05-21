@@ -4,7 +4,7 @@
 // Automatically runs on every request and injects `locals.user` if session is valid
 //-------------------------------------------------------------------------
 import type { Handle } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {
   // Handle Lucia authentication

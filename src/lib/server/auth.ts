@@ -3,14 +3,14 @@
 
 import lucia from 'lucia';
 import { dev } from '$app/environment';
-import { postgres as postgresAdapter } from '@lucia-auth/adapter-postgresql';
+import { drizzle as luciaDrizzleAdapter } from '@lucia-auth/adapter-drizzle/drizzle';
 import { db } from './db';
 import { users, sessions } from './db/schema';
 
 // Lucia instance
 export const auth = lucia({
 	env: dev ? 'DEV' : 'PROD',
-	adapter: postgresAdapter(db, {
+	adapter: luciaDrizzleAdapter(db, {
 		user: users,
 		session: sessions
 	}),
