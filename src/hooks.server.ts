@@ -1,17 +1,15 @@
 // src/hooks.server.ts
-// ------------------------------------------------------------------------
-// Global request hook
-// Automatically runs on every request and injects `locals.user` if session is valid
-//-------------------------------------------------------------------------
 import type { Handle } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const { user, session } = await auth.validateRequest(event);
+	// Handle Lucia authentication
+	event.locals.auth = auth.handleRequest(event);
+	const session = await event.locals.auth.validate();
+	event.locals.user = session?.user || null;
+	event.locals.session = session;
 
-  event.locals.user = user;
-  event.locals.session = session;
-
-  return resolve(event);
+	// Proceed to resolve the request
+	const response = await resolve(event);
+	return response;
 };
-
