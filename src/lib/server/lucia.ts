@@ -2,7 +2,7 @@
 // Import Lucia correctly based on the package version
 import { Lucia } from "lucia";
 import { dev } from "$app/environment";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
+import { drizzle as DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle/drizzle";
 import { db } from "./db";
 import { users, sessions } from "./db/schema";
 

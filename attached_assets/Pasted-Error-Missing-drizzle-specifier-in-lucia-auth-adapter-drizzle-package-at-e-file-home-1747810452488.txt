@@ -1,0 +1,56 @@
+Error: Missing "./drizzle" specifier in "@lucia-auth/adapter-drizzle" package
+    at e (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:12200:25)
+    at n (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:12200:631)
+    at o (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:12200:1293)
+    at resolveExportsOrImports (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:16217:18)
+    at resolveDeepImport (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:16230:25)
+    at tryNodeResolve (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:16060:18)
+    at ResolveIdContext.resolveId (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:15831:19)
+    at EnvironmentPluginContainer.resolveId (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:42213:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async TransformPluginContext.resolve (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:42420:15) {
+  pos: 115,
+  plugin: 'vite:import-analysis',
+  id: '/home/runner/workspace/src/lib/server/auth.ts',
+  pluginCode: 'import lucia from "lucia";\n' +
+    'import { dev } from "$app/environment";\n' +
+    'import { drizzle as luciaDrizzleAdapter } from "@lucia-auth/adapter-drizzle/drizzle";\n' +
+    'import { db } from "./db";\n' +
+    'import { users, sessions } from "./db/schema";\n' +
+    'export const auth = lucia({\n' +
+    '  env: dev ? "DEV" : "PROD",\n' +
+    '  adapter: luciaDrizzleAdapter(db, {\n' +
+    '    user: users,\n' +
+    '    session: sessions\n' +
+    '  }),\n' +
+    '  middleware: "sveltekit",\n' +
+    '  sessionCookie: {\n' +
+    '    name: "session",\n' +
+    '    attributes: {\n' +
+    '      secure: !dev\n' +
+    '    }\n' +
+    '  }\n' +
+    '});\n',
+  loc: {
+    file: '/home/runner/workspace/src/lib/server/auth.ts',
+    line: 6,
+    column: 47
+  },
+  frame: '1  |  import lucia from "lucia";\n' +
+    '2  |  import { dev } from "$app/environment";\n' +
+    '3  |  import { drizzle as luciaDrizzleAdapter } from "@lucia-auth/adapter-drizzle/drizzle";\n' +
+    '   |                                                  ^\n' +
+    '4  |  import { db } from "./db";\n' +
+    '5  |  import { users, sessions } from "./db/schema";',
+  runnerError: Error: RunnerError
+      at reviveInvokeError (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:552:18)
+      at Object.invoke (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:635:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async SSRCompatModuleRunner.getModuleInformation (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1205:73)
+      at async request (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1227:88)
+      at async eval (/home/runner/workspace/src/hooks.server.ts:4:31)
+      at async ESModulesEvaluator.runInlinedModule (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1062:5)
+      at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1284:61)
+      at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:25274:23)
+      at async SSRCompatModuleRunner.cachedRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1180:76)
+}
