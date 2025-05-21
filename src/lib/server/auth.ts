@@ -1,20 +1,20 @@
-
 // src/lib/server/auth.ts
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
+import { sveltekit } from 'lucia/middleware';
 import { db } from './db';
 import { users, sessions } from './db/schema';
 
-// Create the Lucia authentication instance
 export const auth = new Lucia({
-	env: dev ? 'DEV' : 'PROD',
 	adapter: new DrizzlePostgreSQLAdapter(db, {
 		user: users,
 		session: sessions
 	}),
-	middleware: 'sveltekit',
+	env: dev ? 'DEV' : 'PROD',
+	middleware: sveltekit(),
 	sessionCookie: {
+		name: 'session',
 		attributes: {
 			secure: !dev
 		}
@@ -27,7 +27,7 @@ export const auth = new Lucia({
 	}
 });
 
-// Lucia type declarations
+// Type declarations for Lucia
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof auth;
