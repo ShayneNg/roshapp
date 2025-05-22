@@ -1,18 +1,17 @@
 // src/lib/server/auth.ts
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
-import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
-import { sveltekit } from 'lucia/middleware';
-import { db } from './db';
+import { PostgresJsAdapter } from '@lucia-auth/adapter-postgresql';
+import { luciaDb } from './db';
 import { users, sessions } from './db/schema';
 
-export const auth = new Lucia({
-	adapter: new DrizzlePostgreSQLAdapter(db, {
+export const lucia = Lucia({
+	adapter: new PostgresJsAdapter(luciaDb, {
 		user: users,
 		session: sessions
 	}),
 	env: dev ? 'DEV' : 'PROD',
-	middleware: sveltekit(),
+	middleware: 'sveltekit',
 	sessionCookie: {
 		name: 'session',
 		attributes: {

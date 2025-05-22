@@ -11,6 +11,9 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
         version: 1.1.0(drizzle-orm@0.40.1(gel@2.1.0)(postgres@3.4.5))(lucia@3.2.2)
+      '@lucia-auth/adapter-postgresql':
+        specifier: ^3.1.2
+        version: 3.1.2(lucia@3.2.2)(postgres@3.4.5)
       '@node-rs/argon2':
         specifier: ^2.0.2
         version: 2.0.2
@@ -707,6 +710,21 @@ packages:
     peerDependencies:
       drizzle-orm: '>= 0.29 <1'
       lucia: 3.x
+
+  '@lucia-auth/adapter-postgresql@3.1.2':
+    resolution: {integrity: sha512-XgScy312JsaiyJZ0OaUHakk01hFBldF1m8abX4Ctk2Dkt7lEVS/u0xZ2Sf6Hlji1wZtEM0uiIWdeMUu79XcXZA==}
+    peerDependencies:
+      '@neondatabase/serverless': 0.7 - 0.9
+      lucia: 3.x
+      pg: ^8.8.0
+      postgres: ^3.3.0
+    peerDependenciesMeta:
+      '@neondatabase/serverless':
+        optional: true
+      pg:
+        optional: true
+      postgres:
+        optional: true
 
   '@melt-ui/svelte@0.76.2':
     resolution: {integrity: sha512-7SbOa11tXUS95T3fReL+dwDs5FyJtCEqrqG3inRziDws346SYLsxOQ6HmX+4BkIsQh1R8U3XNa+EMmdMt38lMA==}
@@ -3409,6 +3427,12 @@ snapshots:
     dependencies:
       drizzle-orm: 0.40.1(gel@2.1.0)(postgres@3.4.5)
       lucia: 3.2.2
+
+  '@lucia-auth/adapter-postgresql@3.1.2(lucia@3.2.2)(postgres@3.4.5)':
+    dependencies:
+      lucia: 3.2.2
+    optionalDependencies:
+      postgres: 3.4.5
 
   '@melt-ui/svelte@0.76.2(svelte@5.28.2)':
     dependencies:

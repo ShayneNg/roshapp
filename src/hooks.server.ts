@@ -1,15 +1,32 @@
 // src/hooks.server.ts
-import type { Handle } from '@sveltejs/kit';
-import { auth } from '$lib/server/auth';
+import { lucia } from "$lib/server/auth";
+
+import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// Handle Lucia authentication
-	event.locals.auth = auth.handleRequest(event);
-	const session = await event.locals.auth.validate();
-	event.locals.user = session?.user || null;
-	event.locals.session = session;
+	const sessionId = event.cookies.get(lucia.sessionCookieName);
+	if (!sessionId) {
+		event.locals.user = null;
+		event.locals.session = null;
+		return resolve(event);
+	}
 
-	// Proceed to resolve the request
-	const response = await resolve(event);
-	return response;
+	const { session, user } = await lucia.validateSession(sessionId);
+	if (session && session.fresh) {
+		const sessionCookie = lucia.createSessionCookie(session.id);
+		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: ".",
+			...sessionCookie.attributes
+		});
+	}
+	if (!session) {
+		const sessionCookie = lucia.createBlankSessionCookie();
+		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: ".",
+			...sessionCookie.attributes
+		});
+	}
+	event.locals.user = user;
+	event.locals.session = session;
+	return resolve(event);
 };

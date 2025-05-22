@@ -1,0 +1,28 @@
+TypeError: val.includes is not a function
+    at escapeName (file:///home/runner/workspace/node_modules/.pnpm/@lucia-auth+adapter-postgresql@3.1.2_lucia@3.2.2_postgres@3.4.5/node_modules/@lucia-auth/adapter-postgresql/dist/base.js:82:13)
+    at new PostgreSQLAdapter (file:///home/runner/workspace/node_modules/.pnpm/@lucia-auth+adapter-postgresql@3.1.2_lucia@3.2.2_postgres@3.4.5/node_modules/@lucia-auth/adapter-postgresql/dist/base.js:7:40)
+    at new PostgresJsAdapter (file:///home/runner/workspace/node_modules/.pnpm/@lucia-auth+adapter-postgresql@3.1.2_lucia@3.2.2_postgres@3.4.5/node_modules/@lucia-auth/adapter-postgresql/dist/drivers/postgresjs.js:4:9)
+    at /home/runner/workspace/src/lib/server/auth.ts:9:11
+    at async ESModulesEvaluator.runInlinedModule (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1062:5)
+    at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1284:61)
+    at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:25274:23)
+    at async SSRCompatModuleRunner.cachedRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1180:76)
+    at async eval (/home/runner/workspace/src/hooks.server.ts:2:1)
+    at async ESModulesEvaluator.runInlinedModule (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1062:5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
