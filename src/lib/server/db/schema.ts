@@ -23,8 +23,8 @@ export const sessions = pgTable('session', {
 
 // ——— inferred TS types ———
 //   'select' gives you exactly the shape you get back from SELECT queries
-export type Session = typeof session.$inferSelect;
-export type Users = typeof users.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
+export type User = typeof users.$inferSelect;
 //   you can also export Insert/UserUpdate if you want:
 // export type NewUser = InferModel<typeof users, 'insert'>;
 // export type UserUpdate = InferModel<typeof users, 'update'>;

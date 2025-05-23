@@ -5,7 +5,7 @@
 // destroySession: invalidates session and removes cookie
 //---------------------------------------------------------------------------
 import { randomUUID } from 'crypto';
-import type { User } from '$lib/server/db/schema'; // your User type
+import type { User } from './db/schema'; // your User type
 
 // Simple in-memory store: Map<sessionId, { user, expires }>
 const SESSION_TTL = 1000 * 60 * 60 * 24; // 24h

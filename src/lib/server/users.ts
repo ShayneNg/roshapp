@@ -3,7 +3,7 @@
 // This file acts as a service layer between your database and auth logic.
 // It exposes clean, reusable functions for interacting with the "users" table.
 
-import { db } from './db'; // PostgreSQL connection using postgres.js
+import { appDb } from './db'; // PostgreSQL connection using postgres.js
 import { users } from './db/schema'; // Drizzle schema for "users" table
 import { eq } from 'drizzle-orm'; // Helper to write SQL WHERE condition
 
@@ -15,7 +15,7 @@ import { eq } from 'drizzle-orm'; // Helper to write SQL WHERE condition
  * @returns the user object if found, or undefined
  */
 export async function getUserByEmail(email: string) {
-  const result = await db
+  const result = await appDb
     .select()
     .from(users)
     .where(eq(users.email, email))
@@ -33,7 +33,7 @@ export async function getUserByEmail(email: string) {
  * @returns the inserted user record
  */
 export async function createUser(email: string, hashedPassword: string) {
-  const result = await db
+  const result = await appDb
     .insert(users)
     .values({ email, hashedPassword })
     .returning();
@@ -49,7 +49,7 @@ export async function createUser(email: string, hashedPassword: string) {
  * @returns the user object if found
  */
 export async function getUserById(userId: number) {
-  const result = await db
+  const result = await appDb
     .select()
     .from(users)
     .where(eq(users.id, userId))
