@@ -6,7 +6,7 @@ import { validate, registerSchema } from '$lib/server/validation';
 import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';
-import { generateId } from 'lucia';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST({ request }) {
   try {
@@ -24,7 +24,7 @@ export async function POST({ request }) {
     }
 
     // Generate a unique ID for the user
-    const userId = generateId(15); // Generate a 15-character ID
+    const userId = uuidv4(); // Generate a UUID for user ID
 
     // Hash the password
     const hasher = new Argon2id();
