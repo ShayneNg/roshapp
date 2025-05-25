@@ -22,7 +22,7 @@ export async function POST({ request }) {
 
     if (existingUser) {
       toast.error('User with this email already exists');
-      // return json({ error: 'User with this email already exists' }, { status: 400 });
+      return;
     }
 
     // Generate a unique ID for the user
@@ -45,26 +45,12 @@ export async function POST({ request }) {
     const session = await auth.createSession(user.id, {});
     const sessionCookie = auth.createSessionCookie(session.id);
 
-    return json({ 
-      success: true,
-      message: 'Registration successful! Please login.',
-      user: { 
-        id: user.id,
-        email: user.email,
-        username: user.username 
-      }
-    }, {
-      headers: {
-        'Set-Cookie': sessionCookie.serialize()
-      }
-    });
+    toast.success('Registration successful! Please login.');
+
+    return;
   } catch (error) {
     console.error('Registration error:', error);
-    return json({ 
-      success: false,
-      message: error.message || 'Registration failed' 
-    }, { 
-      status: 400 
-    });
+    toast.error(error.message || 'Registration failed');
+    return;
   }
 }
