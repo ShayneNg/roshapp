@@ -6,6 +6,7 @@ import { validate, registerSchema } from '$lib/server/validation';
 import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';
+import { generateId } from 'lucia';
 
 export async function POST({ request }) {
   try {
@@ -22,15 +23,20 @@ export async function POST({ request }) {
       return json({ error: 'User with this email already exists' }, { status: 400 });
     }
 
+    // Generate a unique ID for the user
+    const userId = generateId(15); // Generate a 15-character ID
+
     // Hash the password
     const hasher = new Argon2id();
     const hashedPassword = await hasher.hash(password);
 
     // Create user
     const [user] = await appDb.insert(users).values({
+      id: userId,
       email,
       username,
-      passwordHash: hashedPassword
+      status: 'active',
+      hashedPassword
     }).returning();
 
     // Create session

@@ -9,8 +9,8 @@ export const users = pgTable('users', {
 	username: 		text('username').notNull().unique(),
 	hashedPassword: text('password_hash').notNull(),
 	status:       text('status', { length: 20 }).notNull(),
-	createdAt:    timestamp('created_at').defaultNow().notNull(),
-	updatedAt:    timestamp('updated_at').defaultNow().notNull()
+	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
 
 export const sessions = pgTable('session', {
