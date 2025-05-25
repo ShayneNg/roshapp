@@ -76,9 +76,10 @@
         dispatch('success');
         goto('/app'); // redirect to dashboard or protected area
       } else {
-        toast.error(result.error || 'Something went wrong');
+        toast.error(result.message || 'Something went wrong');
       }
     } catch (err) {
+      console.error('Auth error:', err);
       toast.error('Server error. Please try again.');
     } finally {
       loading = false;
