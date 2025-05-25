@@ -1,5 +1,5 @@
 // src/routes/app/+layout.ts
-
+import { roleGuard } from '$lib/guards/roleGuard';
 import { routeMeta } from '$lib/config/routeMeta';
 
 function matchRoute(pathname: string) {
@@ -35,3 +35,8 @@ export function load({ url }) {
     actions: meta.actions ?? []
   };
 }
+
+
+export const load: LayoutLoad = async (event) => {
+  return await roleGuard(event, ['admin', 'manager']);
+};
