@@ -41,7 +41,7 @@
   const dispatch = createEventDispatcher();
 
   // Handles form submission
-  async function onSubmit() {
+  async function handleSubmit() {
     loading = true;
 
     // Client-side schema validation
@@ -88,7 +88,7 @@
 
 <!-- Main Auth Form -->
 <section class="space-y-6">
-  <form on:submit|preventDefault={onSubmit} class="space-y-4">
+  <form on:submit|preventDefault={handleSubmit} class="space-y-4">
     <!-- Email Field -->
     <div class="space-y-2">
       <Label for="email">Email</Label>

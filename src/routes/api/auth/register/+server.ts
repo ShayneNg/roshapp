@@ -2,6 +2,7 @@
 import { json } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { appDb } from '$lib/server/db';
+import { toast } from "svelte-sonner";
 import { validate, registerSchema } from '$lib/server/validation';
 import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -20,7 +21,8 @@ export async function POST({ request }) {
     });
 
     if (existingUser) {
-      return json({ error: 'User with this email already exists' }, { status: 400 });
+      toast.error('User with this email already exists');
+      // return json({ error: 'User with this email already exists' }, { status: 400 });
     }
 
     // Generate a unique ID for the user
@@ -45,6 +47,7 @@ export async function POST({ request }) {
 
     return json({ 
       success: true,
+      message: 'Registration successful! Please login.',
       user: { 
         id: user.id,
         email: user.email,
@@ -58,7 +61,8 @@ export async function POST({ request }) {
   } catch (error) {
     console.error('Registration error:', error);
     return json({ 
-      error: error.message || 'Registration failed' 
+      success: false,
+      message: error.message || 'Registration failed' 
     }, { 
       status: 400 
     });
