@@ -1,11 +1,60 @@
-// src/routes/api/auth/register/+server.ts
-import type { RequestHandler } from '@sveltejs/kit';
+
+import { json } from '@sveltejs/kit';
+import { auth } from '$lib/server/auth';
+import { appDb } from '$lib/server/db';
 import { validate, registerSchema } from '$lib/server/validation';
+import { users } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+import { Argon2id } from 'oslo/password';
 
-export const POST: RequestHandler = async ({ request }) => {
-  const payload = await request.json();
-  // throws if invalid
-  const { email, password, name } = validate(registerSchema, payload);
+export async function POST({ request }) {
+  try {
+    const payload = await request.json();
+    // Validate using the updated schema
+    const { email, password, username } = validate(registerSchema, payload);
 
-  // proceed: hash password, save user, etc.
-};
+    // Check if user already exists
+    const existingUser = await appDb.query.users.findFirst({
+      where: eq(users.email, email)
+    });
+
+    if (existingUser) {
+      return json({ error: 'User with this email already exists' }, { status: 400 });
+    }
+
+    // Hash the password
+    const hasher = new Argon2id();
+    const hashedPassword = await hasher.hash(password);
+
+    // Create user
+    const [user] = await appDb.insert(users).values({
+      email,
+      username,
+      passwordHash: hashedPassword
+    }).returning();
+
+    // Create session
+    const session = await auth.createSession(user.id, {});
+    const sessionCookie = auth.createSessionCookie(session.id);
+
+    return json({ 
+      success: true,
+      user: { 
+        id: user.id,
+        email: user.email,
+        username: user.username 
+      }
+    }, {
+      headers: {
+        'Set-Cookie': sessionCookie.serialize()
+      }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    return json({ 
+      error: error.message || 'Registration failed' 
+    }, { 
+      status: 400 
+    });
+  }
+}
