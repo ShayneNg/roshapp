@@ -1,6 +1,8 @@
+
 // src/routes/app/+layout.ts
 import { roleGuard } from '$lib/guards/roleGuard';
 import { routeMeta } from '$lib/config/routeMeta';
+import type { LayoutLoad } from './$types';
 
 function matchRoute(pathname: string) {
   const trimmed = pathname.replace(/\/$/, '');
@@ -27,16 +29,16 @@ function matchRoute(pathname: string) {
 }
 
 /** @type {import('./$types').LayoutLoad} */
-export function load({ url }) {
-  const meta = matchRoute(url.pathname);
+export const load: LayoutLoad = async (event) => {
+  // Apply role guard first
+  const guardResult = await roleGuard(event, ['admin', 'manager']);
+  
+  // Then add meta information
+  const meta = matchRoute(event.url.pathname);
   return {
+    ...guardResult,
     title: meta.title ?? '',
     subtitle: meta.subtitle ?? '',
     actions: meta.actions ?? []
   };
-}
-
-
-export const load: LayoutLoad = async (event) => {
-  return await roleGuard(event, ['admin', 'manager']);
 };
