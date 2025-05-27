@@ -2,7 +2,6 @@
 import { json } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { appDb } from '$lib/server/db';
-import { toast } from "svelte-sonner";
 import { validate, registerSchema } from '$lib/server/validation';
 import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -15,14 +14,15 @@ export async function POST({ request }) {
     // Validate using the updated schema
     const { email, password, username } = validate(registerSchema, payload);
 
+    console.log('Registration payload:', payload)
     // Check if user already exists
     const existingUser = await appDb.query.users.findFirst({
       where: eq(users.email, email)
     });
 
     if (existingUser) {
-      toast.error('User with this email already exists');
-      return;
+      console.log('User already exists:', existingUser)
+      return json({ error: 'User with this email already exists' }, { status: 400 });
     }
 
     // Generate a unique ID for the user
@@ -45,12 +45,26 @@ export async function POST({ request }) {
     const session = await auth.createSession(user.id, {});
     const sessionCookie = auth.createSessionCookie(session.id);
 
-    toast.success('Registration successful! Please login.');
-
-    return;
+    return json({ 
+      success: true,
+      message: 'Registration successful! Please login.',
+      user: { 
+        id: user.id,
+        email: user.email,
+        username: user.username 
+      }
+    }, {
+      headers: {
+        'Set-Cookie': sessionCookie.serialize()
+      }
+    });
   } catch (error) {
     console.error('Registration error:', error);
-    toast.error(error.message || 'Registration failed');
-    return;
+    return json({ 
+      success: false,
+      message: error.message || 'Registration failed' 
+    }, { 
+      status: 400 
+    });
   }
 }
