@@ -22,7 +22,12 @@ export async function POST({ request }) {
 
     if (existingUser) {
       console.log('User already exists:', existingUser)
-      return json({ error: 'User with this email already exists' }, { status: 400 });
+      return json({ 
+        success: false,
+        message: 'An account with this email already exists' 
+      }, { 
+        status: 400 
+      });
     }
 
     // Generate a unique ID for the user
@@ -60,11 +65,22 @@ export async function POST({ request }) {
     });
   } catch (error) {
     console.error('Registration error:', error);
+    
+    // Check for duplicate key violation (PostgreSQL error code)
+    if (error.code === '23505' || (error.message && error.message.includes('duplicate key'))) {
+      return json({ 
+        success: false,
+        message: 'An account with this email already exists' 
+      }, { 
+        status: 400 
+      });
+    }
+    
     return json({ 
       success: false,
-      message: error.message || 'Registration failed' 
+      message: 'Registration failed. Please try again.' 
     }, { 
-      status: 400 
+      status: 500 
     });
   }
 }
