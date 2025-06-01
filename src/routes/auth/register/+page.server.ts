@@ -3,12 +3,27 @@ import { createUser, getUserByEmail } from '$lib/server/users';
 import { createSession } from '$lib/server/session';
 import { Argon2id } from 'oslo/password';
 
+export const load = async ({ locals }) => {
+  if (locals.user) {
+    redirect(302, '/app');
+  }
+  return {
+    csrf: locals.csrf
+  };
+};
+
 export const actions = {
   default: async ({ request, locals }) => {
     // 1. Get form data
     const formData = await request.formData();
     const email = String(formData.get('email'));
     const password = String(formData.get('password'));
+    const csrf = String(formData.get('csrf'));
+
+    // 2. Validate CSRF token
+    if (csrf !== locals.csrf) {
+      return fail(403, { message: 'Invalid CSRF token' });
+    }
 
     // 2. Validate presence
     if (!email || !password) {

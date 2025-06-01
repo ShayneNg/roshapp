@@ -16,6 +16,8 @@
 
   // Navigation helper
   import { goto } from '$app/navigation';
+  import { enhance } from '$app/forms';
+  import { page } from '$app/stores';
 
   // Props: define form type
   export let type: 'login' | 'register' = 'login';
@@ -67,6 +69,9 @@
 <!-- Main Auth Form -->
 <section class="space-y-6">
   <form bind:this={formEl} method="POST" use:enhance={handleFormEnhance} class="space-y-5">
+    <!-- CSRF Token -->
+    <input type="hidden" name="csrf" value={$page.data.csrf || ''} />
+
     <!-- Email Field -->
     <div class="space-y-2">
       <Label for="email">Email</Label>
@@ -99,7 +104,7 @@
             required
           />
     </div>
-    
+
     <!-- Confirm Password -->
     {#if type === 'register'}
       <div class="space-y-2">
@@ -113,7 +118,7 @@
             />
       </div>
     {/if}
-    
+
     {#if form.password !== form.confirmPassword}
       <p class="text-red-500 text-xs italic">Passwords do not match.</p>
     {/if}
