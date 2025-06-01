@@ -95,7 +95,7 @@
 
     // Debug function to check CSRF token
     function debugCSRF() {
-        console.log('CSRF Token:', $page.data.csrf);
+        console.log('CSRF Token:', csrf);
         console.log('Form Data:', form);
         console.log('Form Element:', formEl);
     }
@@ -105,7 +105,7 @@
 <section class="space-y-6">
   <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl} on:submit={debugCSRF}>
     <!-- CSRF Token -->
-    <input type="hidden" name="csrf" value={$page.data.csrf || ''} />
+    <input type="hidden" name="csrf" value={csrf || ''} />
 
     <!-- Error Message Display -->
     {#if showError}
@@ -210,4 +210,3 @@
   <!-- Social Logins -->
   <AuthOptions />
 </section>
-</script>
