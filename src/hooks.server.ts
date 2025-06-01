@@ -58,6 +58,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			secure: true,
 			sameSite: 'lax'
 		});
+		console.log('Generated new CSRF token:', csrf);
+	} else {
+		console.log('Using existing CSRF token:', csrf);
 	}
 	event.locals.csrf = csrf;
 
