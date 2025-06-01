@@ -49,39 +49,38 @@
 
   let formEl: HTMLFormElement;
 
-  function handleFormEnhance({ result }: { result: any }) {
-    loading = true;
-    
-    result.then((res: any) => {
-      loading = false;
+  function handleFormEnhance() {
+    return async ({ result, update }: { result: any; update: any }) => {
+      loading = true;
       
-      if (!res?.type) {
-        if (res?.data?.success === false) {
-          errorMessage = res.data.message || 'Login failed';
-          showError = true;
-          toast.error(errorMessage);
-        } else if (res?.data?.success === true) {
-          // Clear any previous errors
-          showError = false;
-          errorMessage = '';
-          
-          toast.success(res.data.message || 'Welcome back!');
+      if (result.type === 'success' && result.data?.success === true) {
+        // Clear any previous errors
+        showError = false;
+        errorMessage = '';
+        
+        toast.success(result.data.message || 'Welcome back!');
 
-          // Delay a bit before navigating
-          const role = res.data.role;
-          setTimeout(() => {
-            if (role === 'staff') goto('/staff');
-            else if (role === 'admin' || role === 'manager') goto('/app');
-            else if (role === 'ceo' || role === 'developer') goto('/protected');
-            else goto('/customer');
-          }, 800);
-        }
+        // Delay a bit before navigating
+        const role = result.data.role;
+        setTimeout(() => {
+          if (role === 'staff') goto('/staff');
+          else if (role === 'admin' || role === 'manager') goto('/app');
+          else if (role === 'ceo' || role === 'developer') goto('/protected');
+          else goto('/customer');
+        }, 800);
+      } else if (result.type === 'failure' || result.data?.success === false) {
+        errorMessage = result.data?.message || 'Login failed';
+        showError = true;
+        toast.error(errorMessage);
+      } else if (result.type === 'error') {
+        errorMessage = 'An unexpected error occurred';
+        showError = true;
+        toast.error(errorMessage);
       }
-    }).catch(() => {
+      
       loading = false;
-      errorMessage = 'An unexpected error occurred';
-      showError = true;
-    });
+      await update();
+    };
   }
 
   // Clear errors when user starts typing
