@@ -10,7 +10,7 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-  default: async ({ request, locals }) => {
+  default: async ({ request, locals, cookies }) => {
     // 1. Get form data
     const formData = await request.formData();
     const email = String(formData.get('email'));
@@ -19,7 +19,7 @@ export const actions = {
 
     // 2. Validate CSRF token
     if (csrf !== locals.csrf) {
-      return fail(403, { message: 'Invalid CSRF token' });
+      return fail(403, { message: 'Invalid CSRF token', success: false });
     }
 
     // 2. Validate presence

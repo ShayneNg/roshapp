@@ -10,13 +10,22 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-  default: async ({ request, cookies }) => {
+  default: async ({ request, cookies, locals }) => {
     try {
       // Step 1: Parse form data
       const formData = await request.formData();
       const email = String(formData.get('email') || '').trim();
       const password = String(formData.get('password') || '');
       const type = String(formData.get('type') || 'login');
+      const csrf = String(formData.get('csrf') || '');
+
+      // Step 1.5: Validate CSRF token
+      if (csrf !== locals.csrf) {
+        return fail(403, {
+          message: 'CSRF validation failed.',
+          success: false
+        });
+      }
 
       // Step 2: Check type
       if (type !== 'login') {
