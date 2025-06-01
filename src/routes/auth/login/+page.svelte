@@ -2,7 +2,7 @@
   import AuthForm from '$lib/components/forms/AuthForm.svelte';
   import type { PageData } from './$types';
 
-  export let data: PageData;
+  export let data;
 </script>
 
 <div class="space-y-4 text-center">

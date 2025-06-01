@@ -116,7 +116,7 @@
             id="email"
             name="email"
             type="email"
-            placeholder="mail@example.com"
+            placeholder="john.doe@example.com"
             bind:value={form.email}
             on:input={clearErrors}
             required
@@ -131,6 +131,7 @@
           id="username" 
           name="username"
           type="text" 
+          placeholder="@JDoe"
           bind:value={form.username} 
           on:input={clearErrors}
           required 
@@ -145,6 +146,7 @@
             id="password"
             name="password"
             type="password"
+            placeholder="password"
             bind:value={form.password}
             on:input={clearErrors}
             required
