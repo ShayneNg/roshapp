@@ -1,5 +1,8 @@
 <script lang="ts">
   import AuthForm from '$lib/components/forms/AuthForm.svelte';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
 </script>
 
 <div class="space-y-4 text-center">
@@ -7,7 +10,7 @@
   <p class="text-sm text-muted-foreground">Please enter your credentials to sign in</p>
 </div>
 
-<AuthForm type="login" />
+<AuthForm type="login" csrf={data.csrf} />
 
 <!-- Optional: extra login options -->
 <div class="text-center text-sm text-muted-foreground">

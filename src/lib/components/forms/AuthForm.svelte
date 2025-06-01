@@ -21,6 +21,11 @@
 
   // Props: define form type
   export let type: 'login' | 'register' = 'login';
+  export let csrf: string;
+
+  let loading = false;
+
+  console.log('CSRF Token:', csrf);
 
   // Form validation schema using Zod
   const schema = z.object({
@@ -36,9 +41,6 @@
     password: '',
     confirmPassword: ''
   };
-
-  // Loading state for submit button
-  let loading = false;
 
   // Error state
   let errorMessage = '';
@@ -185,7 +187,7 @@
         {/if}
         {type === 'login' ? 'Login' : 'Register'}
       </Button>
-  
+
       <!-- Debug button -->
       <Button type="button" variant="outline" class="w-full" on:click={debugCSRF}>
         Debug CSRF
@@ -208,3 +210,4 @@
   <!-- Social Logins -->
   <AuthOptions />
 </section>
+</script>
