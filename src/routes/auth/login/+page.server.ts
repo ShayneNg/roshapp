@@ -4,6 +4,7 @@ import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
 
 export async function load({ locals }) {
+  console.log('Login page load - CSRF token:', locals.csrf);
   return {
     csrf: locals.csrf
   };
@@ -20,9 +21,15 @@ export const actions = {
       const csrf = String(formData.get('csrf') || '');
 
       // Step 1.5: Validate CSRF token
+      console.log('Server CSRF Debug:');
+      console.log('- Received CSRF:', csrf);
+      console.log('- Local CSRF:', locals.csrf);
+      console.log('- Match:', csrf === locals.csrf);
+      
       if (csrf !== locals.csrf) {
+        console.log('CSRF validation failed!');
         return fail(403, {
-          message: 'CSRF validation failed.',
+          message: `CSRF validation failed. Received: "${csrf}", Expected: "${locals.csrf}"`,
           success: false
         });
       }
