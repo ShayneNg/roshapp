@@ -93,17 +93,12 @@
     }
   }
 
-    // Debug function to check CSRF token
-    function debugCSRF() {
-        console.log('CSRF Token:', csrf);
-        console.log('Form Data:', form);
-        console.log('Form Element:', formEl);
-    }
+    
 </script>
 
 <!-- Main Auth Form -->
 <section class="space-y-6">
-  <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl} on:submit={debugCSRF}>
+  <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
     <!-- CSRF Token -->
     <input type="hidden" name="csrf" value={csrf || ''} />
 
@@ -186,11 +181,6 @@
           <span class="animate-spin mr-2">⏳</span>
         {/if}
         {type === 'login' ? 'Login' : 'Register'}
-      </Button>
-
-      <!-- Debug button -->
-      <Button type="button" variant="outline" class="w-full" on:click={debugCSRF}>
-        Debug CSRF
       </Button>
     </div>
   </form>
