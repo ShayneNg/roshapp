@@ -1,6 +1,6 @@
 
 <script lang="ts">
-    import * as icons from '@lucide/svelte';
+    import * as icons from 'lucide-svelte';
     
     let { name, size = 20, strokeWidth = 1.5, class: className = '', ...rest } = $props();
 

@@ -14,9 +14,6 @@ importers:
       '@lucia-auth/adapter-postgresql':
         specifier: ^3.1.2
         version: 3.1.2(lucia@3.2.2)(postgres@3.4.5)
-      '@lucide/svelte':
-        specifier: ^0.511.0
-        version: 0.511.0(svelte@5.28.2)
       '@node-rs/argon2':
         specifier: ^2.0.2
         version: 2.0.2
@@ -32,6 +29,9 @@ importers:
       lucia:
         specifier: ^3.2.2
         version: 3.2.2
+      lucide-svelte:
+        specifier: 0.511.0
+        version: 0.511.0(svelte@5.28.2)
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -728,11 +728,6 @@ packages:
         optional: true
       postgres:
         optional: true
-
-  '@lucide/svelte@0.511.0':
-    resolution: {integrity: sha512-aLCSPMUJmHlCuLXzXENXa4Z1NV2mN1iAZAFKk4bEbey+/MdsNlu+/DqwVkgW3Yvj6p8y8Vn5xZ2v9CLmPlA6Vw==}
-    peerDependencies:
-      svelte: ^5
 
   '@melt-ui/svelte@0.76.2':
     resolution: {integrity: sha512-7SbOa11tXUS95T3fReL+dwDs5FyJtCEqrqG3inRziDws346SYLsxOQ6HmX+4BkIsQh1R8U3XNa+EMmdMt38lMA==}
@@ -2169,6 +2164,11 @@ packages:
   lucia@3.2.2:
     resolution: {integrity: sha512-P1FlFBGCMPMXu+EGdVD9W4Mjm0DqsusmKgO7Xc33mI5X1bklmsQb0hfzPhXomQr9waWIBDsiOjvr1e6BTaUqpA==}
 
+  lucide-svelte@0.511.0:
+    resolution: {integrity: sha512-cSBj1UPKt1EXnj3VBUidBqwHyFQ83pLYiTaQ/67Q5thnaP9IPohL2UXjqEzgSXXklYPYQKaAv+kmVdliDWFjWQ==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -3440,10 +3440,6 @@ snapshots:
       lucia: 3.2.2
     optionalDependencies:
       postgres: 3.4.5
-
-  '@lucide/svelte@0.511.0(svelte@5.28.2)':
-    dependencies:
-      svelte: 5.28.2
 
   '@melt-ui/svelte@0.76.2(svelte@5.28.2)':
     dependencies:
@@ -4777,6 +4773,10 @@ snapshots:
     dependencies:
       '@oslojs/crypto': 1.0.1
       '@oslojs/encoding': 1.1.0
+
+  lucide-svelte@0.511.0(svelte@5.28.2):
+    dependencies:
+      svelte: 5.28.2
 
   magic-string@0.30.17:
     dependencies:
