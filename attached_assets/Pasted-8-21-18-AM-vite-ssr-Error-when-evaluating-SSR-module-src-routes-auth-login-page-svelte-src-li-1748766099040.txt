@@ -1,0 +1,244 @@
+8:21:18 AM [vite] (ssr) Error when evaluating SSR module /src/routes/auth/login/+page.svelte: src/lib/components/forms/AuthForm.svelte:213:0 `</script>` attempted to close an element that was not open
+https://svelte.dev/e/element_invalid_closing_tag
+  Plugin: vite-plugin-svelte
+  File: src/lib/components/forms/AuthForm.svelte:213:0
+   211 |    <AuthOptions />
+   212 |  </section>
+   213 |  </script>
+          ^
+[Error [CompileError]: src/lib/components/forms/AuthForm.svelte:213:0 `</script>` attempted to close an element that was not open
+https://svelte.dev/e/element_invalid_closing_tag] {
+  id: 'src/lib/components/forms/AuthForm.svelte',
+  frame: ' 211 |    <AuthOptions />\n 212 |  </section>\n 213 |  </script>\n        ^',
+  code: 'element_invalid_closing_tag',
+  loc: {
+    line: 213,
+    column: 0,
+    file: 'src/lib/components/forms/AuthForm.svelte'
+  },
+  plugin: 'vite-plugin-svelte',
+  pluginCode: '<script lang="ts">\n' +
+    '  // Core Svelte utilities\n' +
+    "  import { createEventDispatcher } from 'svelte';\n" +
+    '\n' +
+    '  // Form validation with Zod\n' +
+    "  import { z } from 'zod';\n" +
+    '\n' +
+    '  // ShadCN-Svelte UI components\n' +
+    "  import { Button } from '$lib/components/ui/button';\n" +
+    "  import { Input } from '$lib/components/ui/input';\n" +
+    "  import { Label } from '$lib/components/ui/label';\n" +
+    '  import { toast } from "svelte-sonner";\n' +
+    '\n' +
+    '  // Auth providers (social buttons)\n' +
+    "  import AuthOptions from '$lib/components/design/authOptions.svelte';\n" +
+    '\n' +
+    '  // Navigation helper\n' +
+    "  import { goto } from '$app/navigation';\n" +
+    "  import { enhance } from '$app/forms';\n" +
+    "  import { page } from '$app/stores';\n" +
+    '\n' +
+    '  // Props: define form type\n' +
+    "  export let type: 'login' | 'register' = 'login';\n" +
+    '  export let csrf: string;\n' +
+    '\n' +
+    '  let loading = false;\n' +
+    '\n' +
+    "  console.log('CSRF Token:', csrf);\n" +
+    '\n' +
+    '  // Form validation schema using Zod\n' +
+    '  const schema = z.object({\n' +
+    "    email: z.string().email({ message: 'Invalid email format' }),\n" +
+    '    // username: z.string().min(3).max(20).optional(),\n' +
+    "    password: z.string().min(6, { message: 'Password too short' })\n" +
+    '  });\n' +
+    '\n' +
+    '  // Local form state\n' +
+    '  let form = {\n' +
+    "    email: '',\n" +
+    "    username: '',\n" +
+    "    password: '',\n" +
+    "    confirmPassword: ''\n" +
+    '  };\n' +
+    '\n' +
+    '  // Error state\n' +
+    "  let errorMessage = '';\n" +
+    '  let showError = false;\n' +
+    '\n' +
+    '  // Event dispatcher for parent communication\n' +
+    '  const dispatch = createEventDispatcher();\n' +
+    '\n' +
+    '  let formEl: HTMLFormElement;\n' +
+    '\n' +
+    '  function handleFormEnhance() {\n' +
+    '    return async ({ result, update }: { result: any; update: any }) => {\n' +
+    '      loading = true;\n' +
+    '\n' +
+    "      if (result.type === 'success' && result.data?.success === true) {\n" +
+    '        // Clear any previous errors\n' +
+    '        showError = false;\n' +
+    "        errorMessage = '';\n" +
+    '\n' +
+    "        toast.success(result.data.message || 'Welcome back!');\n" +
+    '\n' +
+    '        // Delay a bit before navigating\n' +
+    '        const role = result.data.role;\n' +
+    '        setTimeout(() => {\n' +
+    "          if (role === 'staff') goto('/staff');\n" +
+    "          else if (role === 'admin' || role === 'manager') goto('/app');\n" +
+    "          else if (role === 'ceo' || role === 'developer') goto('/protected');\n" +
+    "          else goto('/customer');\n" +
+    '        }, 800);\n' +
+    "      } else if (result.type === 'failure' || result.data?.success === false) {\n" +
+    "        errorMessage = result.data?.message || 'Login failed';\n" +
+    '        showError = true;\n' +
+    '        toast.error(errorMessage);\n' +
+    "      } else if (result.type === 'error') {\n" +
+    "        errorMessage = 'An unexpected error occurred';\n" +
+    '        showError = true;\n' +
+    '        toast.error(errorMessage);\n' +
+    '      }\n' +
+    '\n' +
+    '      loading = false;\n' +
+    '      await update();\n' +
+    '    };\n' +
+    '  }\n' +
+    '\n' +
+    '  // Clear errors when user starts typing\n' +
+    '  function clearErrors() {\n' +
+    '    if (showError) {\n' +
+    '      showError = false;\n' +
+    "      errorMessage = '';\n" +
+    '    }\n' +
+    '  }\n' +
+    '\n' +
+    '    // Debug function to check CSRF token\n' +
+    '    function debugCSRF() {\n' +
+    "        console.log('CSRF Token:', $page.data.csrf);\n" +
+    "        console.log('Form Data:', form);\n" +
+    "        console.log('Form Element:', formEl);\n" +
+    '    }\n' +
+    '</script>\n' +
+    '\n' +
+    '<!-- Main Auth Form -->\n' +
+    '<section class="space-y-6">\n' +
+    '  <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl} on:submit={debugCSRF}>\n' +
+    '    <!-- CSRF Token -->\n' +
+    `    <input type="hidden" name="csrf" value={$page.data.csrf || ''} />\n` +
+    '\n' +
+    '    <!-- Error Message Display -->\n' +
+    '    {#if showError}\n' +
+    '      <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">\n' +
+    '        {errorMessage}\n' +
+    '      </div>\n' +
+    '    {/if}\n' +
+    '\n' +
+    '    <!-- Email Field -->\n' +
+    '    <div class="space-y-2">\n' +
+    '      <Label for="email">Email</Label>\n' +
+    '      <Input\n' +
+    '            id="email"\n' +
+    '            name="email"\n' +
+    '            type="email"\n' +
+    '            placeholder="mail@example.com"\n' +
+    '            bind:value={form.email}\n' +
+    '            on:input={clearErrors}\n' +
+    '            required\n' +
+    '          />\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <!-- Username (Register Only) -->\n' +
+    "    {#if type === 'register'}\n" +
+    '      <div class="space-y-2">\n' +
+    '        <Label for="username">Username</Label>\n' +
+    '        <Input \n' +
+    '          id="username" \n' +
+    '          name="username"\n' +
+    '          type="text" \n' +
+    '          bind:value={form.username} \n' +
+    '          on:input={clearErrors}\n' +
+    '          required \n' +
+    '        />\n' +
+    '      </div>\n' +
+    '    {/if}\n' +
+    '\n' +
+    '    <!-- Password -->\n' +
+    '    <div class="space-y-2">\n' +
+    '      <Label for="password">Password</Label>\n' +
+    '      <Input\n' +
+    '            id="password"\n' +
+    '            name="password"\n' +
+    '            type="password"\n' +
+    '            bind:value={form.password}\n' +
+    '            on:input={clearErrors}\n' +
+    '            required\n' +
+    '          />\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <!-- Confirm Password -->\n' +
+    "    {#if type === 'register'}\n" +
+    '      <div class="space-y-2">\n' +
+    '        <Label for="confirm-password">Re-type Password</Label>\n' +
+    '        <Input\n' +
+    '              id="confirm-password"\n' +
+    '              name="confirmPassword"\n' +
+    '              type="password"\n' +
+    '              placeholder="Re-type password"\n' +
+    '              bind:value={form.confirmPassword}\n' +
+    '              on:input={clearErrors}\n' +
+    '              required\n' +
+    '            />\n' +
+    '      </div>\n' +
+    '\n' +
+    '      {#if form.password !== form.confirmPassword}\n' +
+    '        <p class="text-red-500 text-xs italic">Passwords do not match.</p>\n' +
+    '      {/if}\n' +
+    '\n' +
+    '    {/if}\n' +
+    '\n' +
+    '\n' +
+    '\n' +
+    '    <!-- Submit Button -->\n' +
+    '    <div class="space-y-2">\n' +
+    '      <Button class="w-full mt-2" type="submit" disabled={loading}>\n' +
+    '        {#if loading}\n' +
+    '          <span class="animate-spin mr-2">⏳</span>\n' +
+    '        {/if}\n' +
+    "        {type === 'login' ? 'Login' : 'Register'}\n" +
+    '      </Button>\n' +
+    '\n' +
+    '      <!-- Debug button -->\n' +
+    '      <Button type="button" variant="outline" class="w-full" on:click={debugCSRF}>\n' +
+    '        Debug CSRF\n' +
+    '      </Button>\n' +
+    '    </div>\n' +
+    '  </form>\n' +
+    '\n' +
+    '  <!-- Divider -->\n' +
+    '  <div class="relative">\n' +
+    '    <div class="absolute inset-0 flex items-center">\n' +
+    '      <span class="w-full border-t"></span>\n' +
+    '    </div>\n' +
+    '    <div class="relative flex justify-center text-xs uppercase">\n' +
+    '      <span class="bg-background text-muted-foreground px-2">\n' +
+    '        Or continue with\n' +
+    '      </span>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '\n' +
+    '  <!-- Social Logins -->\n' +
+    '  <AuthOptions />\n' +
+    '</section>\n' +
+    '</script>',
+  runnerError: Error: RunnerError
+      at reviveInvokeError (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:552:18)
+      at Object.invoke (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:635:15)
+      at async SSRCompatModuleRunner.getModuleInformation (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1205:73)
+      at async request (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1227:88)
+      at async eval (/home/runner/workspace/src/routes/auth/login/+page.svelte:4:173)
+      at async ESModulesEvaluator.runInlinedModule (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1062:5)
+      at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1284:61)
+      at async SSRCompatModuleRunner.directRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/chunks/dep-Bn81Esdm.js:25274:23)
+      at async SSRCompatModuleRunner.cachedRequest (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1180:76)
+      at async SSRCompatModuleRunner.import (file:///home/runner/workspace/node_modules/.pnpm/vite@6.3.4_@types+node@22.15.3_jiti@2.4.2_lightningcss@1.29.2_sass-embedded@1.87.0_yaml@2.7.1/node_modules/vite/dist/node/module-runner.js:1117:12)
+}
