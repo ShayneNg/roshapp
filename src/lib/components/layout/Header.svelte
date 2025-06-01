@@ -1,15 +1,13 @@
 <script lang="ts">
 	// import github from "$lib/images/github.svg";
   import Logo from '$lib/components/layout/Logo.svelte';
-	import Icon from "$lib/components/icons/Icon.svelte";
-	import { Binoculars, Bell, Server } from "lucide-svelte";
+	import { Search, Bell, Server } from "lucide-svelte";
 
 	import * as Avatar from "$lib/components/ui/avatar";
 	import { Badge } from "$lib/components/ui/badge/index.js";
 	import { Button } from "$lib/components/ui/button/index.js";
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+	import * * DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import LightSwitch from "$lib/components/ui/light-switch/light-switch.svelte";
-
 </script>
 
 <header>
@@ -19,9 +17,9 @@
 		<!-- App Logo -->
 			<Logo />
 			<!-- <span class="font-bold text-xl">oshapp Inc.</span> -->
-		
+
 	</div>
-	
+
 	<!-- <Breadcrumb.Root class="corner hidden md:flex">
 		<Breadcrumb.List>
 			<Breadcrumb.Item>
@@ -49,17 +47,17 @@
 			/>
 		</form> -->
 
-		
+
 		<!-- Search Icon Button -->
-				
+
 		<!-- Search Link -->
         <a href="/" class="h-10 w-10 search-icon flex items-center justify-center transition-all duration-200 hover:border-2 hover:border-primary hover:rounded-md">
-					<Icon name="Binoculars" class="text-muted-foreground transition-all duration-200 hover:fill-current hover:text-primary hover:border-primary"/>
+					<Search class="text-muted-foreground transition-all duration-200 hover:fill-current hover:text-primary hover:border-primary"/>
         </a>
 
 		<!-- LightSwitch component to toggle between light and dark themes -->
 		<LightSwitch />
-		
+
 		<!-- Server Dropdown Menu -->
 		<DropdownMenu.Root>
 			<!-- Trigger button to open the notification dropdown menu -->
@@ -71,7 +69,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Icon name="Server" class="h-5 w-5" />					
+					<Server class="h-5 w-5" />					
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge
 						variant="default"
@@ -104,7 +102,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Icon name="Bell" class="h-5 w-5" />
+					<Bell class="h-5 w-5" />
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge 
 						variant="destructive"
