@@ -15,13 +15,19 @@ import { eq } from 'drizzle-orm'; // Helper to write SQL WHERE condition
  * @returns the user object if found, or undefined
  */
 export async function getUserByEmail(email: string) {
-  const result = await appDb
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  try {
+    const result = await appDb
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-  return result[0]; // undefined if not found
+    console.log('Database query result for email', email, ':', result.length > 0 ? 'found' : 'not found');
+    return result[0]; // undefined if not found
+  } catch (error) {
+    console.error('Error fetching user by email:', error);
+    return undefined;
+  }
 }
 
 /**
@@ -29,16 +35,28 @@ export async function getUserByEmail(email: string) {
  * Used during registration flow.
  *
  * @param email - User's email
+ * @param username - User's username
  * @param hashedPassword - Securely hashed password string
  * @returns the inserted user record
  */
-export async function createUser(email: string, hashedPassword: string) {
-  const result = await appDb
-    .insert(users)
-    .values({ email, hashedPassword })
-    .returning();
+export async function createUser(email: string, username: string, hashedPassword: string) {
+  try {
+    const result = await appDb
+      .insert(users)
+      .values({ 
+        id: crypto.randomUUID(),
+        email, 
+        username,
+        hashedPassword,
+        status: 'active'
+      })
+      .returning();
 
-  return result[0]; // Returns the created user row
+    return result[0]; // Returns the created user row
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
 }
 
 /**

@@ -93,7 +93,14 @@
     <!-- Email Field -->
     <div class="space-y-2">
       <Label for="email">Email</Label>
-      <Input id="email" type="email" bind:value={form.email} required />
+      <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="mail@example.com"
+            value={form?.email || ''}
+            required
+          />
     </div>
 
     <!-- Username (Register Only) -->
@@ -107,7 +114,12 @@
     <!-- Password -->
     <div class="space-y-2">
       <Label for="password">Password</Label>
-      <Input id="password" type="password" bind:value={form.password} required />
+      <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+          />
     </div>
 
     <!-- Submit Button -->
