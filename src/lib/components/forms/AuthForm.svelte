@@ -56,7 +56,7 @@
 
     try {
       // Prepare request
-      const url = `/api/auth/${type}`;
+      const url = `/auth/${type}`;
       const payload = {
         email: form.email,
         password: form.password,
