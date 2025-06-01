@@ -162,14 +162,17 @@
               required
             />
       </div>
+
+      {#if form.password !== form.confirmPassword}
+        <p class="text-red-500 text-xs italic">Passwords do not match.</p>
+      {/if}
+      
     {/if}
 
-    {#if form.password !== form.confirmPassword}
-      <p class="text-red-500 text-xs italic">Passwords do not match.</p>
-    {/if}
+
 
     <!-- Submit Button -->
-    <Button class="w-full" type="submit" disabled={loading}>
+    <Button class="w-full mt-2" type="submit" disabled={loading}>
       {#if loading}
         <span class="animate-spin mr-2">⏳</span>
       {/if}
