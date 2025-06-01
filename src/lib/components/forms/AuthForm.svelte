@@ -18,7 +18,7 @@
   import { goto } from '$app/navigation';
 
   // Props: define form type
-  export let type: 'login' | 'register';
+  export let type: 'login' | 'register' = 'login';
 
   // Form validation schema using Zod
   const schema = z.object({
@@ -40,58 +40,33 @@
   // Event dispatcher for parent communication
   const dispatch = createEventDispatcher();
 
-  // Handles form submission
-  async function handleSubmit() {
-    loading = true;
-    console.log('Form submitted:', form)
+  let formEl: HTMLFormElement;
 
-    // Client-side schema validation
-    const validation = schema.safeParse(form);
-    console.log('Form validation:', validation)
-    if (!validation.success) {
-      toast.error('Please check your form input');
-      loading = false;
-      return;
-    }
+  function handleFormEnhance({ result }: { result: any }) {
+    result.then((res: any) => {
+      if (!res?.type) {
+        if (res?.data?.success === false) {
+          toast.error(res.data.message || 'Login failed');
+        } else if (res?.data?.success === true) {
+          toast.success(res.data.message || 'Welcome back!');
 
-    try {
-      // Prepare request
-      const url = `/auth/${type}`;
-      const payload = {
-        email: form.email,
-        password: form.password,
-        ...(type === 'register' && { username: form.username })
-      };
-
-      // Perform server request
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await res.json();
-
-      // Handle success or failure
-      if (res.ok) {
-        toast.success(result.message || `${type} successful`);
-        dispatch('success');
-        goto('/app'); // redirect to dashboard or protected area
-      } else {
-        toast.error(result.message || 'Something went wrong');
+          // Delay a bit before navigating
+          const role = res.data.role;
+          setTimeout(() => {
+            if (role === 'staff') goto('/staff');
+            else if (role === 'admin' || role === 'manager') goto('/app');
+            else if (role === 'ceo' || role === 'developer') goto('/protected');
+            else goto('/customer');
+          }, 800);
+        }
       }
-    } catch (err) {
-      console.error('Auth error:', err);
-      toast.error('Server error. Please try again.');
-    } finally {
-      loading = false;
-    }
+    });
   }
 </script>
 
 <!-- Main Auth Form -->
 <section class="space-y-6">
-  <form on:submit|preventDefault={handleSubmit} class="space-y-4">
+  <form bind:this={formEl} method="POST" use:enhance={handleFormEnhance} class="space-y-5">
     <!-- Email Field -->
     <div class="space-y-2">
       <Label for="email">Email</Label>
@@ -124,6 +99,24 @@
             required
           />
     </div>
+    
+    <!-- Confirm Password -->
+    {#if type === 'register'}
+      <div class="space-y-2">
+        <Label for="confirm-password">Re-type Password</Label>
+        <Input
+              id="confirm-password"
+              type="password"
+              placeholder="Re-type password"
+              bind:value={form.confirmPassword}
+              required
+            />
+      </div>
+    {/if}
+    
+    {#if form.password !== form.confirmPassword}
+      <p class="text-red-500 text-xs italic">Passwords do not match.</p>
+    {/if}
 
     <!-- Submit Button -->
     <Button class="w-full" type="submit" disabled={loading}>

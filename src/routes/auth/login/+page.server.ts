@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
@@ -6,77 +6,78 @@ import { auth } from '$lib/server/auth';
 export const actions = {
   default: async ({ request, cookies }) => {
     try {
-      // 1. Get form input
+      // Step 1: Parse form data
       const formData = await request.formData();
       const email = String(formData.get('email') || '').trim();
       const password = String(formData.get('password') || '');
+      const type = String(formData.get('type') || 'login');
 
-      console.log('Login attempt for email:', email);
+      // Step 2: Check type
+      if (type !== 'login') {
+        return fail(400, { message: 'Only login is supported.', success: false });
+      }
 
-      // 2. Basic validation
+      // Step 3: Validate required fields
       if (!email || !password) {
-        return fail(400, { 
+        return fail(400, {
           message: 'Email and password are required.',
           email,
           success: false
         });
       }
 
-      // 3. Email format validation
+      // Step 4: Email format check
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        return fail(400, { 
+        return fail(400, {
           message: 'Please enter a valid email address.',
           email,
           success: false
         });
       }
 
-      // 4. Find user in DB
+      // Step 5: Get user by email
       const user = await getUserByEmail(email);
       if (!user) {
-        console.log('User not found for email:', email);
-        return fail(400, { 
+        return fail(400, {
           message: 'Invalid email or password.',
           email,
           success: false
         });
       }
 
-      // 5. Check password match
+      // Step 6: Password verification
       const hasher = new Argon2id();
       const valid = await hasher.verify(user.hashedPassword, password);
       if (!valid) {
-        console.log('Invalid password for user:', email);
-        return fail(400, { 
+        return fail(400, {
           message: 'Invalid email or password.',
           email,
           success: false
         });
       }
 
-      // 6. Create session using Lucia
+      // Step 7: Create secure session
       const session = await auth.createSession(user.id, {});
       const sessionCookie = auth.createSessionCookie(session.id);
-      
+
       cookies.set(sessionCookie.name, sessionCookie.value, {
         path: '/',
         ...sessionCookie.attributes
       });
 
-      console.log('Login successful for user:', email);
+      // Step 8: Return login success and role for client-side navigation
+      const role = user.role?.toLowerCase() ?? 'customer';
 
-      // 7. Redirect to app
-      throw redirect(302, '/app');
+      return {
+        success: true,
+        message: 'Login successful!',
+        role
+      };
     } catch (error) {
+      // Step 9: Fallback error
       console.error('Login error:', error);
-      
-      // Don't redirect on errors, return them
-      if (error?.status === 302) {
-        throw error; // Re-throw redirects
-      }
-      
-      return fail(500, { 
+      return fail(500, {
         message: 'An error occurred during login. Please try again.',
         success: false
       });
