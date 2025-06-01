@@ -7,6 +7,7 @@ declare global {
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
 			csrf: string;
+			role: string | null;
 		}
 	}
 }
