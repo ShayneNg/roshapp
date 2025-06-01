@@ -98,7 +98,7 @@
             name="email"
             type="email"
             placeholder="mail@example.com"
-            value={form?.email || ''}
+            bind:value={form.email}
             required
           />
     </div>
@@ -118,6 +118,7 @@
             id="password"
             name="password"
             type="password"
+            bind:value={form.password}
             required
           />
     </div>
