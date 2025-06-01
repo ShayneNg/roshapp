@@ -8,13 +8,30 @@ const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
 	//
+	// ─── LAYER 6: CSRF PROTECTION ───────────────────────────────────────────────────
+	//
+	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
+	if (!csrf) {
+		csrf = randomUUID();
+		event.cookies.set(CSRF_COOKIE_NAME, csrf, {
+			path: '/',
+			httpOnly: true,
+			secure: true,
+			sameSite: 'lax'
+		});
+		console.log('Generated new CSRF token:', csrf);
+	} else {
+		console.log('Using existing CSRF token:', csrf);
+	}
+	event.locals.csrf = csrf;
+
+	//
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
 	//
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 	if (!sessionId) {
 		event.locals.user = null;
 		event.locals.session = null;
-		return resolve(event);
 	} else {
 		const { session, user } = await auth.validateSession(sessionId);
 
@@ -45,24 +62,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.user = user;
 		event.locals.session = session;
 	}
-
-	//
-	// ─── LAYER 6: CSRF PROTECTION ───────────────────────────────────────────────────
-	//
-	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
-	if (!csrf) {
-		csrf = randomUUID();
-		event.cookies.set(CSRF_COOKIE_NAME, csrf, {
-			path: '/',
-			httpOnly: true,
-			secure: true,
-			sameSite: 'lax'
-		});
-		console.log('Generated new CSRF token:', csrf);
-	} else {
-		console.log('Using existing CSRF token:', csrf);
-	}
-	event.locals.csrf = csrf;
 
 	//
 	// ─── LAYER 8: CORS PRE-FLIGHT ──────────────────────────────────────────────────
