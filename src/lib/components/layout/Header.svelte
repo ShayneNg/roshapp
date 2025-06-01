@@ -72,7 +72,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Icon name="Server" class="h-5 w-5">					
+					<Icon name="Server" class="h-5 w-5" />					
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge
 						variant="default"
@@ -105,7 +105,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Icon name="Bell" class="h-5 w-5">
+					<Icon name="Bell" class="h-5 w-5" />
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge 
 						variant="destructive"

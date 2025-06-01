@@ -1,6 +1,6 @@
 
 // src/routes/app/+layout.ts
-import { roleGuard } from '$lib/guards/roleGuard';
+import { roleGuard } from '$lib/guards/roleGuards';
 import { routeMeta } from '$lib/config/routeMeta';
 import type { LayoutLoad } from './$types';
 
