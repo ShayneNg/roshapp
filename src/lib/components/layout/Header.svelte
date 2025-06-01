@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import github from "$lib/images/github.svg";
   import Logo from '$lib/components/layout/Logo.svelte';
-	import Icon from "$lib/icons/Icon.svelte";
+	import Icon from "$lib/components/icons/Icon.svelte";
 	import { Binoculars, Bell, Server } from "lucide-svelte";
 
 	import * as Avatar from "$lib/components/ui/avatar";
@@ -9,7 +9,6 @@
 	import { Button } from "$lib/components/ui/button/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import LightSwitch from "$lib/components/ui/light-switch/light-switch.svelte";
-
 
 </script>
 
