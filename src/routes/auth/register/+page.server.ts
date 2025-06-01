@@ -4,7 +4,6 @@ import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
 
 export async function load({ locals }) {
-  console.log('Register page load - CSRF token:', locals.csrf);
   return {
     csrf: locals.csrf
   };
