@@ -49,51 +49,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const sc = auth.createBlankSessionCookie();
 			event.cookies.set(sc.name, sc.value, {
 				path: '/',
-				...sc.attributes
-			});
-		}
-
-		event.locals.user = user;
-		event.locals.session = session;
-	}
-
-	//
-	// ─── LAYER 3: ROLE ASSIGNMENT ─────────────────────────────────────────────────
-	//
-	if (event.locals.user) {
-		// You can extend this logic to fetch role from database
-		// For now, using a simple mapping based on user data
-		event.locals.role = event.locals.user.role || 'customer';
-	} else {
-		event.locals.role = null;
-	}
-
-	//
-	// ─── LAYER 4: CORS HANDLING ────────────────────────────────────────────────────
-	//
-	if (event.request.method === 'OPTIONS') {
-		return new Response(null, {
-			status: 200,
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-				'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-			}
-		});
-	}
-
-	//
-	// ─── LAYER 5: RESPONSE HANDLING ────────────────────────────────────────────────
-	//
-	const response = await resolve(event);
-
-	// Add security headers
-	response.headers.set('X-Frame-Options', 'DENY');
-	response.headers.set('X-Content-Type-Options', 'nosniff');
-	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-
-	return response;lue, {
-				path: '/',
 				httpOnly: true,
 				secure: true,
 				sameSite: 'lax',
