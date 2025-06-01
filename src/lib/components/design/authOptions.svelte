@@ -1,7 +1,7 @@
 <script>
   import { Label } from "$lib/components/ui/label";
 
-  import { Bitcoin, Slack } from "lucide-svelte";
+  import Icon from "$lib/components/icons/Icon.svelte";
 </script>
 
 <div class="grid grid-cols-3 gap-4">
@@ -29,7 +29,7 @@
     for="bitcoin"
     class="border-muted bg-popover hover:bg-primary hover:text-primary-foreground [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4 cursor-pointer"
   >
-    <Bitcoin class="option-icon" />
+    <Icon name="Bitcoin" class="option-icon" />
     Bitcoin
   </Label>
 
@@ -37,7 +37,7 @@
     for="framer"
     class="border-muted bg-popover hover:bg-primary hover:text-primary-foreground [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4 cursor-pointer"
   >
-    <Slack class="option-icon" />
+    <Icon name="Slack" class="option-icon" />
     Slack
   </Label>
 

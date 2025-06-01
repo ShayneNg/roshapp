@@ -1,14 +1,19 @@
 <script>
-  import { Card, CardHeader, CardContent } from "$lib/components/ui";
+  import * as Card from "$lib/components/ui/card";
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <Card>
-    <CardHeader>My Bookings</CardHeader>
-    <CardContent>No upcoming bookings</CardContent>
-  </Card>
-  <Card>
-    <CardHeader>My Coupons</CardHeader>
-    <CardContent>None active. Stay tuned!</CardContent>
-  </Card>
+<div class="customer-container">
+  <div class="customer-container-column">
+    
+  </div>
 </div>
+
+<style lang="scss" scoped>
+.customer-container {
+  @apply hidden items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3
+
+  &-column{
+    @apply col-span-2 grid items-start gap-6 lg:col-span-1
+  }
+}
+</style>

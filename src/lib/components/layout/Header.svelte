@@ -1,6 +1,7 @@
 <script lang="ts">
 	// import github from "$lib/images/github.svg";
   import Logo from '$lib/components/layout/Logo.svelte';
+	import Icon from "$lib/icons/Icon.svelte";
 	import { Binoculars, Bell, Server } from "lucide-svelte";
 
 	import * as Avatar from "$lib/components/ui/avatar";
@@ -54,7 +55,7 @@
 				
 		<!-- Search Link -->
         <a href="/" class="h-10 w-10 search-icon flex items-center justify-center transition-all duration-200 hover:border-2 hover:border-primary hover:rounded-md">
-            <Binoculars class="h-5 w-5 text-muted-foreground transition-all duration-200 hover:fill-current hover:text-primary hover:border-primary"/>
+					<Icon name="Binoculars" class="text-muted-foreground transition-all duration-200 hover:fill-current hover:text-primary hover:border-primary"/>
         </a>
 
 		<!-- LightSwitch component to toggle between light and dark themes -->
@@ -71,7 +72,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Server class="h-5 w-5"/>
+					<Icon name="Server" class="h-5 w-5">					
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge
 						variant="default"
@@ -104,7 +105,7 @@
 					class="relative text-muted-foreground"
 				>
 					<!-- Notification icon for alerts and updates -->
-					<Bell class="h-5 w-5"/>
+					<Icon name="Bell" class="h-5 w-5">
 					<!-- Badge icon to indicate number of notifications -->
 					<Badge 
 						variant="destructive"

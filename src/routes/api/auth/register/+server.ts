@@ -21,7 +21,6 @@ export async function POST({ request }) {
     });
 
     if (existingUser) {
-      console.log('User already exists:', existingUser)
       return json({ 
         success: false,
         message: 'An account with this email already exists' 
