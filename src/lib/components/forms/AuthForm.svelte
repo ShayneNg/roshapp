@@ -23,7 +23,7 @@
   // Form validation schema using Zod
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email format' }),
-    username: z.string().min(3).max(20).optional(),
+    // username: z.string().min(3).max(20).optional(),
     password: z.string().min(6, { message: 'Password too short' })
   });
 
@@ -43,9 +43,11 @@
   // Handles form submission
   async function handleSubmit() {
     loading = true;
+    console.log('Form submitted:', form)
 
     // Client-side schema validation
     const validation = schema.safeParse(form);
+    console.log('Form validation:', validation)
     if (!validation.success) {
       toast.error('Please check your form input');
       loading = false;
