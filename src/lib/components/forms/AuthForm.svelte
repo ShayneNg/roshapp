@@ -178,17 +178,19 @@
 
 
     <!-- Submit Button -->
-    <Button class="w-full mt-2" type="submit" disabled={loading}>
-      {#if loading}
-        <span class="animate-spin mr-2">⏳</span>
-      {/if}
-      {type === 'login' ? 'Login' : 'Register'}
-    </Button>
-
-    <!-- Debug button -->
-    <Button type="button" variant="outline" class="w-full" on:click={debugCSRF}>
-      Debug CSRF
-    </Button>
+    <div class="space-y-2">
+      <Button class="w-full mt-2" type="submit" disabled={loading}>
+        {#if loading}
+          <span class="animate-spin mr-2">⏳</span>
+        {/if}
+        {type === 'login' ? 'Login' : 'Register'}
+      </Button>
+  
+      <!-- Debug button -->
+      <Button type="button" variant="outline" class="w-full" on:click={debugCSRF}>
+        Debug CSRF
+      </Button>
+    </div>
   </form>
 
   <!-- Divider -->
