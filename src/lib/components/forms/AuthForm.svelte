@@ -54,6 +54,9 @@
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
       loading = true;
+      console.log('AUTH FORM DEBUG - Form submission result:', result);
+      console.log('AUTH FORM DEBUG - Result type:', result.type);
+      console.log('AUTH FORM DEBUG - Result data:', result.data);
 
       if (result.type === 'success' && result.data?.success === true) {
         // Clear any previous errors

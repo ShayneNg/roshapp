@@ -19,13 +19,22 @@ export const actions = {
       const type = String(formData.get('type') || 'login');
       const csrf = String(formData.get('csrf') || '');
 
+      console.log('LOGIN DEBUG - Form CSRF:', csrf);
+      console.log('LOGIN DEBUG - Locals CSRF:', locals.csrf);
+      console.log('LOGIN DEBUG - CSRF Match:', csrf === locals.csrf);
+      console.log('LOGIN DEBUG - Email:', email);
+      console.log('LOGIN DEBUG - Type:', type);
+
       // Step 1.5: Validate CSRF token
       if (csrf !== locals.csrf) {
+        console.log('LOGIN DEBUG - CSRF VALIDATION FAILED');
         return fail(403, {
           message: 'CSRF validation failed',
           success: false
         });
       }
+
+      console.log('LOGIN DEBUG - CSRF validation passed');
 
       // Step 2: Check type
       if (type !== 'login') {
@@ -52,8 +61,11 @@ export const actions = {
       }
 
       // Step 5: Get user by email
+      console.log('LOGIN DEBUG - Looking up user by email:', email);
       const user = await getUserByEmail(email);
+      console.log('LOGIN DEBUG - User found:', !!user);
       if (!user) {
+        console.log('LOGIN DEBUG - User not found');
         return fail(400, {
           message: 'Invalid email or password.',
           email,
@@ -62,9 +74,12 @@ export const actions = {
       }
 
       // Step 6: Password verification
+      console.log('LOGIN DEBUG - Verifying password');
       const hasher = new Argon2id();
       const valid = await hasher.verify(user.hashedPassword, password);
+      console.log('LOGIN DEBUG - Password valid:', valid);
       if (!valid) {
+        console.log('LOGIN DEBUG - Password verification failed');
         return fail(400, {
           message: 'Invalid email or password.',
           email,
@@ -73,16 +88,21 @@ export const actions = {
       }
 
       // Step 7: Create secure session
+      console.log('LOGIN DEBUG - Creating session for user:', user.id);
       const session = await auth.createSession(user.id, {});
+      console.log('LOGIN DEBUG - Session created:', session.id);
       const sessionCookie = auth.createSessionCookie(session.id);
 
       cookies.set(sessionCookie.name, sessionCookie.value, {
         path: '/',
         ...sessionCookie.attributes
       });
+      console.log('LOGIN DEBUG - Session cookie set');
 
       // Step 8: Return login success and role for client-side navigation
       const role = user.role?.toLowerCase() ?? 'customer';
+      console.log('LOGIN DEBUG - User role:', role);
+      console.log('LOGIN DEBUG - Login process completed successfully');
 
       return {
         success: true,
