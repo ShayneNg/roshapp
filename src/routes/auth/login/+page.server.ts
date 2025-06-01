@@ -3,6 +3,12 @@ import { getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
 
+export async function load({ locals }) {
+  return {
+    csrf: locals.csrf
+  };
+}
+
 export const actions = {
   default: async ({ request, cookies }) => {
     try {

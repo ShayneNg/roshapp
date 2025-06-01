@@ -1,16 +1,13 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { createUser, getUserByEmail } from '$lib/server/users';
-import { createSession } from '$lib/server/session';
 import { Argon2id } from 'oslo/password';
+import { auth } from '$lib/server/auth';
 
-export const load = async ({ locals }) => {
-  if (locals.user) {
-    redirect(302, '/app');
-  }
+export async function load({ locals }) {
   return {
     csrf: locals.csrf
   };
-};
+}
 
 export const actions = {
   default: async ({ request, locals }) => {

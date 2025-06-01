@@ -52,12 +52,12 @@
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
       loading = true;
-      
+
       if (result.type === 'success' && result.data?.success === true) {
         // Clear any previous errors
         showError = false;
         errorMessage = '';
-        
+
         toast.success(result.data.message || 'Welcome back!');
 
         // Delay a bit before navigating
@@ -77,7 +77,7 @@
         showError = true;
         toast.error(errorMessage);
       }
-      
+
       loading = false;
       await update();
     };
@@ -94,7 +94,7 @@
 
 <!-- Main Auth Form -->
 <section class="space-y-6">
-  <form bind:this={formEl} method="POST" use:enhance={handleFormEnhance} class="space-y-5">
+  <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
     <!-- CSRF Token -->
     <input type="hidden" name="csrf" value={$page.data.csrf || ''} />
 
@@ -165,7 +165,7 @@
       {#if form.password !== form.confirmPassword}
         <p class="text-red-500 text-xs italic">Passwords do not match.</p>
       {/if}
-      
+
     {/if}
 
 
