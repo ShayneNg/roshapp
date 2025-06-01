@@ -33,11 +33,16 @@
   let form = {
     email: '',
     username: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   };
 
   // Loading state for submit button
   let loading = false;
+
+  // Error state
+  let errorMessage = '';
+  let showError = false;
 
   // Event dispatcher for parent communication
   const dispatch = createEventDispatcher();
@@ -45,11 +50,21 @@
   let formEl: HTMLFormElement;
 
   function handleFormEnhance({ result }: { result: any }) {
+    loading = true;
+    
     result.then((res: any) => {
+      loading = false;
+      
       if (!res?.type) {
         if (res?.data?.success === false) {
-          toast.error(res.data.message || 'Login failed');
+          errorMessage = res.data.message || 'Login failed';
+          showError = true;
+          toast.error(errorMessage);
         } else if (res?.data?.success === true) {
+          // Clear any previous errors
+          showError = false;
+          errorMessage = '';
+          
           toast.success(res.data.message || 'Welcome back!');
 
           // Delay a bit before navigating
@@ -62,7 +77,19 @@
           }, 800);
         }
       }
+    }).catch(() => {
+      loading = false;
+      errorMessage = 'An unexpected error occurred';
+      showError = true;
     });
+  }
+
+  // Clear errors when user starts typing
+  function clearErrors() {
+    if (showError) {
+      showError = false;
+      errorMessage = '';
+    }
   }
 </script>
 
@@ -71,6 +98,13 @@
   <form bind:this={formEl} method="POST" use:enhance={handleFormEnhance} class="space-y-5">
     <!-- CSRF Token -->
     <input type="hidden" name="csrf" value={$page.data.csrf || ''} />
+
+    <!-- Error Message Display -->
+    {#if showError}
+      <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+        {errorMessage}
+      </div>
+    {/if}
 
     <!-- Email Field -->
     <div class="space-y-2">
@@ -81,6 +115,7 @@
             type="email"
             placeholder="mail@example.com"
             bind:value={form.email}
+            on:input={clearErrors}
             required
           />
     </div>
@@ -89,7 +124,14 @@
     {#if type === 'register'}
       <div class="space-y-2">
         <Label for="username">Username</Label>
-        <Input id="username" type="text" bind:value={form.username} required />
+        <Input 
+          id="username" 
+          name="username"
+          type="text" 
+          bind:value={form.username} 
+          on:input={clearErrors}
+          required 
+        />
       </div>
     {/if}
 
@@ -101,6 +143,7 @@
             name="password"
             type="password"
             bind:value={form.password}
+            on:input={clearErrors}
             required
           />
     </div>
@@ -111,9 +154,11 @@
         <Label for="confirm-password">Re-type Password</Label>
         <Input
               id="confirm-password"
+              name="confirmPassword"
               type="password"
               placeholder="Re-type password"
               bind:value={form.confirmPassword}
+              on:input={clearErrors}
               required
             />
       </div>
