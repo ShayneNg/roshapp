@@ -15,6 +15,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const origin = event.request.headers.get('origin');
 	
 	if (!origin && event.request.method === 'POST') {
+		// Clone the request body before modifying headers
+		const body = await event.request.arrayBuffer();
+		
 		// Create a new request with the proper origin header
 		const headers = new Headers(event.request.headers);
 		headers.set('origin', url.origin);
@@ -23,16 +26,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.request = new Request(event.request.url, {
 			method: event.request.method,
 			headers: headers,
-			body: event.request.body,
-			mode: event.request.mode,
-			credentials: event.request.credentials,
-			cache: event.request.cache,
-			redirect: event.request.redirect,
-			referrer: event.request.referrer,
-			referrerPolicy: event.request.referrerPolicy,
-			integrity: event.request.integrity,
-			keepalive: event.request.keepalive,
-			signal: event.request.signal
+			body: body,
+			duplex: 'half'
 		});
 	}
 
