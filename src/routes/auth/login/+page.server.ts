@@ -51,15 +51,6 @@ export const actions = {
         });
       }
 
-      // Step 1.5: Validate CSRF token
-      if (csrf !== locals.csrf) {
-        console.log('LOGIN DEBUG - CSRF VALIDATION FAILED');
-        return fail(403, {
-          message: 'CSRF validation failed',
-          success: false
-        });
-      }
-
       console.log('LOGIN DEBUG - CSRF validation passed');
 
       // Step 2: Check type
