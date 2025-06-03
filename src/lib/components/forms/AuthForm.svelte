@@ -211,4 +211,3 @@
 
 <!-- Social login options (e.g. Google, GitHub) -->
 <AuthOptions />
-</script>
