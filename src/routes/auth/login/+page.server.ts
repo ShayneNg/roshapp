@@ -1,3 +1,4 @@
+// src/routes/auth/login/+page.server.ts
 import { fail } from '@sveltejs/kit';
 import { getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
@@ -5,6 +6,7 @@ import { auth } from '$lib/server/auth';
 import { z } from 'zod';
 
 export async function load({ locals }) {
+  // Expose CSRF token to the frontend form via props
   return {
     csrf: locals.csrf
   };
@@ -33,7 +35,7 @@ const RegisterSchema = z.object({
 export const actions = {
   default: async ({ request, cookies, locals }) => {
     try {
-      // Step 1: Parse form data
+      // Parse form into object
       const formData = Object.fromEntries(await request.formData()) as Record<string, string>;
       const { type } = formData;
 
@@ -51,38 +53,19 @@ export const actions = {
         });
       }
 
-      console.log('LOGIN DEBUG - CSRF validation passed');
+      const { email, password, csrf } = result.data;
 
-      // Step 2: Check type
-      if (type !== 'login') {
-        return fail(400, { message: 'Only login is supported.', success: false });
-      }
-
-      // Step 3: Validate required fields
-      if (!email || !password) {
-        return fail(400, {
-          message: 'Email and password are required.',
-          email,
+      // CSRF token validation
+      if (csrf !== locals.csrf) {
+        return fail(403, {
+          message: 'CSRF validation failed',
           success: false
         });
       }
 
-      // Step 4: Email format check
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        return fail(400, {
-          message: 'Please enter a valid email address.',
-          email,
-          success: false
-        });
-      }
-
-      // Step 5: Get user by email
-      console.log('LOGIN DEBUG - Looking up user by email:', email);
+      // Get user by email
       const user = await getUserByEmail(email);
-      console.log('LOGIN DEBUG - User found:', !!user);
       if (!user) {
-        console.log('LOGIN DEBUG - User not found');
         return fail(400, {
           message: 'Invalid email or password.',
           email,
@@ -90,13 +73,10 @@ export const actions = {
         });
       }
 
-      // Step 6: Password verification
-      console.log('LOGIN DEBUG - Verifying password');
+      // Verify password using Argon2id
       const hasher = new Argon2id();
       const valid = await hasher.verify(user.hashedPassword, password);
-      console.log('LOGIN DEBUG - Password valid:', valid);
       if (!valid) {
-        console.log('LOGIN DEBUG - Password verification failed');
         return fail(400, {
           message: 'Invalid email or password.',
           email,
@@ -104,22 +84,17 @@ export const actions = {
         });
       }
 
-      // Step 7: Create secure session
-      console.log('LOGIN DEBUG - Creating session for user:', user.id);
+      // Create and set session cookie
       const session = await auth.createSession(user.id, {});
-      console.log('LOGIN DEBUG - Session created:', session.id);
       const sessionCookie = auth.createSessionCookie(session.id);
 
       cookies.set(sessionCookie.name, sessionCookie.value, {
         path: '/',
         ...sessionCookie.attributes
       });
-      console.log('LOGIN DEBUG - Session cookie set');
 
-      // Step 8: Return login success and role for client-side navigation
+      // Return success and user role for redirection
       const role = user.role?.toLowerCase() ?? 'customer';
-      console.log('LOGIN DEBUG - User role:', role);
-      console.log('LOGIN DEBUG - Login process completed successfully');
 
       return {
         success: true,
@@ -127,7 +102,6 @@ export const actions = {
         role
       };
     } catch (error) {
-      // Step 9: Fallback error
       console.error('Login error:', error);
       return fail(500, {
         message: 'An error occurred during login. Please try again.',

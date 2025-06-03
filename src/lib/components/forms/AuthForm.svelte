@@ -1,40 +1,43 @@
 <script lang="ts">
-  // Core Svelte utilities
+  // Emits custom events (not used here, but good practice for form components)
   import { createEventDispatcher } from 'svelte';
 
-  // Form validation with Zod
+  // Zod schema for client-side validation (optional but clean)
   import { z } from 'zod';
 
-  // ShadCN-Svelte UI components
+  // UI components (ShadCN-style)
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
-  import { toast } from "svelte-sonner";
 
-  // Auth providers (social buttons)
+  // Toast notification system
+  import { toast } from 'svelte-sonner';
+
+  // Social login buttons (e.g. Google, GitHub)
   import AuthOptions from '$lib/components/design/authOptions.svelte';
 
-  // Navigation helper
+  // Used for programmatic navigation
   import { goto } from '$app/navigation';
+
+  // Enables progressive form enhancement (SvelteKit magic)
   import { enhance } from '$app/forms';
+
+  // For access to URL parameters or SSR values
   import { page } from '$app/stores';
 
-  // Props: define form type
+  // Props passed from the page
   export let type: 'login' | 'register' = 'login';
-  export let csrf: string;
+  export let csrf: string; // passed from `+page.server.ts`
 
-  let loading = false;
+  let loading = false; // disables submit button and shows spinner
 
-  console.log('CSRF Token:', csrf);
-
-  // Form validation schema using Zod
+  // Form validation schema (used optionally here)
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email format' }),
-    // username: z.string().min(3).max(20).optional(),
     password: z.string().min(6, { message: 'Password too short' })
   });
 
-  // Local form state
+  // Form data structure
   let form = {
     email: '',
     username: '',
@@ -42,41 +45,44 @@
     confirmPassword: ''
   };
 
-  // Error state
+  // Error display logic
   let errorMessage = '';
   let showError = false;
 
-  // Event dispatcher for parent communication
+  // Useful if you want to emit 'success' or 'fail' to a parent
   const dispatch = createEventDispatcher();
 
+  // Optional reference to the form element itself
   let formEl: HTMLFormElement;
 
+  /**
+   * Handles enhanced form submission via SvelteKit's use:enhance
+   */
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
       loading = true;
-      console.log('AUTH FORM DEBUG - Form submission result:', result);
-      console.log('AUTH FORM DEBUG - Result type:', result.type);
-      console.log('AUTH FORM DEBUG - Result data:', result.data);
 
+      // SUCCESS → Redirect based on role
       if (result.type === 'success' && result.data?.success === true) {
-        // Clear any previous errors
         showError = false;
         errorMessage = '';
-
         toast.success(result.data.message || 'Welcome back!');
 
-        // Delay a bit before navigating
         const role = result.data.role;
         setTimeout(() => {
           if (role === 'staff') goto('/staff');
           else if (role === 'admin' || role === 'manager') goto('/app');
           else if (role === 'ceo' || role === 'developer') goto('/protected');
-          else goto('/customer');
+          else goto('/customer'); // fallback if no role set
         }, 800);
+
+      // VALIDATION FAILURE (from +page.server.ts)
       } else if (result.type === 'failure' || result.data?.success === false) {
         errorMessage = result.data?.message || 'Login failed';
         showError = true;
         toast.error(errorMessage);
+
+      // SERVER ERROR
       } else if (result.type === 'error') {
         errorMessage = 'An unexpected error occurred';
         showError = true;
@@ -84,124 +90,121 @@
       }
 
       loading = false;
-      await update();
+      await update(); // refresh form state
     };
   }
 
-  // Clear errors when user starts typing
+  /**
+   * Clear errors when user types again
+   */
   function clearErrors() {
     if (showError) {
       showError = false;
       errorMessage = '';
     }
   }
-
-    
 </script>
 
-<!-- Main Auth Form -->
-<section class="space-y-6">
-  <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
-    <!-- CSRF Token -->
-    <input type="hidden" name="csrf" value={csrf || ''} />
+<!-- CSRF protection & enhanced form submission -->
+<form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
+  <!-- Secure CSRF token from server -->
+  <input type="hidden" name="csrf" value={csrf || ''} />
 
-    <!-- Error Message Display -->
-    {#if showError}
-      <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-        {errorMessage}
-      </div>
-    {/if}
-
-    <!-- Email Field -->
-    <div class="space-y-2">
-      <Label for="email">Email</Label>
-      <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john.doe@example.com"
-            bind:value={form.email}
-            on:input={clearErrors}
-            required
-          />
+  <!-- Error message block -->
+  {#if showError}
+    <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+      {errorMessage}
     </div>
+  {/if}
 
-    <!-- Username (Register Only) -->
-    {#if type === 'register'}
-      <div class="space-y-2">
-        <Label for="username">Username</Label>
-        <Input 
-          id="username" 
-          name="username"
-          type="text" 
-          placeholder="@JDoe"
-          bind:value={form.username} 
-          on:input={clearErrors}
-          required 
-        />
-      </div>
-    {/if}
-
-    <!-- Password -->
-    <div class="space-y-2">
-      <Label for="password">Password</Label>
-      <Input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="password"
-            bind:value={form.password}
-            on:input={clearErrors}
-            required
-          />
-    </div>
-
-    <!-- Confirm Password -->
-    {#if type === 'register'}
-      <div class="space-y-2">
-        <Label for="confirm-password">Re-type Password</Label>
-        <Input
-              id="confirm-password"
-              name="confirmPassword"
-              type="password"
-              placeholder="Re-type password"
-              bind:value={form.confirmPassword}
-              on:input={clearErrors}
-              required
-            />
-      </div>
-
-      {#if form.password !== form.confirmPassword}
-        <p class="text-red-500 text-xs italic">Passwords do not match.</p>
-      {/if}
-
-    {/if}
-
-
-
-    <!-- Submit Button -->
-    <div class="space-y-2">
-      <Button class="w-full mt-2" type="submit" disabled={loading}>
-        {#if loading}
-          <span class="animate-spin mr-2">⏳</span>
-        {/if}
-        {type === 'login' ? 'Login' : 'Register'}
-      </Button>
-    </div>
-  </form>
-
-  <!-- Divider -->
-  <div class="relative">
-    <div class="absolute inset-0 flex items-center">
-      <span class="w-full border-t"></span>
-    </div>
-    <div class="relative flex justify-center text-xs uppercase">
-      <span class="bg-background text-muted-foreground px-2">
-        Or continue with
-      </span>
-    </div>
+  <!-- Always required: Email -->
+  <div class="space-y-2">
+    <Label for="email">Email</Label>
+    <Input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="john.doe@example.com"
+      bind:value={form.email}
+      on:input={clearErrors}
+      required
+    />
   </div>
 
-  <!-- Social Logins -->
-  <AuthOptions />
-</section>
+  <!-- Only for register: Username -->
+  {#if type === 'register'}
+    <div class="space-y-2">
+      <Label for="username">Username</Label>
+      <Input
+        id="username"
+        name="username"
+        type="text"
+        placeholder="@JDoe"
+        bind:value={form.username}
+        on:input={clearErrors}
+        required={type === 'register'}
+      />
+    </div>
+  {/if}
+
+  <!-- Always required: Password -->
+  <div class="space-y-2">
+    <Label for="password">Password</Label>
+    <Input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="password"
+      bind:value={form.password}
+      on:input={clearErrors}
+      required
+    />
+  </div>
+
+  <!-- Only for register: Confirm Password -->
+  {#if type === 'register'}
+    <div class="space-y-2">
+      <Label for="confirm-password">Re-type Password</Label>
+      <Input
+        id="confirm-password"
+        name="confirmPassword"
+        type="password"
+        placeholder="Re-type password"
+        bind:value={form.confirmPassword}
+        on:input={clearErrors}
+        required={type === 'register'}
+      />
+    </div>
+
+    {#if form.password && form.confirmPassword && form.password !== form.confirmPassword}
+      <p class="text-red-500 text-xs italic">Passwords do not match.</p>
+    {/if}
+  {/if}
+
+
+  <!-- Submit button -->
+  <div class="space-y-2">
+    <Button class="w-full mt-2" type="submit" disabled={loading}>
+      {#if loading}
+        <span class="animate-spin mr-2">⏳</span>
+      {/if}
+      {type === 'login' ? 'Login' : 'Register'}
+    </Button>
+  </div>
+</form>
+
+<!-- Divider for social login -->
+<div class="relative">
+  <div class="absolute inset-0 flex items-center">
+    <span class="w-full border-t"></span>
+  </div>
+  <div class="relative flex justify-center text-xs uppercase">
+    <span class="bg-background text-muted-foreground px-2">
+      Or continue with
+    </span>
+  </div>
+</div>
+
+<!-- Social login options (e.g. Google, GitHub) -->
+<AuthOptions />
+
