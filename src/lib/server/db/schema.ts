@@ -13,7 +13,7 @@ export const users = pgTable('users', {
 	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
 
-export const sessions = pgTable('session', {
+export const sessions = pgTable('sessions', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
