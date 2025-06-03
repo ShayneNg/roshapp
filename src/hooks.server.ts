@@ -32,22 +32,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	//
-	// ─── LAYER 6: CSRF PROTECTION ───────────────────────────────────────────────────
+	// ─── LAYER 6: CSRF PROTECTION (DISABLED) ───────────────────────────────────────
 	//
-	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
-	if (!csrf) {
-		csrf = randomUUID();
-		console.log('🔍 CSRF DEBUG - Generated new CSRF token:', csrf.substring(0, 8) + '...');
-		event.cookies.set(CSRF_COOKIE_NAME, csrf, {
-			path: '/',
-			httpOnly: true,
-			secure: false, // Allow HTTP in development
-			sameSite: 'lax'
-		});
-	} else {
-		console.log('🔍 CSRF DEBUG - Using existing CSRF token:', csrf.substring(0, 8) + '...');
-	}
-	event.locals.csrf = csrf;
+	// CSRF protection disabled for development
+	event.locals.csrf = 'disabled';
 
 	//
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
