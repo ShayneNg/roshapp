@@ -7,25 +7,23 @@ import { appDb } from './db';
 import { users, sessions } from './db/schema';
 
 // Create the Lucia authentication instance
-export const auth = new Lucia({
-	env: dev ? 'DEV' : 'PROD',
-	adapter: new DrizzlePostgreSQLAdapter(appDb, {
-		user: users,
-		session: sessions
-	}),
-	middleware: 'sveltekit',
+export const auth = new Lucia(
+	new DrizzlePostgreSQLAdapter(appDb, sessions, users),
+	{
+		env: dev ? 'DEV' : 'PROD',
 	sessionCookie: {
-		attributes: {
-			secure: !dev
+			attributes: {
+				secure: !dev
+			}
+		},
+		getUserAttributes: (data) => {
+			return {
+				username: data.username,
+				email: data.email
+			};
 		}
-	},
-	getUserAttributes: (data) => {
-		return {
-			username: data.username,
-			email: data.email
-		};
 	}
-});
+);
 
 // Lucia type declarations
 declare module 'lucia' {
