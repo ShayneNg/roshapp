@@ -8,6 +8,35 @@ const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
 	//
+	// ─── LAYER 0: REPLIT ORIGIN FIX ─────────────────────────────────────────────────
+	//
+	// Fix for Replit environment where origin header is null
+	const url = new URL(event.request.url);
+	const origin = event.request.headers.get('origin');
+	
+	if (!origin && event.request.method === 'POST') {
+		// Create a new request with the proper origin header
+		const headers = new Headers(event.request.headers);
+		headers.set('origin', url.origin);
+		
+		// Replace the request object
+		event.request = new Request(event.request.url, {
+			method: event.request.method,
+			headers: headers,
+			body: event.request.body,
+			mode: event.request.mode,
+			credentials: event.request.credentials,
+			cache: event.request.cache,
+			redirect: event.request.redirect,
+			referrer: event.request.referrer,
+			referrerPolicy: event.request.referrerPolicy,
+			integrity: event.request.integrity,
+			keepalive: event.request.keepalive,
+			signal: event.request.signal
+		});
+	}
+
+	//
 	// ─── LAYER 6: CSRF PROTECTION ───────────────────────────────────────────────────
 	//
 	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
