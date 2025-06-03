@@ -8,30 +8,6 @@ const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
 	//
-	// ─── LAYER 0: REPLIT ORIGIN FIX ─────────────────────────────────────────────────
-	//
-	// Fix for Replit environment where origin header is null
-	const url = new URL(event.request.url);
-	const origin = event.request.headers.get('origin');
-	
-	if (!origin && event.request.method === 'POST') {
-		// Clone the request body before modifying headers
-		const body = await event.request.arrayBuffer();
-		
-		// Create a new request with the proper origin header
-		const headers = new Headers(event.request.headers);
-		headers.set('origin', url.origin);
-		
-		// Replace the request object
-		event.request = new Request(event.request.url, {
-			method: event.request.method,
-			headers: headers,
-			body: body,
-			duplex: 'half'
-		});
-	}
-
-	//
 	// ─── LAYER 6: CSRF PROTECTION (DISABLED) ───────────────────────────────────────
 	//
 	// CSRF protection disabled for development
