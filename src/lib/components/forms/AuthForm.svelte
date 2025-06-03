@@ -108,7 +108,7 @@
 </script>
 
 <!-- CSRF protection & enhanced form submission -->
-<form method="POST" action="" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
+<form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
   <!-- Secure CSRF token from server -->
   <input type="hidden" name="csrf" value={csrf || ''} />
   <!-- Form type for server action -->
