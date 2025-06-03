@@ -60,6 +60,8 @@
    */
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
+      console.log('🔍 FORM DEBUG - Form submission result:', result);
+      console.log('🔍 FORM DEBUG - CSRF token being sent:', csrf);
       loading = true;
 
       // SUCCESS → Redirect based on role

@@ -13,12 +13,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
 	if (!csrf) {
 		csrf = randomUUID();
+		console.log('🔍 CSRF DEBUG - Generated new CSRF token:', csrf.substring(0, 8) + '...');
 		event.cookies.set(CSRF_COOKIE_NAME, csrf, {
 			path: '/',
 			httpOnly: true,
 			secure: true,
 			sameSite: 'lax'
 		});
+	} else {
+		console.log('🔍 CSRF DEBUG - Using existing CSRF token:', csrf.substring(0, 8) + '...');
 	}
 	event.locals.csrf = csrf;
 
@@ -26,11 +29,20 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
 	//
 	const sessionId = event.cookies.get(auth.sessionCookieName);
+	console.log('🔍 SESSION DEBUG - Session ID from cookie:', sessionId ? sessionId.substring(0, 8) + '...' : 'none');
+	
 	if (!sessionId) {
+		console.log('🔍 SESSION DEBUG - No session ID found, setting user/session to null');
 		event.locals.user = null;
 		event.locals.session = null;
 	} else {
+		console.log('🔍 SESSION DEBUG - Validating session...');
 		const { session, user } = await auth.validateSession(sessionId);
+		console.log('🔍 SESSION DEBUG - Session validation result:', { 
+			sessionExists: !!session, 
+			userExists: !!user,
+			userId: user?.id 
+		});
 
 		// Refresh cookie if session is fresh
 		if (session && session.fresh) {
