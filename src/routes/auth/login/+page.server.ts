@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import { getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
+import { z } from 'zod';
 
 export async function load({ locals }) {
   return {
@@ -9,21 +10,46 @@ export async function load({ locals }) {
   };
 }
 
+// Define Zod schemas for login and register types
+const LoginSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Password is too short' }),
+  csrf: z.string().min(1, { message: 'Missing CSRF token' }),
+  type: z.literal('login')
+});
+
+const RegisterSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  username: z.string().min(3).max(20),
+  password: z.string().min(6),
+  confirmPassword: z.string().min(6),
+  csrf: z.string().min(1),
+  type: z.literal('register')
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword']
+});
+
 export const actions = {
   default: async ({ request, cookies, locals }) => {
     try {
       // Step 1: Parse form data
-      const formData = await request.formData();
-      const email = String(formData.get('email') || '').trim();
-      const password = String(formData.get('password') || '');
-      const type = String(formData.get('type') || 'login');
-      const csrf = String(formData.get('csrf') || '');
+      const formData = Object.fromEntries(await request.formData()) as Record<string, string>;
+      const { type } = formData;
 
-      console.log('LOGIN DEBUG - Form CSRF:', csrf);
-      console.log('LOGIN DEBUG - Locals CSRF:', locals.csrf);
-      console.log('LOGIN DEBUG - CSRF Match:', csrf === locals.csrf);
-      console.log('LOGIN DEBUG - Email:', email);
-      console.log('LOGIN DEBUG - Type:', type);
+      // Select appropriate schema
+      const schema = type === 'register' ? RegisterSchema : LoginSchema;
+      const result = schema.safeParse(formData);
+
+      // Fail early if validation fails
+      if (!result.success) {
+        const error = result.error.flatten();
+        return fail(400, {
+          message: 'Validation failed',
+          errors: error.fieldErrors,
+          success: false
+        });
+      }
 
       // Step 1.5: Validate CSRF token
       if (csrf !== locals.csrf) {
