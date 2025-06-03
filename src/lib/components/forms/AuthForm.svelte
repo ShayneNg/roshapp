@@ -111,6 +111,8 @@
 <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
   <!-- Secure CSRF token from server -->
   <input type="hidden" name="csrf" value={csrf || ''} />
+  <!-- Dynamic type field based on form type prop -->
+  <input type="hidden" name="type" value={type} />
 
   <!-- Error message block -->
   {#if showError}
@@ -209,4 +211,4 @@
 
 <!-- Social login options (e.g. Google, GitHub) -->
 <AuthOptions />
-
+</script>
