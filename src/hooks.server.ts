@@ -17,7 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.cookies.set(CSRF_COOKIE_NAME, csrf, {
 			path: '/',
 			httpOnly: true,
-			secure: true,
+			secure: false, // Allow HTTP in development
 			sameSite: 'lax'
 		});
 	} else {
@@ -76,10 +76,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// ─── LAYER 8: CORS PRE-FLIGHT ──────────────────────────────────────────────────
 	//
 	const origin = event.request.headers.get('origin');
+	const url = new URL(event.request.url);
+	console.log('🔍 ORIGIN DEBUG - Request origin:', origin);
+	console.log('🔍 ORIGIN DEBUG - Request URL:', url.origin);
+	console.log('🔍 ORIGIN DEBUG - Method:', event.request.method);
+
+	// Allow same-origin requests and development URLs
+	const isDevelopment = url.hostname === 'localhost' || url.hostname.includes('replit.dev');
+	const isSameOrigin = !origin || origin === url.origin;
+
 	if (event.request.method === 'OPTIONS') {
 		const headers = new Headers();
-		if (origin && ALLOWED_ORIGINS.includes(origin)) {
-			headers.set('Access-Control-Allow-Origin', origin);
+		if (isSameOrigin || isDevelopment || (origin && ALLOWED_ORIGINS.includes(origin))) {
+			headers.set('Access-Control-Allow-Origin', origin || url.origin);
 			headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
 			headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 		}
@@ -94,8 +103,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 	//
 	// ─── LAYER 8: CORS HEADERS ─────────────────────────────────────────────────────
 	//
-	if (origin && ALLOWED_ORIGINS.includes(origin)) {
-		response.headers.set('Access-Control-Allow-Origin', origin);
+	if (isSameOrigin || isDevelopment || (origin && ALLOWED_ORIGINS.includes(origin))) {
+		response.headers.set('Access-Control-Allow-Origin', origin || url.origin);
 		response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
 		response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 	}
