@@ -104,8 +104,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	//
 	// ─── LAYER 8: CORS PRE-FLIGHT ──────────────────────────────────────────────────
 	//
-	const origin = event.request.headers.get('origin');
-	const url = new URL(event.request.url);
 	console.log('🔍 ORIGIN DEBUG - Request origin:', origin);
 	console.log('🔍 ORIGIN DEBUG - Request URL:', url.origin);
 	console.log('🔍 ORIGIN DEBUG - Method:', event.request.method);
