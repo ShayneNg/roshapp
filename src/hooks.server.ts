@@ -8,20 +8,6 @@ const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
 	//
-	// ─── LAYER 0: BYPASS SVELTEKIT CSRF FOR SAME-ORIGIN ────────────────────────────
-	//
-	// Disable SvelteKit's built-in CSRF protection for development
-	if (event.request.method === 'POST') {
-		const url = new URL(event.request.url);
-		// Mark as same-origin to bypass SvelteKit's CSRF
-		Object.defineProperty(event.request, 'headers', {
-			value: new Headers(event.request.headers),
-			writable: true
-		});
-		(event.request.headers as any).set('origin', url.origin);
-	}
-
-	//
 	// ─── LAYER 6: CSRF PROTECTION ───────────────────────────────────────────────────
 	//
 	let csrf = event.cookies.get(CSRF_COOKIE_NAME);
