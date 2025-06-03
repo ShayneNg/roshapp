@@ -1,6 +1,5 @@
 <script lang="ts">
   import AuthForm from '$lib/components/forms/AuthForm.svelte';
-  import type { PageData } from './$types';
 
   export let data;
 </script>

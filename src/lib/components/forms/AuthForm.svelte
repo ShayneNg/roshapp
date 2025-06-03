@@ -111,8 +111,6 @@
 <form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
   <!-- Secure CSRF token from server -->
   <input type="hidden" name="csrf" value={csrf || ''} />
-  <!-- Form type for server action -->
-  <input type="hidden" name="type" value={type} />
 
   <!-- Error message block -->
   {#if showError}
