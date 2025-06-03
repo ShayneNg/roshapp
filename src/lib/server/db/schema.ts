@@ -18,7 +18,12 @@ export const sessions = pgTable('sessions', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id),
-	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
+	token: text('token').notNull().unique(),
+	ip_address: text('ip_address'),
+	user_agent: text('user_agent'),
+	expires: timestamp('expires_at', { withTimezone: true }).notNull(),
+	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
 
 // ——— inferred TS types ———
