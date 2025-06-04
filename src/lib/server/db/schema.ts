@@ -1,6 +1,7 @@
 // Drizzle ORM schema definition
 // Defines the `users` and `sessions` tables used by Lucia for authentication
 
+import { integer } from 'drizzle-orm/gel-core';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
@@ -27,13 +28,13 @@ export const sessions = pgTable('sessions', {
 });
 
 export const roles = pgTable("roles", {
-	id: serial("id").primaryKey(),
+	id: integer("id").primaryKey(),
 	name: text("name").notNull().unique() // admin, staff, customer, etc.
 });
 
 export const userRoles = pgTable("user_roles", {
-	userId: uuid("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
-	roleId: integer("role_id").notNull().references(() => roles.id, { onDelete: 'cascade' }),
+	userId: text("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+	roleId: text("role_id").notNull().references(() => roles.id, { onDelete: 'cascade' }),
 }, (table) => ({
 	pk: primaryKey({ columns: [table.userId, table.roleId] })
 }));
