@@ -8,7 +8,7 @@ export const users = pgTable('users', {
 	id: 					text('id').primaryKey().notNull().unique().default('uuid_generate_v4()'),
   email: 				text('email').notNull().unique(),
 	username: 		text('username').notNull().unique(),
-	hashedPassword: text('password_hash').notNull(),
+	hashedPassword: text('hashedPassword').notNull(),
 	status:       text('status', { enum: ['active','inactive','suspense'], length: 20 }).notNull(),
 	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
