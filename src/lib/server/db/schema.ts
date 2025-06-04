@@ -4,11 +4,11 @@
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-	id: 					text('id').primaryKey(),
+	id: 					text('id').primaryKey().notNull().unique().default('uuid_generate_v4()'),
   email: 				text('email').notNull().unique(),
 	username: 		text('username').notNull().unique(),
 	hashedPassword: text('password_hash').notNull(),
-	status:       text('status', { length: 20 }).notNull(),
+	status:       text('status', { enum: ['active','inactive','suspense'], length: 20 }).notNull(),
 	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
@@ -25,6 +25,18 @@ export const sessions = pgTable('sessions', {
 	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
+
+export const roles = pgTable("roles", {
+	id: serial("id").primaryKey(),
+	name: text("name").notNull().unique() // admin, staff, customer, etc.
+});
+
+export const userRoles = pgTable("user_roles", {
+	userId: uuid("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+	roleId: integer("role_id").notNull().references(() => roles.id, { onDelete: 'cascade' }),
+}, (table) => ({
+	pk: primaryKey({ columns: [table.userId, table.roleId] })
+}));
 
 // ——— inferred TS types ———
 //   'select' gives you exactly the shape you get back from SELECT queries
