@@ -1,0 +1,92 @@
+ypeError: Cannot read properties of undefined (reading 'session')
+    at roleGuard (/home/runner/workspace/src/lib/guards/roleGuards.ts:4:32)
+    at load (/home/runner/workspace/src/routes/app/+layout.ts:34:29)
+    at load_data (/home/runner/workspace/node_modules/.pnpm/@sveltejs+kit@2.20.8_@sveltejs+vite-plugin-svelte@5.0.3_svelte@5.28.2_vite@6.3.4_@types+node@_hak3cxq5jibh6it76s23w2vjqq/node_modules/@sveltejs/kit/src/runtime/server/page/load_data.js:203:43)
+    at async eval (/home/runner/workspace/node_modules/.pnpm/@sveltejs+kit@2.20.8_@sveltejs+vite-plugin-svelte@5.0.3_svelte@5.28.2_vite@6.3.4_@types+node@_hak3cxq5jibh6it76s23w2vjqq/node_modules/@sveltejs/kit/src/runtime/server/page/index.js:183:13)
+🔍 SESSION DEBUG - Session ID from cookie: none
+🔍 SESSION DEBUG - No session ID found, setting user/session to null
+🔍 ORIGIN DEBUG - Request origin: null
+🔍 ORIGIN DEBUG - Request URL: http://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev
+🔍 ORIGIN DEBUG - Method: GET
+TypeError: Cannot read properties of undefined (reading 'session')
+    at roleGuard (/home/runner/workspace/src/lib/guards/roleGuards.ts:4:32)
+    at load (/home/runner/workspace/src/routes/customer/+layout.ts:5:16)
+    at load_data (/home/runner/workspace/node_modules/.pnpm/@sveltejs+kit@2.20.8_@sveltejs+vite-plugin-svelte@5.0.3_svelte@5.28.2_vite@6.3.4_@types+node@_hak3cxq5jibh6it76s23w2vjqq/node_modules/@sveltejs/kit/src/runtime/server/page/load_data.js:203:43)
+    at async eval (/home/runner/workspace/node_modules/.pnpm/@sveltejs+kit@2.20.8_@sveltejs+vite-plugin-svelte@5.0.3_svelte@5.28.2_vite@6.3.4_@types+node@_hak3cxq5jibh6it76s23w2vjqq/node_modules/@sveltejs/kit/src/runtime/server/page/index.js:183:13)
+🔍 SESSION DEBUG - Session ID from cookie: none
+🔍 SESSION DEBUG - No session ID found, setting user/session to null
+🔍 ORIGIN DEBUG - Request origin: https://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev:5173
+🔍 ORIGIN DEBUG - Request URL: http://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev
+🔍 ORIGIN DEBUG - Method: POST
+🔍 LOGIN DEBUG - Starting login process
+🔍 LOGIN DEBUG - Form data received: {
+  csrf: 'disabled',
+  type: 'login',
+  email: 'gborrowman0@squidoo.com',
+  password: '[REDACTED]'
+}
+🔍 LOGIN DEBUG - Form type: login
+🔍 LOGIN DEBUG - Schema validation result: true
+🔍 LOGIN DEBUG - Extracted data: { email: 'gborrowman0@squidoo.com' }
+🔍 LOGIN DEBUG - CSRF protection disabled for development
+🔍 LOGIN DEBUG - Looking up user by email: gborrowman0@squidoo.com
+Error fetching user by email: PostgresError: operator does not exist: integer = text
+    at ErrorResponse (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:788:26)
+    at handle (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:474:6)
+    at TLSSocket.data (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:315:9)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  severity_local: 'ERROR',
+  severity: 'ERROR',
+  code: '42883',
+  hint: 'No operator matches the given name and argument types. You might need to add explicit type casts.',
+  position: '679',
+  file: 'parse_oper.c',
+  line: '647',
+  routine: 'op_error'
+}
+🔍 LOGIN DEBUG - User not found for email: gborrowman0@squidoo.com
+🔍 SESSION DEBUG - Session ID from cookie: none
+🔍 SESSION DEBUG - No session ID found, setting user/session to null
+🔍 ORIGIN DEBUG - Request origin: null
+🔍 ORIGIN DEBUG - Request URL: http://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev
+🔍 ORIGIN DEBUG - Method: GET
+🔍 SESSION DEBUG - Session ID from cookie: none
+🔍 SESSION DEBUG - No session ID found, setting user/session to null
+🔍 ORIGIN DEBUG - Request origin: https://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev:5173
+🔍 ORIGIN DEBUG - Request URL: http://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev
+🔍 ORIGIN DEBUG - Method: POST
+Error fetching user by email: PostgresError: operator does not exist: integer = text
+    at ErrorResponse (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:788:26)
+    at handle (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:474:6)
+    at TLSSocket.data (file:///home/runner/workspace/node_modules/.pnpm/postgres@3.4.5/node_modules/postgres/src/connection.js:315:9)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  severity_local: 'ERROR',
+  severity: 'ERROR',
+  code: '42883',
+  hint: 'No operator matches the given name and argument types. You might need to add explicit type casts.',
+  position: '679',
+  file: 'parse_oper.c',
+  line: '647',
+  routine: 'op_error'
+}
+Role 'customer' assigned to user 7d59087d-7ea6-40c0-8e77-cbfbf71bb06c
+🔍 SESSION DEBUG - Session ID from cookie: mtzo2tqg...
+🔍 SESSION DEBUG - Validating session...
+🔍 SESSION DEBUG - Session validation result: {
+  sessionExists: true,
+  userExists: true,
+  userId: '7d59087d-7ea6-40c0-8e77-cbfbf71bb06c'
+}
+🔍 ORIGIN DEBUG - Request origin: null
+🔍 ORIGIN DEBUG - Request URL: http://76a1670c-5492-42e2-9c04-6e9a33221cbf-00-3fxqozxlirspt.picard.replit.dev
+🔍 ORIGIN DEBUG - Method: GET
