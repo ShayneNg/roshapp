@@ -16,20 +16,52 @@ import { eq, and } from 'drizzle-orm'; // Helper to write SQL WHERE condition
  */
 export async function getUserByEmail(email: string) {
   try {
-    const result = await appDb.query.users.findFirst({
-      where: eq(users.email, email),
-      with: {
-        userRoles: {
-          with: {
-            role: true
-          }
-        },
-        profile: true
-      }
-    });
+    const result = await appDb
+      .select({
+        id: users.id,
+        email: users.email,
+        username: users.username,
+        hashedPassword: users.hashedPassword,
+        status: users.status,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt
+      })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-    console.log('Database query result for email', email, ':', result ? 'found' : 'not found');
-    return result; // undefined if not found
+    if (result.length === 0) {
+      console.log('Database query result for email', email, ': not found');
+      return undefined;
+    }
+
+    const user = result[0];
+    
+    // Get user roles separately
+    const userRolesResult = await appDb
+      .select({
+        roleId: userRoles.roleId,
+        roleName: roles.name,
+        assignedAt: userRoles.assignedAt
+      })
+      .from(userRoles)
+      .leftJoin(roles, eq(userRoles.roleId, roles.id))
+      .where(eq(userRoles.userId, user.id));
+
+    console.log('Database query result for email', email, ': found');
+    
+    return {
+      ...user,
+      userRoles: userRolesResult.map(ur => ({
+        userId: user.id,
+        roleId: ur.roleId,
+        assignedAt: ur.assignedAt,
+        role: {
+          id: ur.roleId,
+          name: ur.roleName
+        }
+      }))
+    };
   } catch (error) {
     console.error('Error fetching user by email:', error);
     return undefined;

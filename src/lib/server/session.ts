@@ -41,3 +41,18 @@ export function getSession(sessionId: string) {
 export function destroySession(sessionId: string) {
   store.delete(sessionId);
 }
+
+import { lucia } from "./auth";
+import type { User, Session } from "./db/schema";
+
+export { validateSessionToken, createSession, invalidateSession, deleteSessionTokenCookie } from './auth';
+
+/**
+ * Generates a secure session ID using crypto.getRandomValues
+ * More secure than UUID for session identifiers
+ */
+export function generateSecureSessionId(): string {
+  const array = new Uint8Array(32); // 32 bytes = 256 bits
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
