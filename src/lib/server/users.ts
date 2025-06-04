@@ -144,10 +144,10 @@ export async function assignRoleToUser(userId: string, roleName: string) {
  * Fetches a user by their internal user ID (primary key).
  * Useful when validating session ownership or performing actions as user.
  *
- * @param userId - Primary key of the user
+ * @param userId - Primary key of the user (UUID string)
  * @returns the user object if found
  */
-export async function getUserById(userId: number) {
+export async function getUserById(userId: string) {
   const result = await appDb
     .select()
     .from(users)
