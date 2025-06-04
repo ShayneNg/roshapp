@@ -17,15 +17,7 @@ import { eq, and } from 'drizzle-orm'; // Helper to write SQL WHERE condition
 export async function getUserByEmail(email: string) {
   try {
     const result = await appDb
-      .select({
-        id: users.id,
-        email: users.email,
-        username: users.username,
-        hashedPassword: users.hashedPassword,
-        status: users.status,
-        createdAt: users.createdAt,
-        updatedAt: users.updatedAt
-      })
+      .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
@@ -37,30 +29,38 @@ export async function getUserByEmail(email: string) {
 
     const user = result[0];
     
-    // Get user roles separately
-    const userRolesResult = await appDb
-      .select({
-        roleId: userRoles.roleId,
-        roleName: roles.name,
-        assignedAt: userRoles.assignedAt
-      })
+    // Get user roles using two separate queries to avoid type issues
+    const userRoleIds = await appDb
+      .select({ roleId: userRoles.roleId, assignedAt: userRoles.assignedAt })
       .from(userRoles)
-      .leftJoin(roles, eq(userRoles.roleId, roles.id))
       .where(eq(userRoles.userId, user.id));
+
+    const userRolesWithNames = [];
+    for (const userRole of userRoleIds) {
+      const roleResult = await appDb
+        .select()
+        .from(roles)
+        .where(eq(roles.id, userRole.roleId))
+        .limit(1);
+      
+      if (roleResult.length > 0) {
+        userRolesWithNames.push({
+          userId: user.id,
+          roleId: userRole.roleId,
+          assignedAt: userRole.assignedAt,
+          role: {
+            id: roleResult[0].id,
+            name: roleResult[0].name
+          }
+        });
+      }
+    }
 
     console.log('Database query result for email', email, ': found');
     
     return {
       ...user,
-      userRoles: userRolesResult.map(ur => ({
-        userId: user.id,
-        roleId: ur.roleId,
-        assignedAt: ur.assignedAt,
-        role: {
-          id: ur.roleId,
-          name: ur.roleName
-        }
-      }))
+      userRoles: userRolesWithNames
     };
   } catch (error) {
     console.error('Error fetching user by email:', error);
