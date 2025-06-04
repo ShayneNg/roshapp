@@ -2,7 +2,7 @@
 // Defines the `users` and `sessions` tables used by Lucia for authentication
 
 import { integer } from 'drizzle-orm/gel-core';
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: 					text('id').primaryKey().notNull().unique().default('uuid_generate_v4()'),
