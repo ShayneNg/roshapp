@@ -1,14 +1,13 @@
 // Drizzle ORM schema definition
 // Defines the `users` and `sessions` tables used by Lucia for authentication
 
-import { integer } from 'drizzle-orm/gel-core';
-import { pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, primaryKey, text, timestamp, integer } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: 					text('id').primaryKey().notNull().unique().default('uuid_generate_v4()'),
   email: 				text('email').notNull().unique(),
 	username: 		text('username').notNull().unique(),
-	hashedPassword: text('hashedPassword').notNull(),
+	hashedPassword: text('hashed_password').notNull(),
 	status:       text('status', { enum: ['active','inactive','suspense'], length: 20 }).notNull(),
 	createdAt:    timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt:    timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()

@@ -39,14 +39,14 @@ export async function getUserByEmail(email: string) {
  * @param hashedPassword - Securely hashed password string
  * @returns the inserted user record
  */
-export async function createUser(email: string, username: string, hashedPassword: string) {
+export async function createUser(email: string, hashedPassword: string, username?: string) {
   try {
     const result = await appDb
       .insert(users)
       .values({ 
         id: crypto.randomUUID(),
         email, 
-        username,
+        username: username || email.split('@')[0], // Use email prefix if no username provided
         hashedPassword,
         status: 'active'
       })

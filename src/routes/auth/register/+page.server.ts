@@ -40,7 +40,13 @@ export const actions = {
     const user = await createUser(email, hashedPassword);
 
     // 6. Create session and set cookie
-    await createSession(user.id, { locals });
+    const session = await auth.createSession(user.id, {});
+    const sessionCookie = auth.createSessionCookie(session.id);
+    
+    cookies.set(sessionCookie.name, sessionCookie.value, {
+      path: '/',
+      ...sessionCookie.attributes
+    });
 
     // 7. Redirect to dashboard
     throw redirect(302, '/app');
