@@ -10,8 +10,7 @@ import { users, sessions } from './db/schema';
 export const auth = new Lucia(
 	new DrizzlePostgreSQLAdapter(appDb, sessions, users),
 	{
-		env: dev ? 'DEV' : 'PROD',
-	sessionCookie: {
+		sessionCookie: {
 			attributes: {
 				secure: !dev
 			}
@@ -19,7 +18,8 @@ export const auth = new Lucia(
 		getUserAttributes: (data) => {
 			return {
 				username: data.username,
-				email: data.email
+				email: data.email,
+				status: data.status
 			};
 		}
 	}

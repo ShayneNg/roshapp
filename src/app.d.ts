@@ -1,9 +1,7 @@
 
-/// <reference types="lucia" />
 declare global {
 	namespace App {
 		interface Locals {
-			auth: import('lucia').AuthRequest;
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
 			csrf: string;
@@ -11,14 +9,15 @@ declare global {
 	}
 }
 
-// Lucia type definitions
-declare namespace Lucia {
-	type Auth = import('$lib/server/lucia').Auth;
-	type DatabaseUserAttributes = {
-		username: string;
-		email: string;
-	};
-	type DatabaseSessionAttributes = {};
+declare module 'lucia' {
+	interface Register {
+		Lucia: typeof import('$lib/server/auth').auth;
+		DatabaseUserAttributes: {
+			username: string;
+			email: string;
+			status: string;
+		};
+	}
 }
 
 export {};
