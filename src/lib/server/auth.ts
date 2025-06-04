@@ -1,10 +1,10 @@
-
 // src/lib/server/auth.ts
-import { Lucia } from 'lucia';
-import { dev } from '$app/environment';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { appDb } from './db';
-import { users, sessions } from './db/schema';
+import { sessions, users } from './db/schema';
+import { getUserByEmail } from './users';
+import { Lucia } from 'lucia';
+import { dev } from '$app/environment';
 
 // Create the Lucia authentication instance
 export const auth = new Lucia(

@@ -4,26 +4,32 @@
 // It exposes clean, reusable functions for interacting with the "users" table.
 
 import { appDb } from './db'; // PostgreSQL connection using postgres.js
-import { users } from './db/schema'; // Drizzle schema for "users" table
-import { eq } from 'drizzle-orm'; // Helper to write SQL WHERE condition
+import { users, roles, userRoles } from './db/schema'; // Drizzle schema for tables
+import { eq, and } from 'drizzle-orm'; // Helper to write SQL WHERE condition
 
 /**
- * Fetches a user from the database by their email address.
+ * Fetches a user from the database by their email address with roles.
  * Used for login and registration checks.
  *
  * @param email - The user email to search for
- * @returns the user object if found, or undefined
+ * @returns the user object with roles if found, or undefined
  */
 export async function getUserByEmail(email: string) {
   try {
-    const result = await appDb
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
+    const result = await appDb.query.users.findFirst({
+      where: eq(users.email, email),
+      with: {
+        userRoles: {
+          with: {
+            role: true
+          }
+        },
+        profile: true
+      }
+    });
 
-    console.log('Database query result for email', email, ':', result.length > 0 ? 'found' : 'not found');
-    return result[0]; // undefined if not found
+    console.log('Database query result for email', email, ':', result ? 'found' : 'not found');
+    return result; // undefined if not found
   } catch (error) {
     console.error('Error fetching user by email:', error);
     return undefined;
@@ -31,20 +37,52 @@ export async function getUserByEmail(email: string) {
 }
 
 /**
- * Creates a new user in the database with a hashed password.
+ * Fetches a user with all related data including roles, profile, addresses, and finance.
+ *
+ * @param userId - The user ID to search for
+ * @returns the complete user object if found, or undefined
+ */
+export async function getUserWithDetails(userId: string) {
+  try {
+    const result = await appDb.query.users.findFirst({
+      where: eq(users.id, userId),
+      with: {
+        userRoles: {
+          with: {
+            role: true
+          }
+        },
+        profile: true,
+        addresses: true,
+        finance: true
+      }
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Error fetching user with details:', error);
+    return undefined;
+  }
+}
+
+/**
+ * Creates a new user in the database with a hashed password and assigns default customer role.
  * Used during registration flow.
  *
  * @param email - User's email
- * @param username - User's username
  * @param hashedPassword - Securely hashed password string
+ * @param username - User's username (optional)
  * @returns the inserted user record
  */
 export async function createUser(email: string, hashedPassword: string, username?: string) {
   try {
-    const result = await appDb
+    const userId = crypto.randomUUID();
+    
+    // Create user
+    const [newUser] = await appDb
       .insert(users)
       .values({ 
-        id: crypto.randomUUID(),
+        id: userId,
         email, 
         username: username || email.split('@')[0], // Use email prefix if no username provided
         hashedPassword,
@@ -52,9 +90,52 @@ export async function createUser(email: string, hashedPassword: string, username
       })
       .returning();
 
-    return result[0]; // Returns the created user row
+    // Assign default customer role
+    await assignRoleToUser(userId, 'customer');
+
+    return newUser; // Returns the created user row
   } catch (error) {
     console.error('Error creating user:', error);
+    throw error;
+  }
+}
+
+/**
+ * Assigns a role to a user.
+ *
+ * @param userId - The user ID
+ * @param roleName - The role name to assign
+ */
+export async function assignRoleToUser(userId: string, roleName: string) {
+  try {
+    // Find the role by name
+    const role = await appDb.query.roles.findFirst({
+      where: eq(roles.name, roleName)
+    });
+
+    if (!role) {
+      throw new Error(`Role '${roleName}' not found`);
+    }
+
+    // Check if user already has this role
+    const existingUserRole = await appDb.query.userRoles.findFirst({
+      where: and(eq(userRoles.userId, userId), eq(userRoles.roleId, role.id))
+    });
+
+    if (existingUserRole) {
+      console.log(`User ${userId} already has role ${roleName}`);
+      return;
+    }
+
+    // Assign the role
+    await appDb.insert(userRoles).values({
+      userId,
+      roleId: role.id
+    });
+
+    console.log(`Role '${roleName}' assigned to user ${userId}`);
+  } catch (error) {
+    console.error('Error assigning role to user:', error);
     throw error;
   }
 }
