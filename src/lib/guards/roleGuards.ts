@@ -4,7 +4,7 @@ export async function roleGuard(event, allowedRoles: string[]) {
   const session = event.locals?.session;
   const role = event.locals?.role;
 
-  if (!session || !role) throw redirect(302, '/login');
+  if (!session || !role) throw redirect(302, '/auth/login');
 
   const isAllowed = allowedRoles.includes(role);
 

@@ -1,0 +1,44 @@
+@layer utilities {
+  /* Base toast layout */
+  [data-sonner-toast] {
+    @apply relative flex items-start gap-3 p-4 pl-5 border-l-[1rem] rounded-none shadow-none;
+    animation: toast-slide-in 0.3s ease-out forwards;
+  }
+
+  [data-sonner-toast][data-type="success"] {
+    @apply text-success-foreground bg-success border-success-foreground;
+  }
+
+  [data-sonner-toast][data-type="error"] {
+    @apply text-destructive-foreground bg-destructive border-destructive-foreground;
+  }
+
+  [data-sonner-toast][data-type="info"] {
+    @apply text-info-foreground bg-info border-info-foreground;
+  }
+
+  [data-sonner-toast][data-type="warning"] {
+    @apply text-warning-foreground bg-warning border-warning-foreground;
+  }
+
+  /* Optional default/neutral toast */
+  [data-sonner-toast]:not([data-type]) {
+    @apply text-foreground bg-muted border-border;
+  }
+
+  /* Icon size and placement */
+  [data-sonner-toast] [data-icon] {
+    @apply w-6 h-6 mt-0.5;
+  }
+
+  @keyframes toast-slide-in {
+    0% {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
