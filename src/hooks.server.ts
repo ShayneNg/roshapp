@@ -58,6 +58,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		event.locals.user = user;
 		event.locals.session = session;
+		
+		// Set the primary role for roleGuard compatibility
+		if (user && user.roles && user.roles.length > 0) {
+			event.locals.role = user.roles[0]; // Use first role as primary
+		} else {
+			event.locals.role = null;
+		}
 	}
 
 	//
