@@ -1,7 +1,8 @@
 <script lang="ts">
   import AuthForm from '$lib/components/forms/AuthForm.svelte';
 
-  export let data;
+  export let data: pageData;
+
 </script>
 
 <div class="space-y-4 text-center">

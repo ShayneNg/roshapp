@@ -12,7 +12,7 @@ export async function load({ locals }) {
   };
 }
 
-// Define Zod schemas for login and register types
+// Define Zod schemas for login and register type
 const LoginSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(6, { message: 'Password is too short' }),
@@ -20,17 +20,6 @@ const LoginSchema = z.object({
   type: z.literal('login')
 });
 
-const RegisterSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  username: z.string().min(3).max(20),
-  password: z.string().min(6),
-  confirmPassword: z.string().min(6),
-  csrf: z.string().optional(),
-  type: z.literal('register')
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword']
-});
 
 export const actions = {
   default: async ({ request, locals, cookies }) => {
@@ -41,7 +30,7 @@ export const actions = {
       const { type } = formData;
 
       // Select appropriate schema
-      const schema = type === 'register' ? RegisterSchema : LoginSchema;
+      const schema = LoginSchema;
       const result = schema.safeParse(formData);
 
       // Fail early if validation fails
@@ -97,8 +86,7 @@ export const actions = {
       return {
         success: true,
         message: 'Login successful!',
-        role: primaryRole,
-        roles
+        roles: primaryRole,
       };
     } catch (error) {
       console.error('Login error:', error);
