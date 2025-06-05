@@ -23,28 +23,28 @@ const LoginSchema = z.object({
 
 export const actions = {
   default: async ({ request, locals, cookies }) => {
+    // Parse form into object
+    const formData = Object.fromEntries(await request.formData()) as Record<string, string>;
+
+    const { type } = formData;
+
+    // Select appropriate schema
+    const schema = LoginSchema;
+    const result = schema.safeParse(formData);
+
+    // Fail early if validation fails
+    if (!result.success) {
+      const error = result.error.flatten();
+      return fail(400, {
+        message: 'Validation failed',
+        errors: error.fieldErrors,
+        success: false
+      });
+    }
+
+    const { email, password } = result.data;
+
     try {
-      // Parse form into object
-      const formData = Object.fromEntries(await request.formData()) as Record<string, string>;
-
-      const { type } = formData;
-
-      // Select appropriate schema
-      const schema = LoginSchema;
-      const result = schema.safeParse(formData);
-
-      // Fail early if validation fails
-      if (!result.success) {
-        const error = result.error.flatten();
-        return fail(400, {
-          message: 'Validation failed',
-          errors: error.fieldErrors,
-          success: false
-        });
-      }
-
-      const { email, password } = result.data;
-
       // Get user by email
       const user = await getUserByEmail(email);
       if (!user) {
@@ -97,21 +97,26 @@ export const actions = {
 
       console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
       
-      // Use SvelteKit's redirect for proper navigation - moved outside try-catch
-      throw redirect(302, redirectPath);
-
     } catch (error) {
-      // Only catch actual errors, not redirects
-      if (error?.status === 302) {
-        // Re-throw redirects
-        throw error;
-      }
-      
       console.error('Login error:', error);
       return fail(500, {
         message: 'An error occurred during login. Please try again.',
         success: false
       });
     }
+
+    // Redirect happens outside of try-catch to prevent it being caught as an error
+    const roles = (await getUserByEmail(result.data.email))?.roles || [];
+    let redirectPath = '/customer';
+    
+    if (roles.includes('admin') || roles.includes('manager')) {
+      redirectPath = '/app';
+    } else if (roles.includes('staff')) {
+      redirectPath = '/staff';
+    } else if (roles.includes('customer')) {
+      redirectPath = '/customer';
+    }
+
+    throw redirect(302, redirectPath);
   }
 };
