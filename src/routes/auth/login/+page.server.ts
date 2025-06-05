@@ -65,7 +65,6 @@ export const actions = {
           success: false
         });
       }
-      console.log('🔍 LOGIN DEBUG - User found:', { id: user.id, email: user.email, roles: user.roles });
 
       // Verify password using Argon2id
       const hasher = new Argon2id();
@@ -92,8 +91,6 @@ export const actions = {
       // Return success and user role for redirection
       const roles = user.roles || [];
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-
-      console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
       
       const loginResponse = {
         success: true,
@@ -101,8 +98,6 @@ export const actions = {
         role: primaryRole,
         roles
       };
-      
-      console.log('🔍 LOGIN DEBUG - Response being sent to client:', loginResponse);
       
       // Return the response in SvelteKit's expected format
       return {
