@@ -63,46 +63,33 @@
       loading = true;
 
       // SUCCESS → Redirect based on role
-      // Handle both direct success responses and SvelteKit's enhanced responses
-      const isSuccess = (result.type === 'success' && result.data?.success === true) || 
-                       (result.success === true);
-      
-      if (isSuccess) {
+      if (result.type === 'success' && result.data?.success === true) {
         showError = false;
         errorMessage = '';
         toast.success(result.data.message || 'Welcome back!');
 
         if (type === 'register') {
           // Redirect to login after successful registration
-          goto('/auth/login');
+          setTimeout(() => {
+            goto('/auth/login');
+          }, 800);
         } else {
           // Role-based redirect for login
-          // Get data from either result.data or result directly
-          const responseData = result.data || result;
-          
-          let primaryRole = null;
+          const role = result.data.role;
           let redirectPath = '/customer'; // Default fallback
           
-          // Handle both single role string and roles array
-          if (responseData.role) {
-            primaryRole = responseData.role.toLowerCase();
-          } else if (responseData.roles && Array.isArray(responseData.roles) && responseData.roles.length > 0) {
-            primaryRole = responseData.roles[0].toLowerCase();
-          }
-          
-          // Determine redirect path based on role
-          if (primaryRole && ['admin', 'manager'].includes(primaryRole)) {
+          if (role && ['admin', 'manager'].includes(role)) {
             redirectPath = '/app';
-          } else if (primaryRole === 'staff') {
+          } else if (role === 'staff') {
             redirectPath = '/staff';
-          } else {
-            redirectPath = '/customer';
           }
           
-          // Use setTimeout to ensure the redirect happens after form processing
+          console.log('🔍 AuthForm - Redirecting to:', redirectPath, 'for role:', role);
+          
+          // Redirect after a short delay to ensure toast is shown
           setTimeout(() => {
             goto(redirectPath, { replaceState: true });
-          }, 100);
+          }, 800);
         }
 
       // VALIDATION FAILURE (from +page.server.ts)

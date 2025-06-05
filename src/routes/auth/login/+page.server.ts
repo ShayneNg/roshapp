@@ -91,19 +91,13 @@ export const actions = {
       // Return success and user role for redirection
       const roles = user.roles || [];
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-      
-      const loginResponse = {
+      console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
+
+      return {
         success: true,
         message: 'Login successful!',
         role: primaryRole,
         roles
-      };
-      
-      // Return the response in SvelteKit's expected format
-      return {
-        type: 'success',
-        status: 200,
-        data: loginResponse
       };
     } catch (error) {
       console.error('Login error:', error);
