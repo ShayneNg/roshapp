@@ -81,8 +81,9 @@
     // Check if login was successful - SvelteKit success means no fail() was called
     if (result.type === 'success') {
       const responseData = result.data;
-      const message = responseData.message || 'Welcome back!';
+      const message = responseData.message || 'Login successfully';
       const userRole = responseData.role || 'customer'; // Default to customer if no role
+      const userRoles = responseData.roles || []; // Get all user roles
       
       toast.success(message);
       
@@ -91,24 +92,25 @@
       errorMessage = '';
       
       console.log('🔑 LOGIN FLOW - Success! User role:', userRole);
-      console.log('🔑 LOGIN FLOW - Available roles:', responseData.roles);
+      console.log('🔑 LOGIN FLOW - Available roles:', userRoles);
       
-      // Determine redirect path based on user role
+      // Determine redirect path based on user roles (check highest privilege first)
       let redirectPath = '/customer'; // Default for customer role
       
-      if (userRole === 'admin' || userRole === 'manager') {
+      if (userRoles.includes('admin') || userRoles.includes('manager')) {
         redirectPath = '/app';
-      } else if (userRole === 'staff') {
+      } else if (userRoles.includes('staff')) {
         redirectPath = '/staff';
+      } else if (userRoles.includes('customer')) {
+        redirectPath = '/customer';
       }
-      // customer or any other role goes to /customer
       
-      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath, 'for role:', userRole);
+      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath, 'for roles:', userRoles);
       
       // Short delay to show toast, then redirect
       setTimeout(() => {
         goto(redirectPath, { replaceState: true });
-      }, 500);
+      }, 1000);
       
     } else {
       // Handle login errors - check both result.data and nested error structures

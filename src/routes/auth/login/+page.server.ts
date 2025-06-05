@@ -86,7 +86,7 @@ export const actions = {
 
       return {
         success: true,
-        message: 'Welcome back!',
+        message: 'Login successfully',
         role: primaryRole,
         roles: roles,
         userId: user.id
