@@ -63,10 +63,11 @@
       loading = true;
 
       // SUCCESS → Redirect based on role
-      if (result.type === 'success' && result.data?.success === true) {
+      if (result.type === 'success' || (result.data?.success === true)) {
         showError = false;
         errorMessage = '';
-        toast.success(result.data.message || 'Welcome back!');
+        const responseData = result.data || result;
+        toast.success(responseData.message || 'Welcome back!');
 
         if (type === 'register') {
           // Redirect to login after successful registration
@@ -75,7 +76,7 @@
           }, 800);
         } else {
           // Role-based redirect for login
-          const role = result.data.role;
+          const role = responseData.role;
           let redirectPath = '/customer'; // Default fallback
           
           if (role && ['admin', 'manager'].includes(role)) {
@@ -85,11 +86,10 @@
           }
           
           console.log('🔍 AuthForm - Redirecting to:', redirectPath, 'for role:', role);
+          console.log('🔍 AuthForm - Response data:', responseData);
           
-          // Redirect after a short delay to ensure toast is shown
-          setTimeout(() => {
-            goto(redirectPath, { replaceState: true });
-          }, 800);
+          // Redirect immediately
+          goto(redirectPath, { replaceState: true });
         }
 
       // VALIDATION FAILURE (from +page.server.ts)
