@@ -1,8 +1,8 @@
+@import './utilities/toast.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './utilities/toast.css';
 
 @layer base {
   :root {
