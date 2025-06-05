@@ -15,10 +15,12 @@ export const auth = new Lucia(
 				secure: !dev
 			}
 		},
-		getUserAttributes: (data) => {
+		getUserAttributes: (databaseUser) => {
 			return {
-				id: data.id,
-				roles: data.roles || []
+				id: databaseUser.id,
+				email: databaseUser.email,
+				username: databaseUser.username,
+				roles: databaseUser.roles || []
 			};
 		}
 	}

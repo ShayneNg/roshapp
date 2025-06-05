@@ -1,6 +1,7 @@
 // src/hooks.server.ts
 import { randomUUID } from 'crypto';
 import { auth } from "$lib/server/auth";
+import { getUserByEmail } from "$lib/server/users";
 import type { Handle } from "@sveltejs/kit";
 
 const CSRF_COOKIE_NAME = 'csrf_token';
@@ -26,10 +27,21 @@ export const handle: Handle = async ({ event, resolve }) => {
 	} else {
 		console.log('🔍 SESSION DEBUG - Validating session...');
 		const { session, user } = await auth.validateSession(sessionId);
+		
+		// If user exists, fetch complete user data with roles
+		let userWithRoles = user;
+		if (user) {
+			const completeUser = await getUserByEmail(user.email);
+			if (completeUser) {
+				userWithRoles = completeUser;
+			}
+		}
+		
 		console.log('🔍 SESSION DEBUG - Session validation result:', { 
 			sessionExists: !!session, 
-			userExists: !!user,
-			userId: user?.id 
+			userExists: !!userWithRoles,
+			userId: userWithRoles?.id,
+			roles: userWithRoles?.roles 
 		});
 
 		// Refresh cookie if session is fresh
@@ -56,12 +68,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 			});
 		}
 
-		event.locals.user = user;
+		event.locals.user = userWithRoles;
 		event.locals.session = session;
 		
 		// Set the primary role for roleGuard compatibility
-		if (user && user.roles && user.roles.length > 0) {
-			event.locals.role = user.roles[0]; // Use first role as primary
+		if (userWithRoles && userWithRoles.roles && userWithRoles.roles.length > 0) {
+			event.locals.role = userWithRoles.roles[0]; // Use first role as primary
 		} else {
 			event.locals.role = null;
 		}
@@ -72,9 +84,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	//
 	const url = new URL(event.request.url);
 	const origin = event.request.headers.get('origin');
-	console.log('🔍 ORIGIN DEBUG - Request origin:', origin);
-	console.log('🔍 ORIGIN DEBUG - Request URL:', url.origin);
-	console.log('🔍 ORIGIN DEBUG - Method:', event.request.method);
 
 	// Allow same-origin requests and development URLs
 	const isDevelopment = url.hostname === 'localhost' || url.hostname.includes('replit.dev');
