@@ -75,11 +75,14 @@
    */
   function handleLoginFlow(result: any) {
     console.log('🔑 LOGIN FLOW - Processing result:', result);
+    console.log('🔑 LOGIN FLOW - Result type:', result.type);
+    console.log('🔑 LOGIN FLOW - Result data:', result.data);
     
-    if (result.type === 'success' || result.data?.success === true) {
-      const responseData = result.data || result;
+    // Check if login was successful - SvelteKit success means no fail() was called
+    if (result.type === 'success') {
+      const responseData = result.data;
       const message = responseData.message || 'Welcome back!';
-      const userRole = responseData.role;
+      const userRole = responseData.role || 'customer'; // Default to customer if no role
       
       toast.success(message);
       
@@ -88,7 +91,7 @@
       errorMessage = '';
       
       console.log('🔑 LOGIN FLOW - Success! User role:', userRole);
-      console.log('🔑 LOGIN FLOW - Full response:', responseData);
+      console.log('🔑 LOGIN FLOW - Available roles:', responseData.roles);
       
       // Determine redirect path based on user role
       let redirectPath = '/customer'; // Default for customer role
@@ -100,7 +103,7 @@
       }
       // customer or any other role goes to /customer
       
-      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath);
+      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath, 'for role:', userRole);
       
       // Short delay to show toast, then redirect
       setTimeout(() => {
@@ -108,12 +111,21 @@
       }, 500);
       
     } else {
-      // Handle login errors
-      const message = result.data?.message || 'Login failed';
-      errorMessage = message;
+      // Handle login errors - check both result.data and nested error structures
+      let errorMsg = 'Login failed';
+      
+      if (result.type === 'failure' && result.data?.message) {
+        errorMsg = result.data.message;
+      } else if (result.data?.message) {
+        errorMsg = result.data.message;
+      } else if (result.message) {
+        errorMsg = result.message;
+      }
+      
+      errorMessage = errorMsg;
       showError = true;
-      toast.error(message);
-      console.log('🔑 LOGIN FLOW - Error:', message);
+      toast.error(errorMsg);
+      console.log('🔑 LOGIN FLOW - Error:', errorMsg);
     }
   }
 
