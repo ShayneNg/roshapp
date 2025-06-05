@@ -38,8 +38,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 		
 		console.log('🔍 SESSION DEBUG - Session validation result:', { 
-			sessionExists: !!session, 
-			userExists: !!userWithRoles,
 			userId: userWithRoles?.id,
 			roles: userWithRoles?.roles 
 		});
