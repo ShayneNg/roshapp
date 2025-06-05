@@ -75,9 +75,15 @@
     console.log('🔑 LOGIN FLOW - Result type:', result.type);
     console.log('🔑 LOGIN FLOW - Result data:', result.data);
     
-    // Server will redirect on success, so we only get here if there's an error
-    if (result.type === 'success') {
-      // This shouldn't happen as server redirects, but just in case
+    // Handle different result types
+    if (result.type === 'redirect') {
+      // This is success! Server is redirecting after successful login
+      console.log('🔑 LOGIN FLOW - Login successful! Redirecting to:', result.location);
+      toast.success('Login successful!');
+      // Don't set any errors - let the redirect happen
+      return;
+    } else if (result.type === 'success') {
+      // Unexpected success without redirect
       toast.success('Login successful!');
       console.log('🔑 LOGIN FLOW - Unexpected success response - server should have redirected');
     } else {
