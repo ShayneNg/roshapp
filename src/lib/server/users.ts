@@ -16,6 +16,12 @@ import { eq, and } from 'drizzle-orm'; // Helper to write SQL WHERE condition
  */
 export async function getUserByEmail(email: string) {
   try {
+    // Add validation for email parameter
+    if (!email || typeof email !== 'string') {
+      console.warn('getUserByEmail called with invalid email:', email);
+      return undefined;
+    }
+
     const result = await appDb
       .select()
       .from(users)
@@ -28,8 +34,15 @@ export async function getUserByEmail(email: string) {
     }
 
     const user = result[0];
+
+    // Add validation for user.id
+    if (!user.id) {
+      console.error('User found but has no ID:', user);
+      return undefined;
+    }
     
     // Get user roles using two separate queries to avoid type issues
+    // Add null checks to prevent UNDEFINED_VALUE errors
     const userRoleIds = await appDb
       .select({ roleId: userRoles.roleId, assignedAt: userRoles.assignedAt })
       .from(userRoles)
@@ -37,6 +50,12 @@ export async function getUserByEmail(email: string) {
 
     const userRolesWithNames = [];
     for (const userRole of userRoleIds) {
+      // Skip if roleId is null or undefined
+      if (!userRole.roleId) {
+        console.warn('Skipping user role with null/undefined roleId for user:', user.id);
+        continue;
+      }
+
       const roleResult = await appDb
         .select()
         .from(roles)
