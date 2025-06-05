@@ -7,27 +7,19 @@
   }
 
   [data-sonner-toast][data-type="success"] {
-    color: hsl(var(--success-foreground));
-    background-color: hsl(var(--success));
-    border-color: hsl(var(--success-foreground));
+    @apply text-success-foreground bg-success border-success-foreground;
   }
 
   [data-sonner-toast][data-type="error"] {
-    color: hsl(var(--destructive-foreground));
-    background-color: hsl(var(--destructive));
-    border-color: hsl(var(--destructive-foreground));
+    @apply text-destructive-foreground bg-destructive border-destructive-foreground;
   }
 
   [data-sonner-toast][data-type="info"] {
-    color: hsl(var(--info-foreground));
-    background-color: hsl(var(--info));
-    border-color: hsl(var(--info-foreground));
+    @apply text-info-foreground bg-info border-info-foreground;
   }
 
   [data-sonner-toast][data-type="warning"] {
-    color: hsl(var(--warning-foreground));
-    background-color: hsl(var(--warning));
-    border-color: hsl(var(--warning-foreground));
+    @apply text-warning-foreground bg-warning border-warning-foreground;
   }
 
   /* Optional default/neutral toast */
