@@ -70,13 +70,25 @@
         errorMessage = '';
         toast.success(result.data.message || 'Welcome back!');
 
-        const role = result.data.role;
-        setTimeout(() => {
-          if (role === 'staff') goto('/staff');
-          else if (role === 'admin' || role === 'manager') goto('/app');
-          else if (role === 'ceo' || role === 'developer') goto('/protected');
-          else goto('/customer'); // fallback if no role set
-        }, 800);
+        if (type === 'register') {
+          // Redirect to login after successful registration
+          goto('/auth/login');
+        } else {
+          // Role-based redirect for login
+          if (result.data.role) {
+            const role = result.data.role.toLowerCase();
+            if (['admin', 'manager'].includes(role)) {
+              goto('/app');
+            } else if (role === 'staff') {
+              goto('/staff');
+            } else {
+              goto('/customer');
+            }
+          } else {
+            // Default redirect if no role is found
+            goto('/customer');
+          }
+        }
 
       // VALIDATION FAILURE (from +page.server.ts)
       } else if (result.type === 'failure' || result.data?.success === false) {
@@ -211,3 +223,4 @@
 
 <!-- Social login options (e.g. Google, GitHub) -->
 <AuthOptions />
+</script>

@@ -1,4 +1,3 @@
-
 import { json } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { appDb } from '$lib/server/db';
@@ -49,22 +48,17 @@ export async function POST({ request }) {
     const session = await auth.createSession(user.id, {});
     const sessionCookie = auth.createSessionCookie(session.id);
 
-    return json({ 
+    return json({
       success: true,
       message: 'Registration successful! Please login.',
-      user: { 
-        id: user.id,
-        email: user.email,
-        username: user.username 
-      }
+      userId: user.id,
+      shouldRedirect: true
     }, {
-      headers: {
-        'Set-Cookie': sessionCookie.serialize()
-      }
+      status: 200
     });
   } catch (error) {
     console.error('Registration error:', error);
-    
+
     // Check for duplicate key violation (PostgreSQL error code)
     if (error.code === '23505' || (error.message && error.message.includes('duplicate key'))) {
       return json({ 
@@ -74,7 +68,7 @@ export async function POST({ request }) {
         status: 400 
       });
     }
-    
+
     return json({ 
       success: false,
       message: 'Registration failed. Please try again.' 
