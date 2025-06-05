@@ -1,11 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
-import { appDb } from '$lib/server/db';
 import { validate, registerSchema } from '$lib/server/validation';
-import { users } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { createUser, getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function POST({ request }) {
   try {
@@ -14,10 +11,9 @@ export async function POST({ request }) {
     const { email, password, username } = validate(registerSchema, payload);
 
     console.log('Registration payload:', payload)
+    
     // Check if user already exists
-    const existingUser = await appDb.query.users.findFirst({
-      where: eq(users.email, email)
-    });
+    const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
       return json({ 
@@ -28,21 +24,12 @@ export async function POST({ request }) {
       });
     }
 
-    // Generate a unique ID for the user
-    const userId = uuidv4(); // Generate a UUID for user ID
-
     // Hash the password
     const hasher = new Argon2id();
     const hashedPassword = await hasher.hash(password);
 
-    // Create user
-    const [user] = await appDb.insert(users).values({
-      id: userId,
-      email,
-      username,
-      status: 'active',
-      hashedPassword
-    }).returning();
+    // Create user with customer role automatically assigned
+    const user = await createUser(email, hashedPassword, username);
 
     // Create session
     const session = await auth.createSession(user.id, {});
