@@ -67,51 +67,19 @@
   }
 
   /**
-   * LOGIN FLOW - Clear role-based redirection
-   * 1. Authenticate user
-   * 2. Get user role from response
-   * 3. Show welcome toast
-   * 4. Redirect based on role
+   * LOGIN FLOW - Handle login response
+   * Server handles redirect on success, so we only need to handle errors
    */
   function handleLoginFlow(result: any) {
     console.log('🔑 LOGIN FLOW - Processing result:', result);
     console.log('🔑 LOGIN FLOW - Result type:', result.type);
     console.log('🔑 LOGIN FLOW - Result data:', result.data);
     
-    // Check if login was successful - SvelteKit success means no fail() was called
+    // Server will redirect on success, so we only get here if there's an error
     if (result.type === 'success') {
-      const responseData = result.data;
-      const message = responseData.message || 'Login successfully';
-      const userRole = responseData.role || 'customer'; // Default to customer if no role
-      const userRoles = responseData.roles || []; // Get all user roles
-      
-      toast.success(message);
-      
-      // Clear any errors
-      showError = false;
-      errorMessage = '';
-      
-      console.log('🔑 LOGIN FLOW - Success! User role:', userRole);
-      console.log('🔑 LOGIN FLOW - Available roles:', userRoles);
-      
-      // Determine redirect path based on user roles (check highest privilege first)
-      let redirectPath = '/customer'; // Default for customer role
-      
-      if (userRoles.includes('admin') || userRoles.includes('manager')) {
-        redirectPath = '/app';
-      } else if (userRoles.includes('staff')) {
-        redirectPath = '/staff';
-      } else if (userRoles.includes('customer')) {
-        redirectPath = '/customer';
-      }
-      
-      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath, 'for roles:', userRoles);
-      
-      // Short delay to show toast, then redirect
-      setTimeout(() => {
-        goto(redirectPath, { replaceState: true });
-      }, 1000);
-      
+      // This shouldn't happen as server redirects, but just in case
+      toast.success('Login successful!');
+      console.log('🔑 LOGIN FLOW - Unexpected success response - server should have redirected');
     } else {
       // Handle login errors - check both result.data and nested error structures
       let errorMsg = 'Login failed';

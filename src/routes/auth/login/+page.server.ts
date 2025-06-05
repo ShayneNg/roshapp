@@ -1,5 +1,5 @@
 // src/routes/auth/login/+page.server.ts
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { getUserByEmail } from '$lib/server/users';
 import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
@@ -77,20 +77,28 @@ export const actions = {
         ...sessionCookie.attributes
       });
 
-      // Return success with role information for redirect
+      // Determine redirect path based on user roles
       const roles = user.roles || [];
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
 
       console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
       console.log('🔍 LOGIN DEBUG - User ID:', user.id);
 
-      return {
-        success: true,
-        message: 'Login successfully',
-        role: primaryRole,
-        roles: roles,
-        userId: user.id
-      };
+      // Server-side redirect based on role
+      let redirectPath = '/customer'; // Default for customer role
+      
+      if (roles.includes('admin') || roles.includes('manager')) {
+        redirectPath = '/app';
+      } else if (roles.includes('staff')) {
+        redirectPath = '/staff';
+      } else if (roles.includes('customer')) {
+        redirectPath = '/customer';
+      }
+
+      console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
+      
+      // Use SvelteKit's redirect for proper navigation
+      throw redirect(302, redirectPath);
     } catch (error) {
       console.error('Login error:', error);
       return fail(500, {
