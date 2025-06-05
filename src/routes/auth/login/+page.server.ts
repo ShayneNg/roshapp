@@ -94,13 +94,17 @@ export const actions = {
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
 
       console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
-
-      return {
+      
+      const loginResponse = {
         success: true,
         message: 'Login successful!',
         role: primaryRole,
         roles
       };
+      
+      console.log('🔍 LOGIN DEBUG - Response being sent to client:', loginResponse);
+      
+      return loginResponse;
     } catch (error) {
       console.error('Login error:', error);
       return fail(500, {

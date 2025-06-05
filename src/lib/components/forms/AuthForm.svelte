@@ -75,17 +75,30 @@
           goto('/auth/login');
         } else {
           // Role-based redirect for login
+          console.log('🔍 REDIRECT DEBUG - Result data:', result.data);
+          console.log('🔍 REDIRECT DEBUG - Role from server:', result.data.role);
+          console.log('🔍 REDIRECT DEBUG - Roles array from server:', result.data.roles);
+          
+          let primaryRole = null;
+          
+          // Handle both single role string and roles array
           if (result.data.role) {
-            const role = result.data.role.toLowerCase();
-            if (['admin', 'manager'].includes(role)) {
-              goto('/app');
-            } else if (role === 'staff') {
-              goto('/staff');
-            } else {
-              goto('/customer');
-            }
+            primaryRole = result.data.role.toLowerCase();
+          } else if (result.data.roles && Array.isArray(result.data.roles) && result.data.roles.length > 0) {
+            primaryRole = result.data.roles[0].toLowerCase();
+          }
+          
+          console.log('🔍 REDIRECT DEBUG - Primary role determined:', primaryRole);
+          
+          // Redirect based on role
+          if (primaryRole && ['admin', 'manager'].includes(primaryRole)) {
+            console.log('🔍 REDIRECT DEBUG - Redirecting to /app');
+            goto('/app');
+          } else if (primaryRole === 'staff') {
+            console.log('🔍 REDIRECT DEBUG - Redirecting to /staff');
+            goto('/staff');
           } else {
-            // Default redirect if no role is found
+            console.log('🔍 REDIRECT DEBUG - Redirecting to /customer (default)');
             goto('/customer');
           }
         }
