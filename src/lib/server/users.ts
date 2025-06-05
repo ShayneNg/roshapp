@@ -128,6 +128,7 @@ export async function createUser(email: string, hashedPassword: string, username
 
     // Assign default customer role
     await assignRoleToUser(userId, 'customer');
+    console.log('✅ User created with customer role assigned:', userId);
 
     return newUser; // Returns the created user row
   } catch (error) {
@@ -169,7 +170,7 @@ export async function assignRoleToUser(userId: string, roleName: string) {
       roleId: role.id
     });
 
-    console.log(`Role '${roleName}' assigned to user ${userId}`);
+    console.log(`✅ Role '${roleName}' assigned to user ${userId}`);
   } catch (error) {
     console.error('Error assigning role to user:', error);
     throw error;

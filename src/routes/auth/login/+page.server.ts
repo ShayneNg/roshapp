@@ -92,6 +92,7 @@ export const actions = {
       const roles = user.roles || [];
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
       console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
+      console.log('🔍 LOGIN DEBUG - Full user object:', JSON.stringify(user, null, 2));
 
       return {
         success: true,

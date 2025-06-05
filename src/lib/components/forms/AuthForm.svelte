@@ -87,9 +87,12 @@
           
           console.log('🔍 AuthForm - Redirecting to:', redirectPath, 'for role:', role);
           console.log('🔍 AuthForm - Response data:', responseData);
+          console.log('🔍 AuthForm - Available roles:', responseData.roles);
           
-          // Redirect immediately
-          goto(redirectPath, { replaceState: true });
+          // Small delay to ensure toast shows, then redirect
+          setTimeout(() => {
+            goto(redirectPath, { replaceState: true });
+          }, 300);
         }
 
       // VALIDATION FAILURE (from +page.server.ts)
