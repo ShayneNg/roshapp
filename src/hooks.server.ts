@@ -1,7 +1,7 @@
 // src/hooks.server.ts
 import { randomUUID } from 'crypto';
 import { auth } from "$lib/server/auth";
-import { getUserByEmail } from "$lib/server/users";
+import { getUserByEmail, getUserById } from "$lib/server/users";
 import type { Handle } from "@sveltejs/kit";
 
 const CSRF_COOKIE_NAME = 'csrf_token';
@@ -27,13 +27,29 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		// If user exists, create clean session user object with only id and roles
 		let sessionUser = null;
-		if (user) {
+		if (user && user.email) {
 			const completeUser = await getUserByEmail(user.email);
 			if (completeUser) {
 				sessionUser = {
 					id: user.id,
 					roles: completeUser.roles || []
 				};
+			}
+		} else if (user && user.id) {
+			// If we have user.id but no email, get user from database by ID
+			try {
+				const completeUser = await getUserById(user.id);
+				if (completeUser) {
+					const userWithRoles = await getUserByEmail(completeUser.email);
+					if (userWithRoles) {
+						sessionUser = {
+							id: user.id,
+							roles: userWithRoles.roles || []
+						};
+					}
+				}
+			} catch (error) {
+				console.error('Error getting user by ID in session validation:', error);
 			}
 		}
 
