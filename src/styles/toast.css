@@ -1,3 +1,4 @@
+
 @layer utilities {
   /* Base toast layout */
   [data-sonner-toast] {
@@ -6,19 +7,27 @@
   }
 
   [data-sonner-toast][data-type="success"] {
-    @apply text-success-foreground bg-success border-success-foreground;
+    color: hsl(var(--success-foreground));
+    background-color: hsl(var(--success));
+    border-color: hsl(var(--success-foreground));
   }
 
   [data-sonner-toast][data-type="error"] {
-    @apply text-destructive-foreground bg-destructive border-destructive-foreground;
+    color: hsl(var(--destructive-foreground));
+    background-color: hsl(var(--destructive));
+    border-color: hsl(var(--destructive-foreground));
   }
 
   [data-sonner-toast][data-type="info"] {
-    @apply text-info-foreground bg-info border-info-foreground;
+    color: hsl(var(--info-foreground));
+    background-color: hsl(var(--info));
+    border-color: hsl(var(--info-foreground));
   }
 
   [data-sonner-toast][data-type="warning"] {
-    @apply text-warning-foreground bg-warning border-warning-foreground;
+    color: hsl(var(--warning-foreground));
+    background-color: hsl(var(--warning));
+    border-color: hsl(var(--warning-foreground));
   }
 
   /* Optional default/neutral toast */
