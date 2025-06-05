@@ -10,5 +10,5 @@
 <div class="min-h-screen bg-background text-foreground">
 	{@render children()}
 	<Toaster />
-	<ModeWatcher />
+	<Toaster position="top-right" />
 </div>
