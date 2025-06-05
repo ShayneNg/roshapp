@@ -80,28 +80,30 @@
       // This is success! Server is redirecting after successful login
       console.log('🔑 LOGIN FLOW - Login successful! Redirecting to:', result.location);
       toast.success('Login successful!');
-      // Don't set any errors - let the redirect happen
+      // Clear any errors and let redirect happen
+      showError = false;
+      errorMessage = '';
       return;
     } else if (result.type === 'success') {
       // Unexpected success without redirect
       toast.success('Login successful!');
+      showError = false;
+      errorMessage = '';
       console.log('🔑 LOGIN FLOW - Unexpected success response - server should have redirected');
-    } else {
-      // Handle login errors - check both result.data and nested error structures
-      let errorMsg = 'Login failed';
-      
-      if (result.type === 'failure' && result.data?.message) {
-        errorMsg = result.data.message;
-      } else if (result.data?.message) {
-        errorMsg = result.data.message;
-      } else if (result.message) {
-        errorMsg = result.message;
-      }
-      
+    } else if (result.type === 'failure') {
+      // Handle login errors
+      const errorMsg = result.data?.message || 'Login failed';
       errorMessage = errorMsg;
       showError = true;
       toast.error(errorMsg);
       console.log('🔑 LOGIN FLOW - Error:', errorMsg);
+    } else {
+      // Handle other error types
+      const errorMsg = 'An unexpected error occurred during login';
+      errorMessage = errorMsg;
+      showError = true;
+      toast.error(errorMsg);
+      console.log('🔑 LOGIN FLOW - Unexpected result type:', result.type);
     }
   }
 
