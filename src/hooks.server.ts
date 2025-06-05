@@ -18,14 +18,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
 	//
 	const sessionId = event.cookies.get(auth.sessionCookieName);
-	console.log('🔍 SESSION DEBUG - Session ID from cookie:', sessionId ? sessionId.substring(0, 8) + '...' : 'none');
 	
 	if (!sessionId) {
-		console.log('🔍 SESSION DEBUG - No session ID found, setting user/session to null');
 		event.locals.user = null;
 		event.locals.session = null;
 	} else {
-		console.log('🔍 SESSION DEBUG - Validating session...');
 		const { session, user } = await auth.validateSession(sessionId);
 		
 		// If user exists, fetch complete user data with roles
@@ -36,11 +33,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 				userWithRoles = completeUser;
 			}
 		}
-		
-		console.log('🔍 SESSION DEBUG - Session validation result:', { 
-			userId: userWithRoles?.id,
-			roles: userWithRoles?.roles 
-		});
 
 		// Refresh cookie if session is fresh
 		if (session && session.fresh) {

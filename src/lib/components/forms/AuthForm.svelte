@@ -60,8 +60,6 @@
    */
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
-      console.log('🔍 FORM DEBUG - Form submission result:', result);
-      console.log('🔍 FORM DEBUG - CSRF token being sent:', csrf);
       loading = true;
 
       // SUCCESS → Redirect based on role
@@ -81,9 +79,6 @@
           // Role-based redirect for login
           // Get data from either result.data or result directly
           const responseData = result.data || result;
-          console.log('🔍 REDIRECT DEBUG - Result data:', responseData);
-          console.log('🔍 REDIRECT DEBUG - Role from server:', responseData.role);
-          console.log('🔍 REDIRECT DEBUG - Roles array from server:', responseData.roles);
           
           let primaryRole = null;
           let redirectPath = '/customer'; // Default fallback
@@ -95,25 +90,17 @@
             primaryRole = responseData.roles[0].toLowerCase();
           }
           
-          console.log('🔍 REDIRECT DEBUG - Primary role determined:', primaryRole);
-          
           // Determine redirect path based on role
           if (primaryRole && ['admin', 'manager'].includes(primaryRole)) {
             redirectPath = '/app';
-            console.log('🔍 REDIRECT DEBUG - Will redirect to /app');
           } else if (primaryRole === 'staff') {
             redirectPath = '/staff';
-            console.log('🔍 REDIRECT DEBUG - Will redirect to /staff');
           } else {
             redirectPath = '/customer';
-            console.log('🔍 REDIRECT DEBUG - Will redirect to /customer (default)');
           }
-          
-          console.log('🔍 REDIRECT DEBUG - Final redirect path:', redirectPath);
           
           // Use setTimeout to ensure the redirect happens after form processing
           setTimeout(() => {
-            console.log('🔍 REDIRECT DEBUG - Executing redirect to:', redirectPath);
             goto(redirectPath, { replaceState: true });
           }, 100);
         }
