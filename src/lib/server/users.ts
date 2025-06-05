@@ -29,7 +29,6 @@ export async function getUserByEmail(email: string) {
       .limit(1);
 
     if (result.length === 0) {
-      console.log('Database query result for email', email, ': not found');
       return undefined;
     }
 
@@ -74,8 +73,6 @@ export async function getUserByEmail(email: string) {
         });
       }
     }
-
-    console.log('Database query result for email', email, ': found');
     
     // Extract role names for the session
     const userRoleNames = userRolesWithNames.map(ur => ur.role.name);
