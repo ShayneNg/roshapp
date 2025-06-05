@@ -65,7 +65,11 @@
       loading = true;
 
       // SUCCESS → Redirect based on role
-      if (result.type === 'success' && result.data?.success === true) {
+      // Handle both direct success responses and SvelteKit's enhanced responses
+      const isSuccess = (result.type === 'success' && result.data?.success === true) || 
+                       (result.success === true);
+      
+      if (isSuccess) {
         showError = false;
         errorMessage = '';
         toast.success(result.data.message || 'Welcome back!');
@@ -75,18 +79,20 @@
           goto('/auth/login');
         } else {
           // Role-based redirect for login
-          console.log('🔍 REDIRECT DEBUG - Result data:', result.data);
-          console.log('🔍 REDIRECT DEBUG - Role from server:', result.data.role);
-          console.log('🔍 REDIRECT DEBUG - Roles array from server:', result.data.roles);
+          // Get data from either result.data or result directly
+          const responseData = result.data || result;
+          console.log('🔍 REDIRECT DEBUG - Result data:', responseData);
+          console.log('🔍 REDIRECT DEBUG - Role from server:', responseData.role);
+          console.log('🔍 REDIRECT DEBUG - Roles array from server:', responseData.roles);
           
           let primaryRole = null;
           let redirectPath = '/customer'; // Default fallback
           
           // Handle both single role string and roles array
-          if (result.data.role) {
-            primaryRole = result.data.role.toLowerCase();
-          } else if (result.data.roles && Array.isArray(result.data.roles) && result.data.roles.length > 0) {
-            primaryRole = result.data.roles[0].toLowerCase();
+          if (responseData.role) {
+            primaryRole = responseData.role.toLowerCase();
+          } else if (responseData.roles && Array.isArray(responseData.roles) && responseData.roles.length > 0) {
+            primaryRole = responseData.roles[0].toLowerCase();
           }
           
           console.log('🔍 REDIRECT DEBUG - Primary role determined:', primaryRole);

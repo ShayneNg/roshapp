@@ -104,7 +104,12 @@ export const actions = {
       
       console.log('🔍 LOGIN DEBUG - Response being sent to client:', loginResponse);
       
-      return loginResponse;
+      // Return the response in SvelteKit's expected format
+      return {
+        type: 'success',
+        status: 200,
+        data: loginResponse
+      };
     } catch (error) {
       console.error('Login error:', error);
       return fail(500, {
