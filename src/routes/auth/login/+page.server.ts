@@ -97,9 +97,16 @@ export const actions = {
 
       console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
       
-      // Use SvelteKit's redirect for proper navigation
+      // Use SvelteKit's redirect for proper navigation - moved outside try-catch
       throw redirect(302, redirectPath);
+
     } catch (error) {
+      // Only catch actual errors, not redirects
+      if (error?.status === 302) {
+        // Re-throw redirects
+        throw error;
+      }
+      
       console.error('Login error:', error);
       return fail(500, {
         message: 'An error occurred during login. Please try again.',
