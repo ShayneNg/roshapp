@@ -1,43 +1,23 @@
+
 <script lang="ts">
-  // Emits custom events (not used here, but good practice for form components)
   import { createEventDispatcher } from 'svelte';
-
-  // Zod schema for client-side validation (optional but clean)
   import { z } from 'zod';
-
-  // UI components (ShadCN-style)
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
-
-  // Toast notification system
   import { toast } from 'svelte-sonner';
-
-  // Social login buttons (e.g. Google, GitHub)
   import AuthOptions from '$lib/components/design/authOptions.svelte';
-
-  // Used for programmatic navigation
   import { goto } from '$app/navigation';
-
-  // Enables progressive form enhancement (SvelteKit magic)
   import { enhance } from '$app/forms';
-
-  // For access to URL parameters or SSR values
   import { page } from '$app/stores';
 
-  // Props passed from the page
+  // Props
   export let type: 'login' | 'register' = 'login';
-  export let csrf: string; // passed from `+page.server.ts`
+  export let csrf: string;
 
-  let loading = false; // disables submit button and shows spinner
+  let loading = false;
 
-  // Form validation schema (used optionally here)
-  const schema = z.object({
-    email: z.string().email({ message: 'Invalid email format' }),
-    password: z.string().min(6, { message: 'Password too short' })
-  });
-
-  // Form data structure
+  // Form data
   let form = {
     email: '',
     username: '',
@@ -45,76 +25,132 @@
     confirmPassword: ''
   };
 
-  // Error display logic
+  // Error handling
   let errorMessage = '';
   let showError = false;
 
-  // Useful if you want to emit 'success' or 'fail' to a parent
   const dispatch = createEventDispatcher();
-
-  // Optional reference to the form element itself
   let formEl: HTMLFormElement;
 
   /**
-   * Handles enhanced form submission via SvelteKit's use:enhance
+   * REGISTER FLOW - Clear and simple
+   * 1. Submit registration data
+   * 2. Show success toast
+   * 3. Redirect to login page after delay
+   */
+  function handleRegisterFlow(result: any) {
+    console.log('📝 REGISTER FLOW - Processing result:', result);
+    
+    if (result.type === 'success' || result.data?.success === true) {
+      const message = result.data?.message || 'Registration successful!';
+      toast.success(message);
+      
+      // Clear any errors
+      showError = false;
+      errorMessage = '';
+      
+      console.log('📝 REGISTER FLOW - Success! Redirecting to login in 2 seconds');
+      
+      // Redirect to login after toast is visible
+      setTimeout(() => {
+        goto('/auth/login', { replaceState: true });
+      }, 2000);
+      
+    } else {
+      // Handle registration errors
+      const message = result.data?.message || 'Registration failed';
+      errorMessage = message;
+      showError = true;
+      toast.error(message);
+      console.log('📝 REGISTER FLOW - Error:', message);
+    }
+  }
+
+  /**
+   * LOGIN FLOW - Clear role-based redirection
+   * 1. Authenticate user
+   * 2. Get user role from response
+   * 3. Show welcome toast
+   * 4. Redirect based on role
+   */
+  function handleLoginFlow(result: any) {
+    console.log('🔑 LOGIN FLOW - Processing result:', result);
+    
+    if (result.type === 'success' || result.data?.success === true) {
+      const responseData = result.data || result;
+      const message = responseData.message || 'Welcome back!';
+      const userRole = responseData.role;
+      
+      toast.success(message);
+      
+      // Clear any errors
+      showError = false;
+      errorMessage = '';
+      
+      console.log('🔑 LOGIN FLOW - Success! User role:', userRole);
+      console.log('🔑 LOGIN FLOW - Full response:', responseData);
+      
+      // Determine redirect path based on user role
+      let redirectPath = '/customer'; // Default for customer role
+      
+      if (userRole === 'admin' || userRole === 'manager') {
+        redirectPath = '/app';
+      } else if (userRole === 'staff') {
+        redirectPath = '/staff';
+      }
+      // customer or any other role goes to /customer
+      
+      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectPath);
+      
+      // Short delay to show toast, then redirect
+      setTimeout(() => {
+        goto(redirectPath, { replaceState: true });
+      }, 500);
+      
+    } else {
+      // Handle login errors
+      const message = result.data?.message || 'Login failed';
+      errorMessage = message;
+      showError = true;
+      toast.error(message);
+      console.log('🔑 LOGIN FLOW - Error:', message);
+    }
+  }
+
+  /**
+   * Main form enhancement handler
+   * Routes to appropriate flow based on form type
    */
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
       loading = true;
 
-      // SUCCESS → Redirect based on role
-      if (result.type === 'success' || (result.data?.success === true)) {
-        showError = false;
-        errorMessage = '';
-        const responseData = result.data || result;
-        toast.success(responseData.message || 'Welcome back!');
+      console.log(`🚀 FORM SUBMIT - ${type.toUpperCase()} flow starting`);
+      console.log('🚀 FORM SUBMIT - Result type:', result.type);
+      console.log('🚀 FORM SUBMIT - Result data:', result.data);
 
-        if (type === 'register') {
-          // Redirect to login after successful registration with delay for toast
-          setTimeout(() => {
-            goto('/auth/login', { replaceState: true });
-          }, 2000); // Increased delay to 2 seconds for toast visibility
-        } else {
-          // Role-based redirect for login
-          const role = responseData.role;
-          let redirectPath = '/customer'; // Default fallback
+      // Route to appropriate flow handler
+      if (type === 'register') {
+        handleRegisterFlow(result);
+      } else if (type === 'login') {
+        handleLoginFlow(result);
+      }
 
-          if (role && ['admin', 'manager'].includes(role)) {
-            redirectPath = '/app';
-          } else if (role === 'staff') {
-            redirectPath = '/staff';
-          }
-
-          console.log('🔍 AuthForm - Redirecting to:', redirectPath, 'for role:', role);
-          console.log('🔍 AuthForm - Response data:', responseData);
-          console.log('🔍 AuthForm - Available roles:', responseData.roles);
-
-          // Small delay to ensure toast shows, then redirect
-          setTimeout(() => {
-            goto(redirectPath, { replaceState: true });
-          }, 300);
-        }
-
-      // VALIDATION FAILURE (from +page.server.ts)
-      } else if (result.type === 'failure' || result.data?.success === false) {
-        errorMessage = result.data?.message || 'Login failed';
+      // Handle server errors (500, etc.)
+      if (result.type === 'error') {
+        errorMessage = 'An unexpected server error occurred';
         showError = true;
         toast.error(errorMessage);
-
-      // SERVER ERROR
-      } else if (result.type === 'error') {
-        errorMessage = 'An unexpected error occurred';
-        showError = true;
-        toast.error(errorMessage);
+        console.log('❌ FORM SUBMIT - Server error occurred');
       }
 
       loading = false;
-      await update(); // refresh form state
+      await update();
     };
   }
 
   /**
-   * Clear errors when user types again
+   * Clear errors when user starts typing
    */
   function clearErrors() {
     if (showError) {
@@ -122,23 +158,45 @@
       errorMessage = '';
     }
   }
+
+  // Form validation
+  function validateForm() {
+    if (type === 'register') {
+      if (form.password !== form.confirmPassword) {
+        errorMessage = 'Passwords do not match';
+        showError = true;
+        return false;
+      }
+    }
+    return true;
+  }
 </script>
 
-<!-- CSRF protection & enhanced form submission -->
-<form method="POST" use:enhance={handleFormEnhance} class="space-y-5" bind:this={formEl}>
-  <!-- Secure CSRF token from server -->
+<!-- Enhanced Form with clear separation -->
+<form 
+  method="POST" 
+  use:enhance={handleFormEnhance} 
+  class="space-y-5" 
+  bind:this={formEl}
+  on:submit={() => {
+    if (!validateForm()) {
+      return false;
+    }
+    console.log(`📤 FORM VALIDATION - ${type.toUpperCase()} form is valid, submitting...`);
+  }}
+>
+  <!-- Security tokens -->
   <input type="hidden" name="csrf" value={csrf || ''} />
-  <!-- Dynamic type field based on form type prop -->
   <input type="hidden" name="type" value={type} />
 
-  <!-- Error message block -->
+  <!-- Error Display -->
   {#if showError}
     <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
       {errorMessage}
     </div>
   {/if}
 
-  <!-- Always required: Email -->
+  <!-- Email Field (Always Required) -->
   <div class="space-y-2">
     <Label for="email">Email</Label>
     <Input
@@ -152,7 +210,7 @@
     />
   </div>
 
-  <!-- Only for register: Username -->
+  <!-- Username Field (Register Only) -->
   {#if type === 'register'}
     <div class="space-y-2">
       <Label for="username">Username</Label>
@@ -163,58 +221,60 @@
         placeholder="@JDoe"
         bind:value={form.username}
         on:input={clearErrors}
-        required={type === 'register'}
+        required
       />
     </div>
   {/if}
 
-  <!-- Always required: Password -->
+  <!-- Password Field (Always Required) -->
   <div class="space-y-2">
     <Label for="password">Password</Label>
     <Input
       id="password"
       name="password"
       type="password"
-      placeholder="password"
+      placeholder="Enter your password"
       bind:value={form.password}
       on:input={clearErrors}
       required
     />
   </div>
 
-  <!-- Only for register: Confirm Password -->
+  <!-- Confirm Password Field (Register Only) -->
   {#if type === 'register'}
     <div class="space-y-2">
-      <Label for="confirm-password">Re-type Password</Label>
+      <Label for="confirm-password">Confirm Password</Label>
       <Input
         id="confirm-password"
         name="confirmPassword"
         type="password"
-        placeholder="Re-type password"
+        placeholder="Confirm your password"
         bind:value={form.confirmPassword}
         on:input={clearErrors}
-        required={type === 'register'}
+        required
       />
     </div>
 
+    <!-- Password Match Validation -->
     {#if form.password && form.confirmPassword && form.password !== form.confirmPassword}
       <p class="text-red-500 text-xs italic">Passwords do not match.</p>
     {/if}
   {/if}
 
-
-  <!-- Submit button -->
+  <!-- Submit Button -->
   <div class="space-y-2">
     <Button class="w-full mt-2" type="submit" disabled={loading}>
       {#if loading}
         <span class="animate-spin mr-2">⏳</span>
+        {type === 'login' ? 'Signing In...' : 'Creating Account...'}
+      {:else}
+        {type === 'login' ? 'Sign In' : 'Create Account'}
       {/if}
-      {type === 'login' ? 'Login' : 'Register'}
     </Button>
   </div>
 </form>
 
-<!-- Divider for social login -->
+<!-- Social Login Divider -->
 <div class="relative">
   <div class="absolute inset-0 flex items-center">
     <span class="w-full border-t"></span>
@@ -226,5 +286,5 @@
   </div>
 </div>
 
-<!-- Social login options (e.g. Google, GitHub) -->
+<!-- Social Login Options -->
 <AuthOptions />
