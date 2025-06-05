@@ -1,21 +1,24 @@
-<script>
-  import * as Card from "$lib/components/ui/card";
+<script lang="ts">
+  import { page } from '$app/stores';
+
+  // Get user data from page store
+  $: user = $page.data?.user;
 </script>
 
-<div class="customer-container">
-  <div class="customer-container-column">
-    <!-- Customer fallback UI -->
-    <h1 class="text-xl font-semibold">Welcome to your space!</h1>
-    <p>We’re setting things up. Your account doesn't have roles yet.</p>
-  </div>
+<h1>Welcome to Customer Portal</h1>
+
+{#if user}
+  <p>Hello, {user.email}!</p>
+  <p>Your role: {user.roles?.join(', ') || 'customer'}</p>
+{:else}
+  <p>Loading user data...</p>
+{/if}
+
+<div class="mt-4">
+  <h2>Customer Features</h2>
+  <ul>
+    <li>View Services</li>
+    <li>Book Appointments</li>
+    <li>Manage Profile</li>
+  </ul>
 </div>
-
-<style lang="scss" scoped>
-.customer-container {
-  @apply hidden items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3;
-}
-
-.customer-container-column {
-  @apply col-span-2 grid items-start gap-6 lg:col-span-1;
-}
-</style>

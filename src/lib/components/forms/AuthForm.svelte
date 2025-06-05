@@ -80,6 +80,7 @@
           console.log('🔍 REDIRECT DEBUG - Roles array from server:', result.data.roles);
           
           let primaryRole = null;
+          let redirectPath = '/customer'; // Default fallback
           
           // Handle both single role string and roles array
           if (result.data.role) {
@@ -90,17 +91,25 @@
           
           console.log('🔍 REDIRECT DEBUG - Primary role determined:', primaryRole);
           
-          // Redirect based on role
+          // Determine redirect path based on role
           if (primaryRole && ['admin', 'manager'].includes(primaryRole)) {
-            console.log('🔍 REDIRECT DEBUG - Redirecting to /app');
-            goto('/app');
+            redirectPath = '/app';
+            console.log('🔍 REDIRECT DEBUG - Will redirect to /app');
           } else if (primaryRole === 'staff') {
-            console.log('🔍 REDIRECT DEBUG - Redirecting to /staff');
-            goto('/staff');
+            redirectPath = '/staff';
+            console.log('🔍 REDIRECT DEBUG - Will redirect to /staff');
           } else {
-            console.log('🔍 REDIRECT DEBUG - Redirecting to /customer (default)');
-            goto('/customer');
+            redirectPath = '/customer';
+            console.log('🔍 REDIRECT DEBUG - Will redirect to /customer (default)');
           }
+          
+          console.log('🔍 REDIRECT DEBUG - Final redirect path:', redirectPath);
+          
+          // Use setTimeout to ensure the redirect happens after form processing
+          setTimeout(() => {
+            console.log('🔍 REDIRECT DEBUG - Executing redirect to:', redirectPath);
+            goto(redirectPath, { replaceState: true });
+          }, 100);
         }
 
       // VALIDATION FAILURE (from +page.server.ts)
