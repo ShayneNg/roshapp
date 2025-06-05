@@ -18,19 +18,22 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
 	//
 	const sessionId = event.cookies.get(auth.sessionCookieName);
-	
+
 	if (!sessionId) {
 		event.locals.user = null;
 		event.locals.session = null;
 	} else {
 		const { session, user } = await auth.validateSession(sessionId);
-		
-		// If user exists, fetch complete user data with roles
-		let userWithRoles = user;
+
+		// If user exists, create clean session user object with only id and roles
+		let sessionUser = null;
 		if (user) {
 			const completeUser = await getUserByEmail(user.email);
 			if (completeUser) {
-				userWithRoles = completeUser;
+				sessionUser = {
+					id: user.id,
+					roles: completeUser.roles || []
+				};
 			}
 		}
 
@@ -58,12 +61,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 			});
 		}
 
-		event.locals.user = userWithRoles;
+		event.locals.user = sessionUser;
 		event.locals.session = session;
-		
+
 		// Set the primary role for roleGuard compatibility
-		if (userWithRoles && userWithRoles.roles && userWithRoles.roles.length > 0) {
-			event.locals.role = userWithRoles.roles[0]; // Use first role as primary
+		if (sessionUser && sessionUser.roles && sessionUser.roles.length > 0) {
+			event.locals.role = sessionUser.roles[0]; // Use first role as primary
 		} else {
 			event.locals.role = null;
 		}

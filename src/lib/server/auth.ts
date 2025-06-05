@@ -18,8 +18,6 @@ export const auth = new Lucia(
 		getUserAttributes: (databaseUser) => {
 			return {
 				id: databaseUser.id,
-				email: databaseUser.email,
-				username: databaseUser.username,
 				roles: databaseUser.roles || []
 			};
 		}

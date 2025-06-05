@@ -77,16 +77,19 @@ export const actions = {
         ...sessionCookie.attributes
       });
 
-      // Return success and user role for redirection
+      // Return success with role information for redirect
       const roles = user.roles || [];
       const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
+
       console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
-      console.log('🔍 LOGIN DEBUG - Full user object:', JSON.stringify(user, null, 2));
+      console.log('🔍 LOGIN DEBUG - User ID:', user.id);
 
       return {
         success: true,
-        message: 'Login successful!',
-        roles: primaryRole,
+        message: 'Welcome back!',
+        role: primaryRole,
+        roles: roles,
+        userId: user.id
       };
     } catch (error) {
       console.error('Login error:', error);
