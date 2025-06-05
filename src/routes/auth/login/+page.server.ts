@@ -84,18 +84,27 @@ export const actions = {
       console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
       console.log('🔍 LOGIN DEBUG - User ID:', user.id);
 
-      // Server-side redirect based on role
+      // Determine redirect path based on first role in roles array
+      const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
       let redirectPath = '/customer'; // Default for customer role
       
-      if (roles.includes('admin') || roles.includes('manager')) {
+      if (firstRole === 'admin' || firstRole === 'manager') {
         redirectPath = '/app';
-      } else if (roles.includes('staff')) {
+      } else if (firstRole === 'staff') {
         redirectPath = '/staff';
-      } else if (roles.includes('customer')) {
+      } else if (firstRole === 'customer') {
         redirectPath = '/customer';
       }
 
-      console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
+      console.log('🔍 LOGIN DEBUG - First role:', firstRole, 'Redirect path:', redirectPath);
+
+      // Return success data with message and redirect route
+      return {
+        success: true,
+        message: `Welcome back! Redirecting to ${firstRole} dashboard...`,
+        redirectTo: redirectPath,
+        userRole: firstRole
+      };
       
     } catch (error) {
       console.error('Login error:', error);
@@ -104,19 +113,5 @@ export const actions = {
         success: false
       });
     }
-
-    // Redirect happens outside of try-catch to prevent it being caught as an error
-    const roles = (await getUserByEmail(result.data.email))?.roles || [];
-    let redirectPath = '/customer';
-    
-    if (roles.includes('admin') || roles.includes('manager')) {
-      redirectPath = '/app';
-    } else if (roles.includes('staff')) {
-      redirectPath = '/staff';
-    } else if (roles.includes('customer')) {
-      redirectPath = '/customer';
-    }
-
-    throw redirect(302, redirectPath);
   }
 };

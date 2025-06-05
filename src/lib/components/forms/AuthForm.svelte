@@ -67,31 +67,37 @@
   }
 
   /**
-   * LOGIN FLOW - Handle login response
-   * Server handles redirect on success, so we only need to handle errors
+   * LOGIN FLOW - Handle login response with dynamic server data
+   * Server returns success data with message and redirect route
    */
   function handleLoginFlow(result: any) {
     console.log('🔑 LOGIN FLOW - Processing result:', result);
     console.log('🔑 LOGIN FLOW - Result type:', result.type);
     console.log('🔑 LOGIN FLOW - Result data:', result.data);
     
-    // Handle different result types
-    if (result.type === 'redirect') {
-      // This is success! Server is redirecting after successful login
-      console.log('🔑 LOGIN FLOW - Login successful! Redirecting to:', result.location);
-      toast.success('Login successful!');
-      // Clear any errors and let redirect happen
+    if (result.type === 'success' && result.data?.success === true) {
+      // Success! Use server message and redirect route
+      const message = result.data.message || 'Login successful!';
+      const redirectTo = result.data.redirectTo || '/customer';
+      const userRole = result.data.userRole || 'customer';
+      
+      console.log('🔑 LOGIN FLOW - Login successful! Message:', message);
+      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectTo, 'for role:', userRole);
+      
+      // Clear any errors
       showError = false;
       errorMessage = '';
-      return;
-    } else if (result.type === 'success') {
-      // Unexpected success without redirect
-      toast.success('Login successful!');
-      showError = false;
-      errorMessage = '';
-      console.log('🔑 LOGIN FLOW - Unexpected success response - server should have redirected');
+      
+      // Show success toast briefly before redirect
+      toast.success(message);
+      
+      // Redirect after short delay to show toast
+      setTimeout(() => {
+        goto(redirectTo, { replaceState: true });
+      }, 1000);
+      
     } else if (result.type === 'failure') {
-      // Handle login errors
+      // Handle login errors with server message
       const errorMsg = result.data?.message || 'Login failed';
       errorMessage = errorMsg;
       showError = true;
