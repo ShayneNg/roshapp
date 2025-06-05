@@ -1,5 +1,6 @@
 <script lang="ts">
   import { spacing } from "$lib/config/spacing";
+  import RoleLayout from '$lib/components/layout/RoleLayout.svelte';
 </script>
 
 <div class={`min-h-screen bg-gray-50 ${spacing.container}`}>
@@ -8,5 +9,7 @@
     <p class="text-sm text-muted-foreground">Track your bookings, promotions, and preferences</p>
   </header>
 
-  <slot />
+  <RoleLayout allow={['customer']}>
+    <slot />
+  </RoleLayout>
 </div>

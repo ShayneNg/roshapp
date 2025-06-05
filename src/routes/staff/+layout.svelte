@@ -2,6 +2,8 @@
   import { spacing } from "$lib/config/spacing";
   import { Icon } from "$lib/icons/Icon.svelte";
   import { page } from '$app/stores';
+  
+  import RoleLayout from '$lib/components/layout/RoleLayout.svelte';
 
   const navLinks = [
     { href: '/staff', icon: 'layout-dashboard', label: 'Dashboard' },
@@ -27,7 +29,9 @@
     </ul>
   </aside>
 
-  <main class={`${spacing.container} py-6`}>
-    <slot />
-  </main>
+  <RoleLayout allow={['staff']}>
+    <main class={`${spacing.container} py-6`}>
+      <slot />
+    </main>
+  </RoleLayout>  
 </div>

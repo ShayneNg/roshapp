@@ -4,7 +4,9 @@
 
 <div class="customer-container">
   <div class="customer-container-column">
-    
+    <!-- Customer fallback UI -->
+    <h1 class="text-xl font-semibold">Welcome to your space!</h1>
+    <p>We’re setting things up. Your account doesn't have roles yet.</p>
   </div>
 </div>
 
