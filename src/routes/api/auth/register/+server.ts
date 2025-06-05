@@ -37,7 +37,7 @@ export async function POST({ request }) {
 
     return json({
       success: true,
-      message: 'Registration successful! Please login.',
+      message: 'Account created successfully! Redirecting to login...',
       userId: user.id,
       shouldRedirect: true
     }, {

@@ -70,25 +70,25 @@
         toast.success(responseData.message || 'Welcome back!');
 
         if (type === 'register') {
-          // Redirect to login after successful registration
+          // Redirect to login after successful registration with delay for toast
           setTimeout(() => {
-            goto('/auth/login');
-          }, 800);
+            goto('/auth/login', { replaceState: true });
+          }, 2000); // Increased delay to 2 seconds for toast visibility
         } else {
           // Role-based redirect for login
           const role = responseData.role;
           let redirectPath = '/customer'; // Default fallback
-          
+
           if (role && ['admin', 'manager'].includes(role)) {
             redirectPath = '/app';
           } else if (role === 'staff') {
             redirectPath = '/staff';
           }
-          
+
           console.log('🔍 AuthForm - Redirecting to:', redirectPath, 'for role:', role);
           console.log('🔍 AuthForm - Response data:', responseData);
           console.log('🔍 AuthForm - Available roles:', responseData.roles);
-          
+
           // Small delay to ensure toast shows, then redirect
           setTimeout(() => {
             goto(redirectPath, { replaceState: true });
@@ -228,3 +228,4 @@
 
 <!-- Social login options (e.g. Google, GitHub) -->
 <AuthOptions />
+</script>
