@@ -59,11 +59,11 @@ export async function getUserByEmail(email: string) {
     console.log('Database query result for email', email, ': found');
     
     // Extract role names for the session
-    const roles = userRolesWithNames.map(ur => ur.role.name);
+    const userRoleNames = userRolesWithNames.map(ur => ur.role.name);
     
     return {
       ...user,
-      roles, // Add roles array directly to user object
+      roles: userRoleNames, // Add roles array directly to user object
       userRoles: userRolesWithNames
     };
   } catch (error) {
