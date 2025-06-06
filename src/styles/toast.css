@@ -6,25 +6,39 @@
     animation: toast-slide-in 0.3s ease-out forwards;
   }
 
+  /* Success toast styling */
   [data-sonner-toast][data-type="success"] {
-    @apply text-success-foreground bg-success border-success-foreground;
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+    border-left-color: hsl(var(--success-foreground));
   }
 
+  /* Error toast styling */
   [data-sonner-toast][data-type="error"] {
-    @apply text-destructive-foreground bg-destructive border-destructive-foreground;
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    border-left-color: hsl(var(--destructive-foreground));
   }
 
+  /* Info toast styling */
   [data-sonner-toast][data-type="info"] {
-    @apply text-info-foreground bg-info border-info-foreground;
+    background-color: hsl(var(--info));
+    color: hsl(var(--info-foreground));
+    border-left-color: hsl(var(--info-foreground));
   }
 
+  /* Warning toast styling */
   [data-sonner-toast][data-type="warning"] {
-    @apply text-warning-foreground bg-warning border-warning-foreground;
+    background-color: hsl(var(--warning));
+    color: hsl(var(--warning-foreground));
+    border-left-color: hsl(var(--warning-foreground));
   }
 
-  /* Optional default/neutral toast */
+  /* Default/neutral toast */
   [data-sonner-toast]:not([data-type]) {
-    @apply text-foreground bg-muted border-border;
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground));
+    border-left-color: hsl(var(--border));
   }
 
   /* Icon size and placement */
@@ -32,6 +46,7 @@
     @apply w-6 h-6 mt-0.5;
   }
 
+  /* Toast animation */
   @keyframes toast-slide-in {
     0% {
       transform: translateY(8px);
