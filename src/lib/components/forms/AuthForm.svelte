@@ -81,7 +81,8 @@
       toast.success('Login successful!');
       showError = false;
       errorMessage = '';
-      // No need to handle redirect manually - server does it
+      // Manually navigate to the redirect location
+      window.location.href = result.location;
       
     } else if (result.type === 'success' && result.data?.success === true) {
       // Fallback: client-side redirect if server doesn't redirect
