@@ -27,29 +27,39 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		// If user exists, create clean session user object with only id and roles
 		let sessionUser = null;
-		if (user && user.email) {
-			const completeUser = await getUserByEmail(user.email);
-			if (completeUser) {
-				sessionUser = {
-					id: user.id,
-					roles: completeUser.roles || []
-				};
-			}
-		} else if (user && user.id) {
-			// If we have user.id but no email, get user from database by ID
+		if (user && user.id) {
 			try {
-				const completeUser = await getUserById(user.id);
-				if (completeUser) {
-					const userWithRoles = await getUserByEmail(completeUser.email);
-					if (userWithRoles) {
+				// First try to get by email if available
+				if (user.email) {
+					const completeUser = await getUserByEmail(user.email);
+					if (completeUser) {
 						sessionUser = {
 							id: user.id,
-							roles: userWithRoles.roles || []
+							roles: completeUser.roles || ['customer'] // Default to customer if no roles
 						};
+						console.log('🔍 HOOKS DEBUG - User from email:', user.email, 'Roles:', completeUser.roles);
+					}
+				} else {
+					// Fallback: get user by ID and then get full user data
+					const completeUser = await getUserById(user.id);
+					if (completeUser) {
+						const userWithRoles = await getUserByEmail(completeUser.email);
+						if (userWithRoles) {
+							sessionUser = {
+								id: user.id,
+								roles: userWithRoles.roles || ['customer'] // Default to customer if no roles
+							};
+							console.log('🔍 HOOKS DEBUG - User from ID:', user.id, 'Roles:', userWithRoles.roles);
+						}
 					}
 				}
 			} catch (error) {
-				console.error('Error getting user by ID in session validation:', error);
+				console.error('Error getting user in session validation:', error);
+				// Create minimal user object if database lookup fails
+				sessionUser = {
+					id: user.id,
+					roles: ['customer'] // Default role
+				};
 			}
 		}
 
@@ -82,10 +92,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		// Set the primary role for roleGuard compatibility
 		if (sessionUser && sessionUser.roles && sessionUser.roles.length > 0) {
-			event.locals.role = sessionUser.roles[0]; // Use first role as primary
+			event.locals.role = sessionUser.roles[0].toLowerCase(); // Use first role as primary
+			console.log('🔍 HOOKS DEBUG - Setting role to:', event.locals.role);
 		} else {
-			event.locals.role = null;
+			event.locals.role = 'customer'; // Default role instead of null
+			console.log('🔍 HOOKS DEBUG - No roles found, defaulting to customer');
 		}
+		
+		console.log('🔍 HOOKS DEBUG - Final locals.user:', event.locals.user);
+		console.log('🔍 HOOKS DEBUG - Final locals.role:', event.locals.role);
 	}
 
 	//

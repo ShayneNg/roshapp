@@ -39,7 +39,7 @@ export async function getUserByEmail(email: string) {
       console.error('User found but has no ID:', user);
       return undefined;
     }
-    
+
     // Get user roles using two separate queries to avoid type issues
     // Add null checks to prevent UNDEFINED_VALUE errors
     const userRoleIds = await appDb
@@ -60,7 +60,7 @@ export async function getUserByEmail(email: string) {
         .from(roles)
         .where(eq(roles.id, userRole.roleId))
         .limit(1);
-      
+
       if (roleResult.length > 0) {
         userRolesWithNames.push({
           userId: user.id,
@@ -73,10 +73,10 @@ export async function getUserByEmail(email: string) {
         });
       }
     }
-    
+
     // Extract role names for the session
     const userRoleNames = userRolesWithNames.map(ur => ur.role.name);
-    
+
     return {
       ...user,
       roles: userRoleNames, // Add roles array directly to user object
@@ -129,7 +129,7 @@ export async function getUserWithDetails(userId: string) {
 export async function createUser(email: string, hashedPassword: string, username?: string) {
   try {
     const userId = crypto.randomUUID();
-    
+
     // Create user
     const [newUser] = await appDb
       .insert(users)
