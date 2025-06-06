@@ -102,7 +102,7 @@ export const actions = {
       });
 
       // Handle remember me functionality
-      const rememberMe = formData.get('rememberMe') === 'on';
+      const rememberMe = formData.rememberMe === 'on';
       if (rememberMe) {
         const { createRememberToken } = await import('$lib/server/rememberMe');
         const { tokenId, token } = await createRememberToken(user.id);
