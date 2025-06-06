@@ -55,6 +55,8 @@ export const actions = {
         });
       }
 
+      console.log('🔍 LOGIN DEBUG - Found user:', user.id, 'with roles:', user.roles);
+
       // Verify password using Argon2id
       const hasher = new Argon2id();
       const valid = await hasher.verify(user.hashedPassword, password);
@@ -77,14 +79,12 @@ export const actions = {
         ...sessionCookie.attributes
       });
 
+      // Get user with roles populated - getUserByEmail should return user with roles array
+      console.log('🔍 LOGIN DEBUG - User object:', user);
+      console.log('🔍 LOGIN DEBUG - User roles:', user.roles);
+
       // Determine redirect path based on user roles
       const roles = user.roles || [];
-      const primaryRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-
-      console.log('🔍 LOGIN DEBUG - Login successful! User roles:', roles, 'Primary role:', primaryRole);
-      console.log('🔍 LOGIN DEBUG - User ID:', user.id);
-
-      // Determine redirect path based on first role in roles array
       const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
       let redirectPath = '/customer'; // Default for customer role
       
@@ -99,10 +99,18 @@ export const actions = {
       console.log('🔍 LOGIN DEBUG - First role:', firstRole, 'Redirect path:', redirectPath);
 
       // Server-side redirect is more reliable
+      console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
       throw redirect(302, redirectPath);
       
     } catch (error) {
       console.error('Login error:', error);
+      
+      // Handle redirect errors differently from other errors
+      if (error?.status === 302 || error?.location) {
+        // This is actually a successful redirect, re-throw it
+        throw error;
+      }
+      
       return fail(500, {
         message: 'An error occurred during login. Please try again.',
         success: false
