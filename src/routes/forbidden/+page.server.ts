@@ -1,7 +1,7 @@
 // src/routes/forbidden/+page.server.ts
 import { redirect } from '@sveltejs/kit';
 
-export const load = ({ locals, url }) => {
+export const load = ({ locals, cookies }) => {
   const roles = locals.user?.roles ?? [];
 
   let target = '/customer';
@@ -11,6 +11,17 @@ export const load = ({ locals, url }) => {
     target = '/staff';
   }
 
-  // Redirect with flash message
-  throw redirect(302, `${target}?message=unauthorized`);
+  // Set flash message via cookie
+  cookies.set('flash_message', JSON.stringify({
+    type: 'error',
+    message: 'Access denied. You do not have permission to view that page.'
+  }), {
+    path: '/',
+    httpOnly: false,
+    maxAge: 60, // 1 minute
+    sameSite: 'lax'
+  });
+
+  // Clean redirect without URL parameters
+  throw redirect(302, target);
 };

@@ -1,9 +1,26 @@
 <script lang="ts">
   import { spacing } from "$lib/config/spacing";
+  import RoleLayout from '$lib/components/layout/RoleLayout.svelte';
+  import { onMount } from 'svelte';
+  import { getFlashMessage } from '$lib/utils/flashMessage';
+  import { toast } from 'svelte-sonner';
   import { Icon } from "$lib/icons/Icon.svelte";
   import { page } from '$app/stores';
-  
-  import RoleLayout from '$lib/components/layout/RoleLayout.svelte';
+
+  onMount(() => {
+    const flashMessage = getFlashMessage();
+    if (flashMessage) {
+      if (flashMessage.type === 'error') {
+        toast.error(flashMessage.message);
+      } else if (flashMessage.type === 'success') {
+        toast.success(flashMessage.message);
+      } else if (flashMessage.type === 'warning') {
+        toast.warning(flashMessage.message);
+      } else {
+        toast.info(flashMessage.message);
+      }
+    }
+  });
 
   const navLinks = [
     { href: '/staff', icon: 'layout-dashboard', label: 'Dashboard' },
