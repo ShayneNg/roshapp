@@ -75,26 +75,24 @@
     console.log('🔑 LOGIN FLOW - Result type:', result.type);
     console.log('🔑 LOGIN FLOW - Result data:', result.data);
     
-    if (result.type === 'success' && result.data?.success === true) {
-      // Success! Use server message and redirect route
-      const message = result.data.message || 'Login successful!';
-      const redirectTo = result.data.redirectTo || '/customer';
-      const userRole = result.data.userRole || 'customer';
-      
-      console.log('🔑 LOGIN FLOW - Login successful! Message:', message);
-      console.log('🔑 LOGIN FLOW - Redirecting to:', redirectTo, 'for role:', userRole);
-      
-      // Clear any errors
+    if (result.type === 'redirect') {
+      // Server is handling the redirect - success!
+      console.log('🔑 LOGIN FLOW - Server redirect to:', result.location);
+      toast.success('Login successful!');
       showError = false;
       errorMessage = '';
+      // No need to handle redirect manually - server does it
       
-      // Show success toast briefly before redirect
+    } else if (result.type === 'success' && result.data?.success === true) {
+      // Fallback: client-side redirect if server doesn't redirect
+      const message = result.data.message || 'Login successful!';
+      const redirectTo = result.data.redirectTo || '/customer';
+      
+      console.log('🔑 LOGIN FLOW - Client redirect to:', redirectTo);
+      showError = false;
+      errorMessage = '';
       toast.success(message);
-      
-      // Redirect after short delay to show toast
-      setTimeout(() => {
-        goto(redirectTo, { replaceState: true });
-      }, 1000);
+      window.location.href = redirectTo;
       
     } else if (result.type === 'failure') {
       // Handle login errors with server message

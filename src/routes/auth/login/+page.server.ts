@@ -98,13 +98,8 @@ export const actions = {
 
       console.log('🔍 LOGIN DEBUG - First role:', firstRole, 'Redirect path:', redirectPath);
 
-      // Return success data with message and redirect route
-      return {
-        success: true,
-        message: `Welcome back! Redirecting to ${firstRole} dashboard...`,
-        redirectTo: redirectPath,
-        userRole: firstRole
-      };
+      // Server-side redirect is more reliable
+      throw redirect(302, redirectPath);
       
     } catch (error) {
       console.error('Login error:', error);
