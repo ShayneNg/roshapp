@@ -17,11 +17,73 @@ export const handle: Handle = async ({ event, resolve }) => {
 	//
 	// ─── LAYER 1 & 2: SESSION HANDLING & AUTH CHECK ───────────────────────────────
 	//
+	// Check if there's a session cookie
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 
 	if (!sessionId) {
+		console.log('🔍 HOOKS DEBUG - No session cookie found, checking remember me token');
+
+		// Check for remember me token
+		const rememberTokenCookie = event.cookies.get('remember_token');
+		if (rememberTokenCookie && rememberTokenCookie.includes(':')) {
+			const [tokenId, token] = rememberTokenCookie.split(':');
+
+			try {
+				const { validateRememberToken } = await import('$lib/server/rememberMe');
+				const rememberToken = await validateRememberToken(tokenId, token);
+
+				if (rememberToken) {
+					console.log('🔍 HOOKS DEBUG - Valid remember me token found, creating new session');
+
+					// Create new session from remember token
+					const newSession = await auth.createSession(rememberToken.userId, {});
+					const sessionCookie = auth.createSessionCookie(newSession.id);
+
+					event.cookies.set(sessionCookie.name, sessionCookie.value, {
+						path: '/',
+						...sessionCookie.attributes
+					});
+
+					// Continue with normal session validation
+					const { session, user } = await auth.validateSession(newSession.id);
+					if (session && user) {
+						// Assuming getUserWithDetails is defined elsewhere and fetches user details.
+						const getUserWithDetails = async (userId: string) => {
+							const completeUser = await getUserById(userId);
+							if (completeUser) {
+								return completeUser;
+							}
+							return null;
+						};
+
+						const sessionUser = await getUserWithDetails(user.id);
+						if (sessionUser) {
+							// Assuming roles are directly on the user object
+							const roles = sessionUser.roles || ['customer'];
+							const role = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
+
+							event.locals.user = { ...sessionUser, roles };
+							event.locals.session = session;
+							event.locals.role = role;
+							event.locals.csrf = randomUUID();
+
+							console.log('🔍 HOOKS DEBUG - Remember me authentication successful');
+							return resolve(event);
+						}
+					}
+				}
+			} catch (error) {
+				console.error('Remember me token validation error:', error);
+				// Clear invalid remember token
+				event.cookies.delete('remember_token', { path: '/' });
+			}
+		}
+
 		event.locals.user = null;
 		event.locals.session = null;
+		event.locals.role = null;
+		event.locals.csrf = randomUUID();
+		return resolve(event);
 	} else {
 		const { session, user } = await auth.validateSession(sessionId);
 
@@ -98,7 +160,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.locals.role = 'customer'; // Default role instead of null
 			console.log('🔍 HOOKS DEBUG - No roles found, defaulting to customer');
 		}
-		
+
 		console.log('🔍 HOOKS DEBUG - Final locals.user:', event.locals.user);
 		console.log('🔍 HOOKS DEBUG - Final locals.role:', event.locals.role);
 	}

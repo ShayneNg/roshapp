@@ -101,6 +101,24 @@ export const actions = {
         ...sessionCookie.attributes
       });
 
+      // Handle remember me functionality
+      const rememberMe = formData.get('rememberMe') === 'on';
+      if (rememberMe) {
+        const { createRememberToken } = await import('$lib/server/rememberMe');
+        const { tokenId, token } = await createRememberToken(user.id);
+        
+        // Set remember me cookie (30 days)
+        cookies.set('remember_token', `${tokenId}:${token}`, {
+          path: '/',
+          httpOnly: true,
+          secure: true,
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30 // 30 days
+        });
+        
+        console.log('🔍 LOGIN DEBUG - Remember me token created for user:', user.id);
+      }
+
       // Get user with roles populated - getUserByEmail should return user with roles array
       console.log('🔍 LOGIN DEBUG - User object:', user);
       console.log('🔍 LOGIN DEBUG - User roles:', user.roles);

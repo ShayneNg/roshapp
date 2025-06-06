@@ -22,7 +22,8 @@
     email: '',
     username: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    rememberMe: false
   };
 
   // Error handling
@@ -235,6 +236,20 @@
     />
   </div>
 
+  <!-- Remember Me (Login Only) -->
+  {#if type === 'login'}
+    <div class="flex items-center space-x-2">
+      <input
+        id="rememberMe"
+        name="rememberMe"
+        type="checkbox"
+        bind:checked={form.rememberMe}
+        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+      />
+      <Label for="rememberMe" class="text-sm font-normal">Remember me for 30 days</Label>
+    </div>
+  {/if}
+
   <!-- Confirm Password Field (Register Only) -->
   {#if type === 'register'}
     <div class="space-y-2">
@@ -266,6 +281,18 @@
         {type === 'login' ? 'Sign In' : 'Create Account'}
       {/if}
     </Button>
+
+    <!-- Forgot Password Link (Login Only) -->
+    {#if type === 'login'}
+      <div class="text-center">
+        <a 
+          href="/auth/forgot-password" 
+          class="text-sm text-blue-600 hover:text-blue-500 hover:underline"
+        >
+          Forgot your password?
+        </a>
+      </div>
+    {/if}
   </div>
 </form>
 

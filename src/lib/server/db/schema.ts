@@ -26,6 +26,31 @@ export const roles = pgTable("roles", {
 	name: text("name", { enum: ['customer', 'staff', 'manager', 'admin', 'developer', 'ceo'] }).notNull().unique()
 });
 
+// Remember Me tokens for persistent login
+export const rememberTokens = pgTable('remember_tokens', {
+	id: text('id').primaryKey().notNull().unique(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	hashedToken: text('hashed_token').notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+// Password reset tokens
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+	id: text('id').primaryKey().notNull().unique(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	hashedToken: text('hashed_token').notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+export type RememberToken = typeof rememberTokens.$inferSelect;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+
 export const userRoles = pgTable("user_roles", {
 	userId: text("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
 	roleId: integer("role_id").notNull().references(() => roles.id, { onDelete: 'cascade' }),
