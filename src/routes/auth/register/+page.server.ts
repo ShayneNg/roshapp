@@ -4,6 +4,28 @@ import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
 
 export async function load({ locals }) {
+  // If user is already authenticated, redirect them to their appropriate dashboard
+  if (locals.session && locals.user) {
+    console.log('🔄 REGISTER PAGE - User already authenticated, redirecting...');
+    
+    // Get user roles to determine redirect path
+    const roles = locals.user.roles || [];
+    const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
+    
+    let redirectPath = '/customer'; // Default for customer role
+    
+    if (firstRole === 'admin' || firstRole === 'manager') {
+      redirectPath = '/app';
+    } else if (firstRole === 'staff') {
+      redirectPath = '/staff';
+    } else if (firstRole === 'customer') {
+      redirectPath = '/customer';
+    }
+    
+    console.log('🔄 REGISTER PAGE - Redirecting authenticated user to:', redirectPath);
+    throw redirect(302, redirectPath);
+  }
+
   return {
     csrf: locals.csrf
   };
