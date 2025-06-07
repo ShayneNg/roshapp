@@ -39,11 +39,6 @@ export const actions = {
     const password = String(formData.get('password'));
     const csrf = String(formData.get('csrf'));
 
-    // 2. Validate CSRF token
-    if (csrf !== locals.csrf) {
-      return fail(403, { message: 'Invalid CSRF token', success: false });
-    }
-
     // 2. Validate presence
     if (!email || !password) {
       return fail(400, { message: 'Email and password are required.' });

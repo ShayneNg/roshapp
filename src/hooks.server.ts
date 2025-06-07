@@ -21,7 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 
 	if (!sessionId) {
-		console.log('🔍 HOOKS DEBUG - No session cookie found, checking remember me token');
+		
 
 		// Check for remember me token
 		const rememberTokenCookie = event.cookies.get('remember_token');
@@ -33,7 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				const rememberToken = await validateRememberToken(tokenId, token);
 
 				if (rememberToken) {
-					console.log('🔍 HOOKS DEBUG - Valid remember me token found, creating new session');
+					
 
 					// Create new session from remember token
 					const newSession = await auth.createSession(rememberToken.userId, {});
@@ -67,7 +67,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 							event.locals.role = role;
 							event.locals.csrf = randomUUID();
 
-							console.log('🔍 HOOKS DEBUG - Remember me authentication successful');
+							
 							return resolve(event);
 						}
 					}
@@ -99,7 +99,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 							id: user.id,
 							roles: completeUser.roles || ['customer'] // Default to customer if no roles
 						};
-						console.log('🔍 HOOKS DEBUG - User from email:', user.email, 'Roles:', completeUser.roles);
+						
 					}
 				} else {
 					// Fallback: get user by ID and then get full user data
@@ -111,7 +111,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 								id: user.id,
 								roles: userWithRoles.roles || ['customer'] // Default to customer if no roles
 							};
-							console.log('🔍 HOOKS DEBUG - User from ID:', user.id, 'Roles:', userWithRoles.roles);
+							
 						}
 					}
 				}
@@ -155,14 +155,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// Set the primary role for roleGuard compatibility
 		if (sessionUser && sessionUser.roles && sessionUser.roles.length > 0) {
 			event.locals.role = sessionUser.roles[0].toLowerCase(); // Use first role as primary
-			console.log('🔍 HOOKS DEBUG - Setting role to:', event.locals.role);
+			
 		} else {
 			event.locals.role = 'customer'; // Default role instead of null
-			console.log('🔍 HOOKS DEBUG - No roles found, defaulting to customer');
+			
 		}
 
-		console.log('🔍 HOOKS DEBUG - Final locals.user:', event.locals.user);
-		console.log('🔍 HOOKS DEBUG - Final locals.role:', event.locals.role);
+		
+		
 	}
 
 	//

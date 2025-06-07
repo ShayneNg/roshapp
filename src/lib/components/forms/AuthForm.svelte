@@ -40,8 +40,6 @@
    * 3. Redirect to login page after delay
    */
   function handleRegisterFlow(result: any) {
-    console.log('📝 REGISTER FLOW - Processing result:', result);
-    
     if (result.type === 'success' || result.data?.success === true) {
       const message = result.data?.message || 'Registration successful!';
       toast.success(message);
@@ -49,8 +47,6 @@
       // Clear any errors
       showError = false;
       errorMessage = '';
-      
-      console.log('📝 REGISTER FLOW - Success! Redirecting to login in 2 seconds');
       
       // Redirect to login after toast is visible
       setTimeout(() => {
@@ -63,7 +59,6 @@
       errorMessage = message;
       showError = true;
       toast.error(message);
-      console.log('📝 REGISTER FLOW - Error:', message);
     }
   }
 
@@ -72,13 +67,8 @@
    * Server returns success data with message and redirect route
    */
   function handleLoginFlow(result: any) {
-    console.log('🔑 LOGIN FLOW - Processing result:', result);
-    console.log('🔑 LOGIN FLOW - Result type:', result.type);
-    console.log('🔑 LOGIN FLOW - Result data:', result.data);
-    
     if (result.type === 'redirect') {
       // Server is handling the redirect - success!
-      console.log('🔑 LOGIN FLOW - Server redirect to:', result.location);
       toast.success('Login successful!');
       showError = false;
       errorMessage = '';
@@ -90,7 +80,6 @@
       const message = result.data.message || 'Login successful!';
       const redirectTo = result.data.redirectTo || '/customer';
       
-      console.log('🔑 LOGIN FLOW - Client redirect to:', redirectTo);
       showError = false;
       errorMessage = '';
       toast.success(message);
@@ -102,14 +91,12 @@
       errorMessage = errorMsg;
       showError = true;
       toast.error(errorMsg);
-      console.log('🔑 LOGIN FLOW - Error:', errorMsg);
     } else {
       // Handle other error types
       const errorMsg = 'An unexpected error occurred during login';
       errorMessage = errorMsg;
       showError = true;
       toast.error(errorMsg);
-      console.log('🔑 LOGIN FLOW - Unexpected result type:', result.type);
     }
   }
 
@@ -120,10 +107,6 @@
   function handleFormEnhance() {
     return async ({ result, update }: { result: any; update: any }) => {
       loading = true;
-
-      console.log(`🚀 FORM SUBMIT - ${type.toUpperCase()} flow starting`);
-      console.log('🚀 FORM SUBMIT - Result type:', result.type);
-      console.log('🚀 FORM SUBMIT - Result data:', result.data);
 
       // Route to appropriate flow handler
       if (type === 'register') {
@@ -137,7 +120,6 @@
         errorMessage = 'An unexpected server error occurred';
         showError = true;
         toast.error(errorMessage);
-        console.log('❌ FORM SUBMIT - Server error occurred');
       }
 
       loading = false;
@@ -178,7 +160,6 @@
     if (!validateForm()) {
       return false;
     }
-    console.log(`📤 FORM VALIDATION - ${type.toUpperCase()} form is valid, submitting...`);
   }}
 >
   <!-- Security tokens -->
