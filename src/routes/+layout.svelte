@@ -19,4 +19,3 @@
   closeButton={true}
   duration={4000}
 />
-</script>
