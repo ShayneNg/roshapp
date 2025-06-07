@@ -1,6 +1,12 @@
 // src/lib/config/spacing.ts
 
 export const spacing = {
+    // === Consistency Container ===
+    consistency: {
+      padding: 'p-5',
+      gap: 'gap-3'
+    },
+  
     // === Card Component ===
     card: {
       padding: 'p-4 md:p-6',
