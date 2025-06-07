@@ -34,7 +34,7 @@
   const recentBookings = 8;
 </script>
 
-<div class="space-y-6">
+<div class="space-y-6 mx-6">
   <!-- Welcome Header -->
   <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-6 rounded-lg">
     <h1 class="text-2xl font-bold text-gray-900 mb-2">
