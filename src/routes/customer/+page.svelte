@@ -2,7 +2,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { Button } from '$lib/components/ui/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Calendar, Clock, Star, Gift, Users, Settings } from 'lucide-svelte';
 
@@ -57,7 +57,28 @@
   </div>
 
   <!-- Quick Stats -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+    
+    <Card>
+      <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle class="text-sm font-medium">Loyal</CardTitle>
+      </CardHeader>
+      <CardFooter class="relative">
+        <img src="logo_1413.svg" alt="Loyal Card Logo" class="h-16 w-14 absolute -bottom-20 right-5" />
+      </CardFooter>
+    </Card>
+    <Card>
+      <CardContent>
+        <div class="flex justify-end">
+          <img 
+            src="/illustrations/welcome_customer_06.svg" 
+            alt="Welcome back illustration" 
+            class="object-fit h-full w-auto overflow-hidden"
+            style="aspect-ratio: 3 / 1; overflow: hidden"  
+          />
+        </div>
+      </CardContent>
+    </Card>
     <Card>
       <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle class="text-sm font-medium">Loyalty Points</CardTitle>
