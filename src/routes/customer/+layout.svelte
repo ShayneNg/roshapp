@@ -6,19 +6,34 @@
   import { toast } from 'svelte-sonner';
 
   onMount(() => {
+    // Check for flash message immediately
     const flashMessage = getFlashMessage();
     if (flashMessage) {
-      if (flashMessage.type === 'error') {
-        toast.error(flashMessage.message);
-      } else if (flashMessage.type === 'success') {
-        toast.success(flashMessage.message);
-      } else if (flashMessage.type === 'warning') {
-        toast.warning(flashMessage.message);
-      } else {
-        toast.info(flashMessage.message);
-      }
+      console.log('Flash message found:', flashMessage);
+      showToast(flashMessage);
     }
+    
+    // Also check after a small delay in case of timing issues
+    setTimeout(() => {
+      const delayedFlashMessage = getFlashMessage();
+      if (delayedFlashMessage) {
+        console.log('Delayed flash message found:', delayedFlashMessage);
+        showToast(delayedFlashMessage);
+      }
+    }, 100);
   });
+  
+  function showToast(flashMessage) {
+    if (flashMessage.type === 'error') {
+      toast.error(flashMessage.message);
+    } else if (flashMessage.type === 'success') {
+      toast.success(flashMessage.message);
+    } else if (flashMessage.type === 'warning') {
+      toast.warning(flashMessage.message);
+    } else {
+      toast.info(flashMessage.message);
+    }
+  }
 </script>
 
 <div class={`min-h-screen bg-gray-50 ${spacing.container}`}>

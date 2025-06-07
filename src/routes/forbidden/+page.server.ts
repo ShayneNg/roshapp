@@ -11,15 +11,20 @@ export const load = ({ locals, cookies }) => {
     target = '/staff';
   }
 
-  // Set flash message via cookie
-  cookies.set('flash_message', JSON.stringify({
+  // Set flash message via cookie with better configuration
+  const flashMessageData = {
     type: 'error',
     message: 'Access denied. You do not have permission to view that page.'
-  }), {
+  };
+  
+  console.log('Setting flash message cookie:', flashMessageData);
+  
+  cookies.set('flash_message', JSON.stringify(flashMessageData), {
     path: '/',
     httpOnly: false,
-    maxAge: 60, // 1 minute
-    sameSite: 'lax'
+    maxAge: 120, // 2 minutes for better debugging
+    sameSite: 'lax',
+    secure: false // Allow in development
   });
 
   // Clean redirect without URL parameters
