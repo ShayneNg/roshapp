@@ -6,6 +6,11 @@
   import { getFlashMessage } from '$lib/utils/flashMessage';
   import { toast } from 'svelte-sonner';
 
+  import Header from '$lib/components/layout/Header.svelte';
+  import Sidebar from '$lib/components/layout/Sidebar.svelte';
+  import PageScaffold from '$lib/components/layout/PageScaffold.svelte';
+  export let data;
+
   onMount(() => {
     const flashMessage = getFlashMessage();
     if (flashMessage) {
@@ -20,12 +25,6 @@
       }
     }
   });
-</script>
-<script lang="ts">
-    import Header from '$lib/components/layout/Header.svelte';
-    import Sidebar from '$lib/components/layout/Sidebar.svelte';
-    import PageScaffold from '$lib/components/layout/PageScaffold.svelte';
-    export let data;
 </script>
 <div class="min-h-screen flex bg-background text-foreground">
     <aside class="w-16 border-r border-muted flex flex-col">
