@@ -6,39 +6,40 @@
   import { toast } from 'svelte-sonner';
 
   onMount(() => {
-    // Use a more reliable approach with multiple checks
-    let attempts = 0;
-    const maxAttempts = 10;
+    console.log('Customer layout mounted, checking for flash message...');
     
-    const checkForFlashMessage = () => {
+    // Wait for DOM to be fully ready
+    setTimeout(() => {
       const flashMessage = getFlashMessage();
       if (flashMessage) {
-        console.log('✅ Flash message found on attempt', attempts + 1, ':', flashMessage);
+        console.log('✅ Flash message found:', flashMessage);
+        console.log('Attempting to show toast...');
         showToast(flashMessage);
-        return;
-      }
-      
-      attempts++;
-      if (attempts < maxAttempts) {
-        setTimeout(checkForFlashMessage, 50);
       } else {
-        console.log('❌ No flash message found after', maxAttempts, 'attempts');
+        console.log('❌ No flash message found');
       }
-    };
-    
-    // Start checking immediately
-    checkForFlashMessage();
+    }, 100);
   });
   
   function showToast(flashMessage) {
-    if (flashMessage.type === 'error') {
-      toast.error(flashMessage.message);
-    } else if (flashMessage.type === 'success') {
-      toast.success(flashMessage.message);
-    } else if (flashMessage.type === 'warning') {
-      toast.warning(flashMessage.message);
-    } else {
-      toast.info(flashMessage.message);
+    console.log('showToast called with:', flashMessage);
+    try {
+      if (flashMessage.type === 'error') {
+        console.log('Showing error toast');
+        toast.error(flashMessage.message);
+      } else if (flashMessage.type === 'success') {
+        console.log('Showing success toast');
+        toast.success(flashMessage.message);
+      } else if (flashMessage.type === 'warning') {
+        console.log('Showing warning toast');
+        toast.warning(flashMessage.message);
+      } else {
+        console.log('Showing info toast');
+        toast.info(flashMessage.message);
+      }
+      console.log('Toast should be visible now');
+    } catch (error) {
+      console.error('Error showing toast:', error);
     }
   }
 </script>

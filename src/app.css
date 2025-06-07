@@ -112,6 +112,18 @@
     --warning: 38 100% 55%;          /* Slightly deeper amber for better contrast */
     --warning-foreground: 0 0% 98%;
   }
+
+  /* Add missing light mode toast colors */
+  :root {
+    --success: 142 40% 45%;          /* Green for success */
+    --success-foreground: 0 0% 98%;
+    
+    --info: 210 40% 50%;             /* Blue for info */
+    --info-foreground: 0 0% 98%;
+    
+    --warning: 38 100% 50%;          /* Amber for warning */
+    --warning-foreground: 0 0% 98%;
+  }
 }
    
   @layer base {
