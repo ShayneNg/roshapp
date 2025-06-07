@@ -1,3 +1,1 @@
-
-// Using server-side layout load instead
-// See +layout.server.ts
+// No client-side role checking needed - handled by server-side layout

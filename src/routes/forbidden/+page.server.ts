@@ -1,8 +1,9 @@
 // src/routes/forbidden/+page.server.ts
 import { redirect } from '@sveltejs/kit';
 
-export const load = ({ locals, cookies }) => {
+export const load = ({ locals, cookies, url }) => {
   const roles = locals.user?.roles ?? [];
+  const attemptedPath = url.searchParams.get('from') || 'a restricted page';
 
   let target = '/customer';
   if (roles.includes('admin') || roles.includes('manager')) {
@@ -14,10 +15,12 @@ export const load = ({ locals, cookies }) => {
   // Set flash message via cookie with better configuration
   const flashMessageData = {
     type: 'error',
-    message: 'Access denied. You do not have permission to view that page.'
+    message: `Access denied. You do not have permission to view that page.`
   };
   
-  console.log('Setting flash message cookie:', flashMessageData);
+  console.log('🚫 FORBIDDEN ACCESS - Setting flash message cookie:', flashMessageData);
+  console.log('🚫 User roles:', roles);
+  console.log('🚫 Redirecting to:', target);
   
   cookies.set('flash_message', JSON.stringify(flashMessageData), {
     path: '/',
