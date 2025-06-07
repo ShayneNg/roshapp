@@ -34,13 +34,26 @@
   const recentBookings = 8;
 </script>
 
-<div class="space-y-6 mx-6">
-  <!-- Welcome Header -->
+<div class="space-y-6">
+  <!-- Welcome Header with Illustration -->
   <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-6 rounded-lg">
-    <h1 class="text-2xl font-bold text-gray-900 mb-2">
-      Welcome back, {user?.email?.split('@')[0] || 'Valued Customer'}! 💅
-    </h1>
-    <p class="text-gray-600">Ready for your next nail appointment?</p>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div class="flex-1">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">
+          Welcome back, {user?.email?.split('@')[0] || 'Valued Customer'}! 💅
+        </h1>
+        <p class="text-gray-600">Ready for your next nail appointment?</p>
+      </div>
+      <div class="flex-shrink-0 mt-4 md:mt-0 md:ml-6">
+        <div class="w-40 h-30 md:w-32 md:h-24 mx-auto md:mx-0">
+          <img 
+            src="/images/welcome-back.svg" 
+            alt="Welcome back illustration" 
+            class="w-full h-full object-contain"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Quick Stats -->
@@ -124,9 +137,16 @@
 
         {#if upcomingBookings.length === 0}
           <div class="text-center py-8 text-gray-500">
-            <Calendar class="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p>No upcoming appointments</p>
-            <Button href="/customer/booking/new" class="mt-2">
+            <div class="w-48 h-36 mx-auto mb-4">
+              <img 
+                src="/images/empty-state.svg" 
+                alt="No appointments illustration" 
+                class="w-full h-full object-contain"
+              />
+            </div>
+            <p class="text-lg font-medium text-gray-600 mb-2">No upcoming appointments</p>
+            <p class="text-sm text-gray-500 mb-4">Book your first nail service and start your beauty journey</p>
+            <Button href="/customer/booking/new" class="bg-pink-500 hover:bg-pink-600">
               Schedule Your First Appointment
             </Button>
           </div>

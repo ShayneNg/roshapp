@@ -1,0 +1,81 @@
+
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="welcomeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fdf2f8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fce7f3;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#be185d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#welcomeGradient)" rx="8"/>
+  
+  <!-- Nail polish bottle -->
+  <g transform="translate(160, 60)">
+    <!-- Bottle body -->
+    <rect x="15" y="40" width="50" height="100" rx="8" fill="#ec4899"/>
+    <rect x="20" y="45" width="40" height="90" rx="6" fill="#f9a8d4"/>
+    
+    <!-- Bottle cap -->
+    <rect x="25" y="20" width="30" height="25" rx="4" fill="#be185d"/>
+    <rect x="30" y="15" width="20" height="10" rx="2" fill="#be185d"/>
+    
+    <!-- Bottle shine -->
+    <rect x="25" y="50" width="8" height="80" rx="4" fill="#fce7f3" opacity="0.8"/>
+    
+    <!-- Brush -->
+    <line x1="50" y1="15" x2="50" y2="30" stroke="#be185d" stroke-width="2"/>
+    <circle cx="50" cy="12" r="3" fill="#be185d"/>
+  </g>
+  
+  <!-- Sparkles and stars -->
+  <g fill="url(#sparkleGradient)">
+    <!-- Star 1 -->
+    <g transform="translate(100, 100)">
+      <polygon points="0,-8 2.4,-2.4 8,0 2.4,2.4 0,8 -2.4,2.4 -8,0 -2.4,-2.4" opacity="0.8"/>
+    </g>
+    
+    <!-- Star 2 -->
+    <g transform="translate(300, 80)">
+      <polygon points="0,-6 1.8,-1.8 6,0 1.8,1.8 0,6 -1.8,1.8 -6,0 -1.8,-1.8" opacity="0.6"/>
+    </g>
+    
+    <!-- Star 3 -->
+    <g transform="translate(80, 180)">
+      <polygon points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5" opacity="0.7"/>
+    </g>
+    
+    <!-- Star 4 -->
+    <g transform="translate(320, 200)">
+      <polygon points="0,-4 1.2,-1.2 4,0 1.2,1.2 0,4 -1.2,1.2 -4,0 -1.2,-1.2" opacity="0.5"/>
+    </g>
+  </g>
+  
+  <!-- Floating hearts -->
+  <g fill="#f472b6" opacity="0.6">
+    <g transform="translate(120, 200)">
+      <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z" transform="scale(0.5)"/>
+    </g>
+    <g transform="translate(280, 140)">
+      <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z" transform="scale(0.3)" opacity="0.4"/>
+    </g>
+  </g>
+  
+  <!-- Decorative dots -->
+  <circle cx="90" cy="120" r="3" fill="#f9a8d4" opacity="0.7"/>
+  <circle cx="330" cy="120" r="4" fill="#ec4899" opacity="0.5"/>
+  <circle cx="70" cy="80" r="2" fill="#be185d" opacity="0.6"/>
+  <circle cx="340" cy="160" r="3" fill="#f472b6" opacity="0.6"/>
+  
+  <!-- Welcome text -->
+  <text x="200" y="240" text-anchor="middle" fill="#be185d" font-family="Arial, sans-serif" font-size="16" font-weight="600">
+    Welcome back! 💅
+  </text>
+  <text x="200" y="260" text-anchor="middle" fill="#ec4899" font-family="Arial, sans-serif" font-size="12">
+    Ready for your next beautiful appointment?
+  </text>
+</svg>
