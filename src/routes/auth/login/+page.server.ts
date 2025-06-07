@@ -8,8 +8,6 @@ import { z } from 'zod';
 export async function load({ locals }) {
   // If user is already authenticated, redirect them to their appropriate dashboard
   if (locals.session && locals.user) {
-    console.log('🔄 LOGIN PAGE - User already authenticated, redirecting...');
-    
     // Get user roles to determine redirect path
     const roles = locals.user.roles || [];
     const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
@@ -24,7 +22,6 @@ export async function load({ locals }) {
       redirectPath = '/customer';
     }
     
-    console.log('🔄 LOGIN PAGE - Redirecting authenticated user to:', redirectPath);
     throw redirect(302, redirectPath);
   }
 
@@ -77,8 +74,6 @@ export const actions = {
         });
       }
 
-      console.log('🔍 LOGIN DEBUG - Found user:', user.id, 'with roles:', user.roles);
-
       // Verify password using Argon2id
       const hasher = new Argon2id();
       const valid = await hasher.verify(user.hashedPassword, password);
@@ -116,12 +111,7 @@ export const actions = {
           maxAge: 60 * 60 * 24 * 30 // 30 days
         });
         
-        console.log('🔍 LOGIN DEBUG - Remember me token created for user:', user.id);
-      }
-
-      // Get user with roles populated - getUserByEmail should return user with roles array
-      console.log('🔍 LOGIN DEBUG - User object:', user);
-      console.log('🔍 LOGIN DEBUG - User roles:', user.roles);
+        }
 
       // Determine redirect path based on user roles
       const roles = user.roles || [];
@@ -136,10 +126,7 @@ export const actions = {
         redirectPath = '/customer';
       }
 
-      console.log('🔍 LOGIN DEBUG - First role:', firstRole, 'Redirect path:', redirectPath);
-
       // Server-side redirect is more reliable
-      console.log('🔍 LOGIN DEBUG - Redirecting to:', redirectPath);
       throw redirect(302, redirectPath);
       
     } catch (error) {
