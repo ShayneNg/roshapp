@@ -1,14 +1,11 @@
-<script lang="ts">
-	import '../app.css';
 
- 	import { ModeWatcher } from "mode-watcher";
-	import { Toaster } from "$lib/components/ui/sonner";
-
-	let { children } = $props();
+<script>
+  import '../app.css';
+  import { Toaster } from 'svelte-sonner';
 </script>
 
-<div class="min-h-screen bg-background text-foreground">
-	{@render children()}
-	<Toaster />
-	<Toaster position="top-right" />
-</div>
+<main>
+  <slot />
+</main>
+
+<Toaster position="top-right" />

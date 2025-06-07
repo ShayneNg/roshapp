@@ -14,6 +14,7 @@
   onMount(() => {
     const flashMessage = getFlashMessage();
     if (flashMessage) {
+      console.log('App flash message found:', flashMessage);
       if (flashMessage.type === 'error') {
         toast.error(flashMessage.message);
       } else if (flashMessage.type === 'success') {

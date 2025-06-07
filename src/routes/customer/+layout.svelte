@@ -6,21 +6,28 @@
   import { toast } from 'svelte-sonner';
 
   onMount(() => {
-    // Check for flash message immediately
-    const flashMessage = getFlashMessage();
-    if (flashMessage) {
-      console.log('Flash message found:', flashMessage);
-      showToast(flashMessage);
-    }
+    // Use a more reliable approach with multiple checks
+    let attempts = 0;
+    const maxAttempts = 10;
     
-    // Also check after a small delay in case of timing issues
-    setTimeout(() => {
-      const delayedFlashMessage = getFlashMessage();
-      if (delayedFlashMessage) {
-        console.log('Delayed flash message found:', delayedFlashMessage);
-        showToast(delayedFlashMessage);
+    const checkForFlashMessage = () => {
+      const flashMessage = getFlashMessage();
+      if (flashMessage) {
+        console.log('✅ Flash message found on attempt', attempts + 1, ':', flashMessage);
+        showToast(flashMessage);
+        return;
       }
-    }, 100);
+      
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(checkForFlashMessage, 50);
+      } else {
+        console.log('❌ No flash message found after', maxAttempts, 'attempts');
+      }
+    };
+    
+    // Start checking immediately
+    checkForFlashMessage();
   });
   
   function showToast(flashMessage) {
