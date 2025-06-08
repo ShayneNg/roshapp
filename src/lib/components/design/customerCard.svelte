@@ -72,9 +72,19 @@
 <style lang="scss">
 .customer-card {
   width: 100%;
-  max-width: 400px;
   height: 250px;
   margin: 0 auto;
+  
+  /* Desktop to tablet landscape: full parent width */
+  @media (min-width: 769px) {
+    max-width: none;
+  }
+  
+  /* Smaller screens: minimum 320px width */
+  @media (max-width: 768px) {
+    min-width: 320px;
+    max-width: 320px;
+  }
 }
 
 .card-background {
@@ -270,11 +280,6 @@
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .customer-card {
-    max-width: 320px;
-    height: 200px;
-  }
-  
   .card-content {
     padding: 16px;
   }
