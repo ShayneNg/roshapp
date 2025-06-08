@@ -5,7 +5,7 @@
   import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Calendar, Clock, Star, Gift, Users, Settings } from 'lucide-svelte';
-  import CustomerCard from '$lib/components/ui/CustomerCard.svelte';
+  import CustomerCard from '$lib/components/design/customerCard.svelte';
 
   // Get user data from page store
   $: user = $page.data?.user;
