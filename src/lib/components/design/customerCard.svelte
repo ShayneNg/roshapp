@@ -37,9 +37,12 @@
       <div class="card-header">
         <div class="membership-badge">
           <span class="membership-number">36.6</span>
-          <span class="membership-text">{membershipLevel}</span>
-          <span class="membership-sub">Since {memberSince}</span>
+          <div class="flex flex-col">
+            <span class="membership-text">{membershipLevel}</span>
+            <span class="membership-sub">Since {memberSince}</span>
+          </div>
         </div>
+      </div>
         
         <!-- Logo space -->
         <div class="logo-space">
@@ -212,28 +215,16 @@
 }
 
 .membership-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  @apply flex flex-row items-center space-x-2;
 }
 
 .membership-number {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 0.125rem;
+  @apply text-4xl font-extrabold;
 }
 
-.membership-text {
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0.95;
-}
-
+.membership-text, 
 .membership-sub {
-  font-size: 0.75rem;
-  font-weight: 400;
-  opacity: 0.8;
+  @apply text-xs font-bold opacity-70;
 }
 
 .logo-space {
@@ -295,10 +286,10 @@
 }
 
 .points-text {
-  font-size: 0.75rem;
+  font-size: 2rem;
   font-weight: 500;
   opacity: 0.9;
-  background-color: white;
+  /* background-color: white; */
   background-opacity: 0.2;
   padding: 0.125rem 0.375rem;
   border-radius: 9999px;
