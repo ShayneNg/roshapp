@@ -12,7 +12,7 @@ import { z } from 'zod';
 export async function load({ url, locals }) {
   // If user is authenticated, redirect to dashboard
   if (locals.session && locals.user) {
-    throw redirect(302, '/customer');
+    throw redirect(302, `/customer/${locals.user.id}`);
   }
 
   const token = url.searchParams.get('token');

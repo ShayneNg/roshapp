@@ -5,7 +5,7 @@ export const load = ({ locals, cookies, url }) => {
   const roles = locals.user?.roles ?? [];
   const attemptedPath = url.searchParams.get('from') || 'a restricted page';
 
-  let target = '/customer';
+  let target = `/customer/${locals.user?.id || ''}`;
   if (roles.includes('admin') || roles.includes('manager')) {
     target = '/app';
   } else if (roles.includes('staff')) {

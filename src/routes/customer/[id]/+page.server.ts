@@ -1,10 +1,21 @@
 
 import { redirect } from '@sveltejs/kit';
 
+// UUID v4 regex pattern for validation
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export const load = async ({ locals, params }) => {
   // Check if user is authenticated
   if (!locals.session || !locals.user) {
     throw redirect(302, '/auth/login');
+  }
+
+  // Get the customer ID from the URL parameter
+  const customerId = params.id;
+  
+  // Validate UUID format to prevent bypass attempts
+  if (!customerId || !UUID_REGEX.test(customerId)) {
+    throw redirect(302, '/forbidden');
   }
 
   // Check if user has customer role
@@ -21,8 +32,10 @@ export const load = async ({ locals, params }) => {
     throw redirect(302, '/forbidden');
   }
 
-  // Get the customer ID from the URL parameter
-  const customerId = params.id;
+  // Security check: customers can only access their own data
+  if (isCustomer && customerId !== locals.user.id) {
+    throw redirect(302, '/forbidden');
+  }
   
   // For now, we'll use the authenticated user's data
   // In a real app, you might want to fetch specific customer data based on the ID

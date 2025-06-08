@@ -11,7 +11,7 @@ export async function load({ locals }) {
     const roles = locals.user.roles || [];
     const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
     
-    let redirectPath = '/customer';
+    let redirectPath = `/customer/${locals.user.id}`;
     if (firstRole === 'admin' || firstRole === 'manager') {
       redirectPath = '/app';
     } else if (firstRole === 'staff') {
