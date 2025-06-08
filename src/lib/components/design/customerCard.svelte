@@ -69,7 +69,7 @@
       
       <!-- Loyalty points indicator -->
       <div class="loyalty-indicator">
-        <div class="points-text">{loyaltyPoints} pts</div>
+        <div class="points-text">{loyaltyPoints} <br> points</div>
       </div>
     </div>
   </div>
@@ -222,7 +222,7 @@
 }
 
 .points-text {
-  @apply text-2xl font-medium opacity-90 bg-opacity-20 rounded-full py-0.125rem px-0.375rem backdrop-blur-lg;
+  @apply text-3xl font-extrabold opacity-90 rounded-full py-0.5 px-1.5;
 }
 
 /* Mobile styles */
