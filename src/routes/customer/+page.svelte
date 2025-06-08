@@ -67,7 +67,7 @@
         membershipLevel="Premium"
         memberSince="2024"
         loyaltyPoints={loyaltyPoints}
-        cardNumber="5699 8908"
+        cardNumber="5699 8908 3326 5756"
       />
     </div>
     <!-- Stats Cards -->
