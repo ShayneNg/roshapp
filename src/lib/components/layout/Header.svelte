@@ -7,7 +7,7 @@
 	import { Badge } from "$lib/components/ui/badge/index.js";
 	import { Button } from "$lib/components/ui/button/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-	import LightSwitch from "$lib/components/ui/light-switch/light-switch.svelte";
+	import { LightSwitch } from '$lib/components/ui/light-switch';
 </script>
 
 <header>
