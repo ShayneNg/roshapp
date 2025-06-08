@@ -1,6 +1,6 @@
 <!-- src/routes/auth/+layout.svelte -->
 <script lang="ts">
-  import LightSwitch from "$lib/components/ui/light-switch/light-switch.svelte";
+  import { LightSwitch } from '$lib/components/ui/light-switch';
   import Logo from '$lib/components/layout/Logo.svelte';
   const  bgImage = '/images/auth-visual_003.jpg';
 
