@@ -33,12 +33,20 @@
     
     <!-- Card content -->
     <div class="card-content">
-      <!-- Header with membership level -->
+      <!-- Header with membership level and logo space -->
       <div class="card-header">
         <div class="membership-badge">
           <span class="membership-number">36.6</span>
           <span class="membership-text">{membershipLevel}</span>
           <span class="membership-sub">Club</span>
+        </div>
+        
+        <!-- Logo space -->
+        <div class="logo-space">
+          <div class="logo-placeholder">
+            <!-- Logo will go here -->
+            <span class="logo-text">LOGO</span>
+          </div>
         </div>
       </div>
       
@@ -66,7 +74,6 @@
   width: 100%;
   max-width: 400px;
   height: 250px;
-  perspective: 1000px;
   margin: 0 auto;
 }
 
@@ -74,17 +81,11 @@
   width: 100%;
   height: 100%;
   position: relative;
-  border-radius: 20px;
+  border-radius: 16px;
   overflow: hidden;
-  transform: rotateX(5deg) rotateY(-5deg);
-  transition: transform 0.3s ease;
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.1),
-    0 8px 16px rgba(0, 0, 0, 0.05);
-  
-  &:hover {
-    transform: rotateX(0deg) rotateY(0deg) scale(1.02);
-  }
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .gradient-overlay {
@@ -115,17 +116,16 @@
 
 .heart {
   position: absolute;
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 16px;
-  animation: float 6s ease-in-out infinite;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 14px;
   
-  &.heart-1 { top: 20%; right: 15%; animation-delay: 0s; }
-  &.heart-2 { top: 35%; right: 25%; animation-delay: 1s; font-size: 12px; }
-  &.heart-3 { top: 50%; right: 10%; animation-delay: 2s; font-size: 14px; }
-  &.heart-4 { top: 65%; right: 30%; animation-delay: 3s; font-size: 10px; }
-  &.heart-5 { top: 15%; right: 35%; animation-delay: 1.5s; font-size: 8px; }
-  &.heart-6 { top: 75%; right: 20%; animation-delay: 4s; font-size: 12px; }
-  &.heart-7 { top: 40%; right: 5%; animation-delay: 2.5s; font-size: 9px; }
+  &.heart-1 { top: 20%; right: 15%; }
+  &.heart-2 { top: 35%; right: 25%; font-size: 10px; }
+  &.heart-3 { top: 50%; right: 10%; font-size: 12px; }
+  &.heart-4 { top: 65%; right: 30%; font-size: 8px; }
+  &.heart-5 { top: 15%; right: 35%; font-size: 6px; }
+  &.heart-6 { top: 75%; right: 20%; font-size: 10px; }
+  &.heart-7 { top: 40%; right: 5%; font-size: 7px; }
 }
 
 .nail-bottles {
@@ -133,38 +133,38 @@
   bottom: 20px;
   right: 20px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .bottle {
-  width: 8px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.4);
+  width: 6px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 2px;
   position: relative;
   
   &::before {
     content: '';
     position: absolute;
-    top: -4px;
+    top: -3px;
     left: 50%;
     transform: translateX(-50%);
-    width: 12px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
+    width: 10px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 2px;
   }
   
-  &.bottle-1 { height: 18px; }
-  &.bottle-2 { height: 22px; }
-  &.bottle-3 { height: 16px; }
+  &.bottle-1 { height: 14px; }
+  &.bottle-2 { height: 18px; }
+  &.bottle-3 { height: 12px; }
 }
 
 .card-content {
   position: relative;
   z-index: 10;
   height: 100%;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -183,22 +183,46 @@
   align-items: flex-start;
   
   .membership-number {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     line-height: 0.9;
     margin-bottom: 2px;
   }
   
   .membership-text {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     opacity: 0.95;
   }
   
   .membership-sub {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     opacity: 0.8;
+  }
+}
+
+.logo-space {
+  display: flex;
+  align-items: center;
+  
+  .logo-placeholder {
+    width: 60px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    .logo-text {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+    }
   }
 }
 
@@ -206,22 +230,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 16px;
   
   .tier-icon {
-    font-size: 18px;
+    font-size: 16px;
     opacity: 0.9;
   }
   
   .customer-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     text-transform: capitalize;
   }
 }
 
 .card-number {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   opacity: 0.8;
   letter-spacing: 2px;
@@ -230,23 +254,18 @@
 
 .loyalty-indicator {
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: 20px;
+  right: 20px;
   
   .points-text {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     opacity: 0.9;
     background: rgba(255, 255, 255, 0.2);
-    padding: 4px 8px;
-    border-radius: 12px;
+    padding: 3px 6px;
+    border-radius: 10px;
     backdrop-filter: blur(10px);
   }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(5deg); }
 }
 
 /* Responsive adjustments */
@@ -257,15 +276,20 @@
   }
   
   .card-content {
-    padding: 20px;
+    padding: 16px;
   }
   
   .membership-badge .membership-number {
-    font-size: 28px;
+    font-size: 24px;
   }
   
   .customer-name {
-    font-size: 20px;
+    font-size: 18px;
+  }
+  
+  .logo-space .logo-placeholder {
+    width: 50px;
+    height: 32px;
   }
 }
 </style>
