@@ -1,0 +1,43 @@
+1:37:33 AM [vite] (ssr) Error when evaluating SSR module /src/routes/auth/+layout.svelte: Transform failed with 1 error:
+/home/runner/workspace/src/lib/components/ui/light-switch/index.ts:4:9: ERROR: Multiple exports with the same name "LightSwitch"
+  Plugin: vite:esbuild
+  File: /home/runner/workspace/src/lib/components/ui/light-switch/index.ts:4:9
+  
+  Multiple exports with the same name "LightSwitch"
+  2  |  export { default as LightSwitch } from "./light-switch.svelte";
+  3  |  export { toggleMode as lightSwitch } from "mode-watcher";
+  4  |  export { default as LightSwitch } from './LightSwitch.svelte';
+     |           ^
+  5  |  
+  
+      at failureErrorWithLog (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:1477:15)
+      at /home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:756:50
+      at responseCallbacks.<computed> (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:623:9)
+      at handleIncomingPacket (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:678:12)
+      at Socket.readFromStdout (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:601:7)
+      at Socket.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:561:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+      at Readable.push (node:internal/streams/readable:392:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:191:23)
+Error: Transform failed with 1 error:
+/home/runner/workspace/src/lib/components/ui/light-switch/index.ts:4:9: ERROR: Multiple exports with the same name "LightSwitch"
+    at failureErrorWithLog (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:1477:15)
+    at /home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:756:50
+    at responseCallbacks.<computed> (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:623:9)
+    at handleIncomingPacket (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:678:12)
+    at Socket.readFromStdout (/home/runner/workspace/node_modules/.pnpm/esbuild@0.25.3/node_modules/esbuild/lib/main.js:601:7)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:191:23) {
+  errors: [
+    {
+      detail: undefined,
+      id: '',
+      location: [Object],
+      notes: [Array],
+      pluginName: '',
+      text: 'Multiple exports with the same name "LightSwitch"'
+    }
