@@ -77,7 +77,7 @@
 
 <style>
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors;
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-foreground hover:bg-muted transition-colors;
   }
 
   .nav-item.active {
@@ -85,7 +85,7 @@
   }
 
   .nav-item-small {
-    @apply flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition-colors;
+    @apply flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:bg-muted transition-colors;
   }
 
   .nav-item-small.active {
