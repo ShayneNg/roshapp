@@ -42,7 +42,6 @@
             <span class="membership-sub">Since {memberSince}</span>
           </div>
         </div>
-      </div>
         
         <!-- Logo space -->
         <div class="logo-space">
