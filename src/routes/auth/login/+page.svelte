@@ -14,5 +14,5 @@
 
 <!-- Optional: extra login options -->
 <div class="text-center text-sm text-muted-foreground">
-  Don’t have an account? <a href="/auth/register" class="text-primary underline">Register here</a>
+  Don't have an account? <a href="/auth/register" class="text-primary hover:underline">Register here</a>
 </div>

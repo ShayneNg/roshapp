@@ -12,6 +12,11 @@
 
 <AuthForm type="register" csrf={data.csrf} />
 
+<!-- Link back to login -->
+<div class="text-center text-sm text-muted-foreground">
+  Already have an account? <a href="/auth/login" class="text-primary hover:underline">Sign in here</a>
+</div>
+
 <div class="text-center text-sm text-muted-foreground">
   Already have an account? <a href="/auth/login" class="text-primary underline">Login here</a>
 </div>

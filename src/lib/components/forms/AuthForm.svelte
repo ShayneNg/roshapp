@@ -1,4 +1,3 @@
-
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { z } from 'zod';
@@ -43,16 +42,16 @@
     if (result.type === 'success' || result.data?.success === true) {
       const message = result.data?.message || 'Registration successful!';
       toast.success(message);
-      
+
       // Clear any errors
       showError = false;
       errorMessage = '';
-      
+
       // Redirect to login after toast is visible
       setTimeout(() => {
         goto('/auth/login', { replaceState: true });
       }, 2000);
-      
+
     } else {
       // Handle registration errors
       const message = result.data?.message || 'Registration failed';
@@ -74,17 +73,17 @@
       errorMessage = '';
       // Manually navigate to the redirect location
       window.location.href = result.location;
-      
+
     } else if (result.type === 'success' && result.data?.success === true) {
       // Fallback: client-side redirect if server doesn't redirect
       const message = result.data.message || 'Login successful!';
       const redirectTo = result.data.redirectTo || '/customer';
-      
+
       showError = false;
       errorMessage = '';
       toast.success(message);
       window.location.href = redirectTo;
-      
+
     } else if (result.type === 'failure') {
       // Handle login errors with server message
       const errorMsg = result.data?.message || 'Login failed';
@@ -263,13 +262,9 @@
       {/if}
     </Button>
 
-    <!-- Forgot Password Link (Login Only) -->
     {#if type === 'login'}
       <div class="text-center">
-        <a 
-          href="/auth/forgot-password" 
-          class="text-sm text-blue-600 hover:text-blue-500 hover:underline"
-        >
+        <a href="/auth/forgot-password" class="text-sm text-muted-foreground hover:text-primary underline">
           Forgot your password?
         </a>
       </div>
