@@ -71,139 +71,270 @@
 
 <style>
 .customer-card {
-  @apply w-full h-64 mx-auto;
-  
-  @media (min-width: 769px) {
-    @apply max-w-none;
-  }
-
-  @media (max-width: 768px) {
-    @apply min-w-[320px] max-w-[320px];
-  }
+  width: 100%;
+  height: 16rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card-background {
-  @apply w-full h-full relative rounded-lg overflow-hidden shadow-md;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .gradient-overlay {
-  @apply absolute top-0 left-0 right-0 bottom-0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(135deg, #ff4500 0%, #ff6b35 25%, #f7931e 50%, #c471ed 75%, #8a2be2 100%);
   opacity: 0.95;
 }
 
 .decorative-elements {
-  @apply absolute top-0 left-0 right-0 bottom-0 overflow-hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
 .heart {
-  @apply absolute text-white text-opacity-20;
+  position: absolute;
+  color: white;
+  opacity: 0.2;
+}
 
-  &.heart-1 { @apply top-1/5 right-15; }
-  &.heart-2 { @apply top-1/3 right-1/4; font-size: 10px; }
-  &.heart-3 { @apply top-1/2 right-1/10; font-size: 12px; }
-  &.heart-4 { @apply top-2/3 right-3/10; font-size: 8px; }
-  &.heart-5 { @apply top-15 right-35; font-size: 6px; }
-  &.heart-6 { @apply top-3/4 right-1/5; font-size: 10px; }
-  &.heart-7 { @apply top-2/5 right-1/20; font-size: 7px; }
+.heart-1 { 
+  top: 20%; 
+  right: 3.75rem; 
+}
+
+.heart-2 { 
+  top: 33.333333%; 
+  right: 25%; 
+  font-size: 10px; 
+}
+
+.heart-3 { 
+  top: 50%; 
+  right: 10%; 
+  font-size: 12px; 
+}
+
+.heart-4 { 
+  top: 66.666667%; 
+  right: 30%; 
+  font-size: 8px; 
+}
+
+.heart-5 { 
+  top: 3.75rem; 
+  right: 8.75rem; 
+  font-size: 6px; 
+}
+
+.heart-6 { 
+  top: 75%; 
+  right: 20%; 
+  font-size: 10px; 
+}
+
+.heart-7 { 
+  top: 40%; 
+  right: 5%; 
+  font-size: 7px; 
 }
 
 .nail-bottles {
-  @apply absolute bottom-5 right-5 flex space-x-1.5;
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  gap: 0.375rem;
 }
 
 .bottle {
-  @apply w-1.5 h-4 bg-white bg-opacity-30 rounded-sm relative;
+  width: 0.375rem;
+  height: 1rem;
+  background-color: white;
+  opacity: 0.3;
+  border-radius: 0.125rem;
+  position: relative;
+}
 
-  &::before {
-    content: '';
-    @apply absolute top-[-0.75rem] left-1/2 transform-translate-x-[-50%] w-2.5 h-1 bg-white bg-opacity-25 rounded-sm;
-  }
+.bottle::before {
+  content: '';
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.625rem;
+  height: 0.25rem;
+  background-color: white;
+  opacity: 0.25;
+  border-radius: 0.125rem;
+}
 
-  &.bottle-1 { @apply h-3.5; }
-  &.bottle-2 { @apply h-4.5; }
-  &.bottle-3 { @apply h-3; }
+.bottle-1 { 
+  height: 0.875rem; 
+}
+
+.bottle-2 { 
+  height: 1.125rem; 
+}
+
+.bottle-3 { 
+  height: 0.75rem; 
 }
 
 .card-content {
-  @apply relative z-10 h-full p-5 flex flex-col justify-between text-white;
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
 }
 
 .card-header {
-  @apply flex justify-between items-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .membership-badge {
-  @apply flex flex-col items-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  .membership-number {
-    @apply text-2xl font-bold leading-tight mb-0.5;
-  }
+.membership-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.125rem;
+}
 
-  .membership-text {
-    @apply text-sm font-medium opacity-95;
-  }
+.membership-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
 
-  .membership-sub {
-    @apply text-xs font-normal opacity-80;
-  }
+.membership-sub {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.8;
 }
 
 .logo-space {
-  @apply flex items-center;
+  display: flex;
+  align-items: center;
+}
 
-  .logo-placeholder {
-    @apply w-15 h-10 bg-white bg-opacity-15 rounded-md flex items-center justify-center backdrop-filter-blur-lg border border-white border-opacity-20;
+.logo-placeholder {
+  width: 3.75rem;
+  height: 2.5rem;
+  background-color: white;
+  opacity: 0.15;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(16px);
+  border: 1px solid white;
+  border-opacity: 0.2;
+}
 
-    .logo-text {
-      @apply text-[10px] font-semibold opacity-70 tracking-wider;
-    }
-  }
+.logo-text {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
 }
 
 .customer-info {
-  @apply flex items-center space-x-2 mt-4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
 
-  .tier-icon {
-    @apply text-lg opacity-90;
-  }
+.tier-icon {
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
 
-  .customer-name {
-    @apply text-xl font-semibold capitalize;
-  }
+.customer-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .card-number {
-  @apply text-sm font-medium opacity-80 tracking-widest mt-auto;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.8;
+  letter-spacing: 0.1em;
+  margin-top: auto;
 }
 
 .loyalty-indicator {
-  @apply absolute top-5 right-5;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+}
 
-  .points-text {
-    @apply text-xs font-medium opacity-90 bg-white bg-opacity-20 px-1.5 py-0.5 rounded-full backdrop-filter-blur-lg;
+.points-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.9;
+  background-color: white;
+  background-opacity: 0.2;
+  padding: 0.125rem 0.375rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .customer-card {
+    min-width: 320px;
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 769px) {
+  .customer-card {
+    max-width: none;
   }
 }
 
 @media (max-width: 640px) {
   .card-content {
-    @apply p-4;
+    padding: 1rem;
   }
 
-  .membership-badge {
-    .membership-number {
-      @apply text-2xl;
-    }
+  .membership-number {
+    font-size: 1.5rem;
   }
 
   .customer-name {
-    @apply text-lg;
+    font-size: 1.125rem;
   }
 
-  .logo-space {
-    .logo-placeholder {
-      @apply w-12.5 h-8;
-    }
+  .logo-placeholder {
+    width: 3.125rem;
+    height: 2rem;
   }
 }
 </style>
