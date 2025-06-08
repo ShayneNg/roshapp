@@ -11,9 +11,9 @@ export async function load({ locals }) {
     // Get user roles to determine redirect path
     const roles = locals.user.roles || [];
     const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-    
+
     let redirectPath = `/customer/${locals.user.id}`; // Default for customer role with user ID
-    
+
     if (firstRole === 'admin' || firstRole === 'manager') {
       redirectPath = '/app';
     } else if (firstRole === 'staff') {
@@ -21,7 +21,7 @@ export async function load({ locals }) {
     } else if (firstRole === 'customer') {
       redirectPath = `/customer/${locals.user.id}`;
     }
-    
+
     throw redirect(302, redirectPath);
   }
 
@@ -98,13 +98,13 @@ export const actions = {
 
       // Clear any existing remember me token first
       cookies.delete('remember_token', { path: '/' });
-      
+
       // Handle remember me functionality
       const rememberMe = formData.rememberMe === 'on';
       if (rememberMe) {
         const { createRememberToken } = await import('$lib/server/rememberMe');
         const { tokenId, token } = await createRememberToken(user.id);
-        
+
         // Set remember me cookie (30 days)
         cookies.set('remember_token', `${tokenId}:${token}`, {
           path: '/',
@@ -113,7 +113,7 @@ export const actions = {
           sameSite: 'lax',
           maxAge: 60 * 60 * 24 * 30 // 30 days
         });
-        
+
         console.log('✅ Remember me token created for user:', user.id);
       } else {
         console.log('❌ Remember me not selected, no token created');
@@ -122,28 +122,37 @@ export const actions = {
       // Determine redirect path based on user roles
       const roles = user.roles || [];
       const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-      let redirectPath = `/customer/${user.id}`; // Default for customer role with user ID
-      
+
+      // Create slug from username for clean URLs
+      const userSlug = user.username
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+
+      let redirectPath = `/customer/${userSlug}`; // Default for customer role with clean slug
+
       if (firstRole === 'admin' || firstRole === 'manager') {
         redirectPath = '/app';
       } else if (firstRole === 'staff') {
         redirectPath = '/staff';
       } else if (firstRole === 'customer') {
-        redirectPath = `/customer/${user.id}`;
+        redirectPath = `/customer/${userSlug}`;
       }
 
       // Server-side redirect is more reliable
       throw redirect(302, redirectPath);
-      
+
     } catch (error) {
       console.error('Login error:', error);
-      
+
       // Handle redirect errors differently from other errors
       if (error?.status === 302 || error?.location) {
         // This is actually a successful redirect, re-throw it
         throw error;
       }
-      
+
       return fail(500, {
         message: 'An error occurred during login. Please try again.',
         success: false

@@ -217,17 +217,17 @@
         <CardDescription>Manage this customer's account</CardDescription>
       </CardHeader>
       <CardContent class="space-y-3">
-        <Button href="/customer/booking/new" variant="outline" class="w-full justify-start h-12">
+        <Button href="/customer/{customerData?.name}/booking" variant="outline" class="w-full justify-start h-12">
           <Calendar class="h-4 w-4 mr-2" />
           Schedule New Appointment
         </Button>
         
-        <Button href="/customer/{customerData?.id}/edit" variant="outline" class="w-full justify-start h-12">
+        <Button href="/customer/{customerData?.name}/edit" variant="outline" class="w-full justify-start h-12">
           <Settings class="h-4 w-4 mr-2" />
           Edit Profile
         </Button>
         
-        <Button href="/customer/{customerData?.id}/loyalty" variant="outline" class="w-full justify-start h-12">
+        <Button href="/customer/{customerData?.name}/loyalty" variant="outline" class="w-full justify-start h-12">
           <Gift class="h-4 w-4 mr-2" />
           Manage Loyalty Points
         </Button>

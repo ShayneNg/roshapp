@@ -2,12 +2,56 @@
 import { randomUUID } from 'crypto';
 import { auth } from "$lib/server/auth";
 import { getUserByEmail, getUserById } from "$lib/server/users";
+import { getUserBySlug, getUserSlugById } from "$lib/server/urlRewriter";
+import { redirect } from '@sveltejs/kit';
 import type { Handle } from "@sveltejs/kit";
 
 const CSRF_COOKIE_NAME = 'csrf_token';
+
+// URL rewriting for customer routes
+async function handleCustomerRouteRewriting(url: URL) {
+  const path = url.pathname;
+  
+  // Check if it's a customer route with username (not UUID)
+  const customerRouteMatch = path.match(/^\/customer\/([^\/]+)(.*)$/);
+  if (customerRouteMatch) {
+    const [, identifier, subPath] = customerRouteMatch;
+    
+    // UUID regex pattern
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    
+    // If it's already a UUID, check if we should redirect to slug version
+    if (UUID_REGEX.test(identifier)) {
+      const slug = await getUserSlugById(identifier);
+      if (slug) {
+        // Redirect to clean URL
+        throw redirect(301, `/customer/${slug}${subPath}`);
+      }
+    } else {
+      // It's a username/slug, convert to UUID for internal routing
+      const user = await getUserBySlug(identifier);
+      if (user) {
+        // Rewrite URL internally to use UUID
+        url.pathname = `/customer/${user.id}${subPath}`;
+      }
+    }
+  }
+  
+  return url;
+}
 const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
+  // Handle URL rewriting for customer routes
+  try {
+    event.url = await handleCustomerRouteRewriting(event.url);
+  } catch (error) {
+    // If it's a redirect, let it through
+    if (error instanceof Response) {
+      return error;
+    }
+    // For other errors, continue normally
+  }
 	//
 	// ─── LAYER 6: CSRF PROTECTION (DISABLED) ───────────────────────────────────────
 	//
