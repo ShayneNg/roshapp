@@ -35,10 +35,7 @@
         <div class="bottle bottle-9"></div>
       </div>
       
-      <!-- Loyalty points indicator -->
-      <div class="loyalty-indicator">
-        <div class="points-text">{loyaltyPoints} <br> points</div>
-      </div>
+     
     </div>
     
     <!-- Card content -->
@@ -46,7 +43,7 @@
       <!-- Header with membership level and logo space -->
       <div class="card-header">
         <div class="membership-badge">
-          <span class="w-10 h-10 opacity-20"><LogoWhite /></span>
+          <span class="w-10 h-10 opacity-90"><LogoWhite /></span>
           <div class="flex flex-col">
             <span class="membership-text">{membershipLevel}</span>
             <span class="membership-sub">Since {memberSince}</span>
@@ -64,6 +61,11 @@
       <div class="card-number">
         {cardNumber}
       </div>
+    </div>
+
+    <!-- Loyalty points indicator -->
+    <div class="loyalty-indicator">
+      <div class="points-text">{loyaltyPoints} <br> points</div>
     </div>
   </div>
 </div>
@@ -99,7 +101,7 @@
 
 .logo-space {
   position: absolute;
-  bottom: 1.25rem;
+  top: 2.25rem;
   right: 1.25rem;
   display: flex;
   gap: 0.1rem;
@@ -168,7 +170,12 @@
 }
 
 .points-text {
-  @apply text-4xl font-extrabold opacity-90 rounded-full py-0.5 px-1.5 text-white;
+  font-size: 2.25rem;
+  font-weight: 800;
+  opacity: 0.9;
+  border-radius: 9999px;
+  padding: 0.125rem 0.375rem;
+  color: white;
 }
 
 /* Mobile styles */
