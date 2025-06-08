@@ -96,6 +96,9 @@ export const actions = {
         ...sessionCookie.attributes
       });
 
+      // Clear any existing remember me token first
+      cookies.delete('remember_token', { path: '/' });
+      
       // Handle remember me functionality
       const rememberMe = formData.rememberMe === 'on';
       if (rememberMe) {
@@ -111,7 +114,10 @@ export const actions = {
           maxAge: 60 * 60 * 24 * 30 // 30 days
         });
         
-        }
+        console.log('✅ Remember me token created for user:', user.id);
+      } else {
+        console.log('❌ Remember me not selected, no token created');
+      }
 
       // Determine redirect path based on user roles
       const roles = user.roles || [];

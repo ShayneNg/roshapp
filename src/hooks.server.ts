@@ -21,9 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 
 	if (!sessionId) {
-		
-
-		// Check for remember me token
+		// Check for remember me token only if no active session
 		const rememberTokenCookie = event.cookies.get('remember_token');
 		if (rememberTokenCookie && rememberTokenCookie.includes(':')) {
 			const [tokenId, token] = rememberTokenCookie.split(':');
@@ -33,7 +31,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				const rememberToken = await validateRememberToken(tokenId, token);
 
 				if (rememberToken) {
-					
+					console.log('✅ Remember me token validated, creating new session');
 
 					// Create new session from remember token
 					const newSession = await auth.createSession(rememberToken.userId, {});
@@ -44,33 +42,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 						...sessionCookie.attributes
 					});
 
-					// Continue with normal session validation
-					const { session, user } = await auth.validateSession(newSession.id);
-					if (session && user) {
-						// Assuming getUserWithDetails is defined elsewhere and fetches user details.
-						const getUserWithDetails = async (userId: string) => {
-							const completeUser = await getUserById(userId);
-							if (completeUser) {
-								return completeUser;
-							}
-							return null;
-						};
-
-						const sessionUser = await getUserWithDetails(user.id);
-						if (sessionUser) {
-							// Assuming roles are directly on the user object
-							const roles = sessionUser.roles || ['customer'];
-							const role = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
-
-							event.locals.user = { ...sessionUser, roles };
-							event.locals.session = session;
-							event.locals.role = role;
-							event.locals.csrf = randomUUID();
-
-							
-							return resolve(event);
-						}
-					}
+					// Set sessionId to the new session for normal processing below
+					const sessionId = newSession.id;
+					
+					// Continue to normal session validation below
+				} else {
+					console.log('❌ Remember me token invalid');
 				}
 			} catch (error) {
 				console.error('Remember me token validation error:', error);
@@ -79,11 +56,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 			}
 		}
 
-		event.locals.user = null;
-		event.locals.session = null;
-		event.locals.role = null;
-		event.locals.csrf = randomUUID();
-		return resolve(event);
+		// If still no session after remember me check, set null values
+		if (!sessionId && !event.cookies.get(auth.sessionCookieName)) {
+			event.locals.user = null;
+			event.locals.session = null;
+			event.locals.role = null;
+			event.locals.csrf = randomUUID();
+			return resolve(event);
+		}
 	} else {
 		const { session, user } = await auth.validateSession(sessionId);
 
