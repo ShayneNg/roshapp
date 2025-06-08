@@ -65,7 +65,9 @@
 
     <!-- Loyalty points indicator -->
     <div class="loyalty-indicator">
-      <div class="points-text">{loyaltyPoints} <br> points</div>
+      <span class="points-text">{loyaltyPoints} </span>
+      <br>
+      <span class="points-sub">points</span>
     </div>
   </div>
 </div>
@@ -170,14 +172,12 @@
 }
 
 .points-text {
-  font-size: 2.25rem;
-  font-weight: 800;
-  opacity: 0.9;
-  border-radius: 9999px;
-  padding: 0.125rem 0.375rem;
-  color: white;
+  @apply text-white text-[2.25rem] font-extrabold opacity-90 rounded-full px-[0.375rem] py-[0.125rem];
 }
-
+  
+.points-sub {
+  @apply text-white text-xs font-bold opacity-70;
+}
 /* Mobile styles */
 @media (max-width: 768px) {
   .customer-card {
