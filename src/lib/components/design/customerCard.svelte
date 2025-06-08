@@ -69,232 +69,141 @@
   </div>
 </div>
 
-<style lang="scss">
+<style>
 .customer-card {
-  width: 100%;
-  height: 250px;
-  margin: 0 auto;
+  @apply w-full h-64 mx-auto;
   
-  /* Desktop to tablet landscape: full parent width */
   @media (min-width: 769px) {
-    max-width: none;
+    @apply max-w-none;
   }
-  
-  /* Smaller screens: minimum 320px width */
+
   @media (max-width: 768px) {
-    min-width: 320px;
-    max-width: 320px;
+    @apply min-w-[320px] max-w-[320px];
   }
 }
 
 .card-background {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.1);
+  @apply w-full h-full relative rounded-lg overflow-hidden shadow-md;
 }
 
 .gradient-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    #ff4500 0%,
-    #ff6b35 25%,
-    #f7931e 50%,
-    #c471ed 75%,
-    #8a2be2 100%
-  );
+  @apply absolute top-0 left-0 right-0 bottom-0;
+  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 25%, #f7931e 50%, #c471ed 75%, #8a2be2 100%);
   opacity: 0.95;
 }
 
 .decorative-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  @apply absolute top-0 left-0 right-0 bottom-0 overflow-hidden;
 }
 
 .heart {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 14px;
-  
-  &.heart-1 { top: 20%; right: 15%; }
-  &.heart-2 { top: 35%; right: 25%; font-size: 10px; }
-  &.heart-3 { top: 50%; right: 10%; font-size: 12px; }
-  &.heart-4 { top: 65%; right: 30%; font-size: 8px; }
-  &.heart-5 { top: 15%; right: 35%; font-size: 6px; }
-  &.heart-6 { top: 75%; right: 20%; font-size: 10px; }
-  &.heart-7 { top: 40%; right: 5%; font-size: 7px; }
+  @apply absolute text-white text-opacity-20;
+
+  &.heart-1 { @apply top-1/5 right-15; }
+  &.heart-2 { @apply top-1/3 right-1/4; font-size: 10px; }
+  &.heart-3 { @apply top-1/2 right-1/10; font-size: 12px; }
+  &.heart-4 { @apply top-2/3 right-3/10; font-size: 8px; }
+  &.heart-5 { @apply top-15 right-35; font-size: 6px; }
+  &.heart-6 { @apply top-3/4 right-1/5; font-size: 10px; }
+  &.heart-7 { @apply top-2/5 right-1/20; font-size: 7px; }
 }
 
 .nail-bottles {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  gap: 6px;
+  @apply absolute bottom-5 right-5 flex space-x-1.5;
 }
 
 .bottle {
-  width: 6px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-  position: relative;
-  
+  @apply w-1.5 h-4 bg-white bg-opacity-30 rounded-sm relative;
+
   &::before {
     content: '';
-    position: absolute;
-    top: -3px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 2px;
+    @apply absolute top-[-0.75rem] left-1/2 transform-translate-x-[-50%] w-2.5 h-1 bg-white bg-opacity-25 rounded-sm;
   }
-  
-  &.bottle-1 { height: 14px; }
-  &.bottle-2 { height: 18px; }
-  &.bottle-3 { height: 12px; }
+
+  &.bottle-1 { @apply h-3.5; }
+  &.bottle-2 { @apply h-4.5; }
+  &.bottle-3 { @apply h-3; }
 }
 
 .card-content {
-  position: relative;
-  z-index: 10;
-  height: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: white;
+  @apply relative z-10 h-full p-5 flex flex-col justify-between text-white;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  @apply flex justify-between items-start;
 }
 
 .membership-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  
+  @apply flex flex-col items-start;
+
   .membership-number {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 0.9;
-    margin-bottom: 2px;
+    @apply text-2xl font-bold leading-tight mb-0.5;
   }
-  
+
   .membership-text {
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0.95;
+    @apply text-sm font-medium opacity-95;
   }
-  
+
   .membership-sub {
-    font-size: 12px;
-    font-weight: 400;
-    opacity: 0.8;
+    @apply text-xs font-normal opacity-80;
   }
 }
 
 .logo-space {
-  display: flex;
-  align-items: center;
-  
+  @apply flex items-center;
+
   .logo-placeholder {
-    width: 60px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    
+    @apply w-15 h-10 bg-white bg-opacity-15 rounded-md flex items-center justify-center backdrop-filter-blur-lg border border-white border-opacity-20;
+
     .logo-text {
-      font-size: 10px;
-      font-weight: 600;
-      opacity: 0.7;
-      letter-spacing: 0.5px;
+      @apply text-[10px] font-semibold opacity-70 tracking-wider;
     }
   }
 }
 
 .customer-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  
+  @apply flex items-center space-x-2 mt-4;
+
   .tier-icon {
-    font-size: 16px;
-    opacity: 0.9;
+    @apply text-lg opacity-90;
   }
-  
+
   .customer-name {
-    font-size: 20px;
-    font-weight: 600;
-    text-transform: capitalize;
+    @apply text-xl font-semibold capitalize;
   }
 }
 
 .card-number {
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0.8;
-  letter-spacing: 2px;
-  margin-top: auto;
+  @apply text-sm font-medium opacity-80 tracking-widest mt-auto;
 }
 
 .loyalty-indicator {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  
+  @apply absolute top-5 right-5;
+
   .points-text {
-    font-size: 11px;
-    font-weight: 500;
-    opacity: 0.9;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 3px 6px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
+    @apply text-xs font-medium opacity-90 bg-white bg-opacity-20 px-1.5 py-0.5 rounded-full backdrop-filter-blur-lg;
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 640px) {
   .card-content {
-    padding: 16px;
+    @apply p-4;
   }
-  
-  .membership-badge .membership-number {
-    font-size: 24px;
+
+  .membership-badge {
+    .membership-number {
+      @apply text-2xl;
+    }
   }
-  
+
   .customer-name {
-    font-size: 18px;
+    @apply text-lg;
   }
-  
-  .logo-space .logo-placeholder {
-    width: 50px;
-    height: 32px;
+
+  .logo-space {
+    .logo-placeholder {
+      @apply w-12.5 h-8;
+    }
   }
 }
 </style>
