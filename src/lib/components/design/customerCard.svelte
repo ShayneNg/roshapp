@@ -65,9 +65,13 @@
 
     <!-- Loyalty points indicator -->
     <div class="loyalty-indicator">
-      <span class="points-text">{loyaltyPoints} </span>
-      <br>
-      <span class="points-sub">points</span>
+      <div class="flex flex-row items-center">
+        <div class="points-sub">
+          <span>Earned</span>
+          <span>Points</span>
+        </div>
+        <span class="points-text">{loyaltyPoints} </span>
+      </div>      
     </div>
   </div>
 </div>
@@ -170,6 +174,16 @@
   justify-content: space-between;
   align-items: flex-start;
 }
+.customer-info{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.customer-name{
+  font-size: 1.5rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
 
 .membership-badge {
   display: flex;
@@ -188,12 +202,13 @@
 .loyalty-indicator {
   position: absolute;
   bottom: 1.25rem;
-  right: 1.25rem;
+  right: 0.7rem;
 }
 
 .points-text {
   color: white;
   font-size: 2.25rem;
+  line-height: 2rem;
   font-weight: 800;
   opacity: 0.9;
   border-radius: 9999px;
@@ -201,10 +216,14 @@
 }
   
 .points-sub {
+  display: flex;
+  flex-direction: column;
   color: white;
-  font-size: 0.75rem;
-  font-weight: 700;
-  opacity: 0.7;
+  font-size: 0.9rem;
+  line-height: 1rem;
+  font-weight: 600;
+  opacity: 0.4;
+  text-align: right;
 }
 /* Mobile styles */
 @media (max-width: 768px) {
