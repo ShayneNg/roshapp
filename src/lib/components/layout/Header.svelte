@@ -151,7 +151,13 @@
 				<DropdownMenu.Item>Settings</DropdownMenu.Item>
 				<DropdownMenu.Item>Support</DropdownMenu.Item>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item>Logout</DropdownMenu.Item>
+				<DropdownMenu.Item>
+					<form method="POST" action="/auth/logout" class="w-full">
+						<button type="submit" class="w-full text-left">
+							Logout
+						</button>
+					</form>
+				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
