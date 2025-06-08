@@ -15,7 +15,7 @@
       }
     }, 100);
   });
-  
+
   function showToast(flashMessage) {
     if (flashMessage.type === 'error') {
       toast.error(flashMessage.message);
@@ -41,7 +41,7 @@
       <div class="lg:col-span-2">
         <slot />
       </div>
-      
+
       <!-- Right Column: Loyal Card + QR Code (1/3 width) -->
       <div class="space-y-6">
         <!-- Customer Loyalty Card -->
@@ -54,7 +54,7 @@
             cardNumber="5699 8908 3326 5756"
           />
         </div>
-        
+
         <!-- QR Code Section -->
         <div class="bg-white rounded-lg p-6 shadow-sm border">
           <h3 class="font-semibold text-lg mb-4 text-center">Your QR Code</h3>
@@ -76,3 +76,21 @@
 </div>
 
 <Toaster />
+
+<style>
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors;
+  }
+
+  .nav-item.active {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+
+  .nav-item-small {
+    @apply flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition-colors;
+  }
+
+  .nav-item-small.active {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+</style>
