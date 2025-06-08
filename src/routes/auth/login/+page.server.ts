@@ -12,14 +12,14 @@ export async function load({ locals }) {
     const roles = locals.user.roles || [];
     const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
     
-    let redirectPath = '/customer'; // Default for customer role
+    let redirectPath = `/customer/${user.id}`; // Default for customer role with user ID
     
     if (firstRole === 'admin' || firstRole === 'manager') {
       redirectPath = '/app';
     } else if (firstRole === 'staff') {
       redirectPath = '/staff';
     } else if (firstRole === 'customer') {
-      redirectPath = '/customer';
+      redirectPath = `/customer/${user.id}`;
     }
     
     throw redirect(302, redirectPath);

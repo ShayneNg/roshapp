@@ -5,7 +5,6 @@
   import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Calendar, Clock, Star, Gift, Users, Settings } from 'lucide-svelte';
-  import CustomerCard from '$lib/components/design/customerCard.svelte';
 
   // Get user data from page store
   $: user = $page.data?.user;
@@ -57,19 +56,8 @@
     </div>
   </div>
 
-  <!-- Premium Customer Card & Quick Stats -->
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-    
-    <!-- Premium Customer Card -->
-    <div class="md:col-span-2">
-      <CustomerCard 
-        customerName={user?.email?.split('@')[0] || 'Valued Customer'}
-        membershipLevel="Premium"
-        memberSince="2024"
-        loyaltyPoints={loyaltyPoints}
-        cardNumber="5699 8908 3326 5756"
-      />
-    </div>
+  <!-- Quick Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Stats Cards -->
     <Card>
       <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
