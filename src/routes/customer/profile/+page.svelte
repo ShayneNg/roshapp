@@ -376,3 +376,86 @@
     </TabsContent>
   </Tabs>
 </div>
+<script lang="ts">
+  import Icon from '$lib/components/icons/Icon.svelte';
+  
+  export let data;
+</script>
+
+<svelte:head>
+  <title>Profile - Customer Portal</title>
+</svelte:head>
+
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-foreground">Profile Settings</h1>
+    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+      <Icon name="Save" size={16} class="mr-2" />
+      Save Changes
+    </button>
+  </div>
+
+  <div class="grid gap-6">
+    <!-- Profile Information -->
+    <div class="bg-card rounded-lg border border-border p-6">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+          <Icon name="User" size={32} class="text-muted-foreground" />
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-foreground">{data.user?.username || 'Customer'}</h3>
+          <p class="text-sm text-muted-foreground">Customer since 2023</p>
+        </div>
+        <button class="ml-auto text-sm text-primary hover:text-primary/80 transition-colors">
+          Change Photo
+        </button>
+      </div>
+
+      <form class="space-y-4">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">First Name</label>
+            <input type="text" value="John" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Last Name</label>
+            <input type="text" value="Doe" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-1">Email</label>
+          <input type="email" value="john@example.com" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-1">Phone</label>
+          <input type="tel" value="+1 (555) 123-4567" class="w-full px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground">
+        </div>
+      </form>
+    </div>
+
+    <!-- Preferences -->
+    <div class="bg-card rounded-lg border border-border p-6">
+      <h3 class="text-lg font-semibold text-foreground mb-4">Preferences</h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-medium text-foreground">Email Notifications</p>
+            <p class="text-sm text-muted-foreground">Receive booking confirmations and updates</p>
+          </div>
+          <button class="bg-primary w-11 h-6 rounded-full relative transition-colors">
+            <span class="absolute left-1 top-1 w-4 h-4 bg-primary-foreground rounded-full transition-transform"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-medium text-foreground">SMS Notifications</p>
+            <p class="text-sm text-muted-foreground">Receive appointment reminders via text</p>
+          </div>
+          <button class="bg-muted w-11 h-6 rounded-full relative transition-colors">
+            <span class="absolute left-1 top-1 w-4 h-4 bg-background rounded-full transition-transform"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

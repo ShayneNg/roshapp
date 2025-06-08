@@ -189,3 +189,77 @@
     </div>
   {/if}
 </div>
+<script lang="ts">
+  import Icon from '$lib/components/icons/Icon.svelte';
+  
+  export let data;
+
+  const services = [
+    { name: 'Hair Cut', price: '$35', duration: '45 min', icon: 'Scissors' },
+    { name: 'Hair Color', price: '$75', duration: '2 hours', icon: 'Palette' },
+    { name: 'Styling', price: '$25', duration: '30 min', icon: 'Sparkles' },
+    { name: 'Beard Trim', price: '$20', duration: '20 min', icon: 'User' }
+  ];
+</script>
+
+<svelte:head>
+  <title>Services - Customer Portal</title>
+</svelte:head>
+
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-foreground">Available Services</h1>
+    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+      <Icon name="Plus" size={16} class="mr-2" />
+      Book Service
+    </button>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    {#each services as service}
+      <div class="bg-card rounded-lg border border-border p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+            <Icon name={service.icon} size={24} class="text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="font-semibold text-foreground">{service.name}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{service.duration}</p>
+            <p class="text-lg font-bold text-primary mt-2">{service.price}</p>
+          </div>
+          <button class="text-primary hover:text-primary/80 transition-colors">
+            <Icon name="ArrowRight" size={20} />
+          </button>
+        </div>
+      </div>
+    {/each}
+  </div>
+
+  <!-- Service History -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-foreground">Recent Services</h2>
+    <div class="space-y-3">
+      <div class="flex items-center gap-4 p-4 bg-muted rounded-lg">
+        <div class="w-10 h-10 bg-success/20 rounded-full flex items-center justify-center">
+          <Icon name="CheckCircle" size={20} class="text-success" />
+        </div>
+        <div class="flex-1">
+          <p class="font-medium text-foreground">Hair Cut</p>
+          <p class="text-sm text-muted-foreground">Completed on Jan 10, 2024</p>
+        </div>
+        <p class="text-foreground font-semibold">$35</p>
+      </div>
+      
+      <div class="flex items-center gap-4 p-4 bg-muted rounded-lg">
+        <div class="w-10 h-10 bg-success/20 rounded-full flex items-center justify-center">
+          <Icon name="CheckCircle" size={20} class="text-success" />
+        </div>
+        <div class="flex-1">
+          <p class="font-medium text-foreground">Hair Color</p>
+          <p class="text-sm text-muted-foreground">Completed on Dec 20, 2023</p>
+        </div>
+        <p class="text-foreground font-semibold">$75</p>
+      </div>
+    </div>
+  </div>
+</div>
