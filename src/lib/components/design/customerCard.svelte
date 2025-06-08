@@ -4,7 +4,7 @@
   export let membershipLevel = 'Premium';
   export let memberSince = '2024';
   export let loyaltyPoints = 450;
-  export let cardNumber = '5699 8908';
+  export let cardNumber = '1234 5678 9012 3456';
 </script>
 
 <div class="customer-card">
@@ -14,20 +14,24 @@
     
     <!-- Decorative elements -->
     <div class="decorative-elements">
-      <!-- Heart shapes scattered around -->
-      <div class="heart heart-1">♥</div>
-      <div class="heart heart-2">♥</div>
-      <div class="heart heart-3">♥</div>
-      <div class="heart heart-4">♥</div>
-      <div class="heart heart-5">♥</div>
-      <div class="heart heart-6">♥</div>
-      <div class="heart heart-7">♥</div>
-      
+      <!-- Heart shapes arranged like Australia National Flag -->
+      <div class="heart heart-1" style="top: 20%; right: 3.75rem;">♥</div>
+      <div class="heart heart-2" style="top: 33.333333%; right: 25%; font-size: 10px;">♥</div>
+      <div class="heart heart-3" style="top: 50%; right: 10%; font-size: 12px;">♥</div>
+      <div class="heart heart-4" style="top: 66.666667%; right: 30%; font-size: 8px;">♥</div>
+      <div class="heart heart-5" style="top: 40%; right: 5%; font-size: 7px;">♥</div>
+
       <!-- Nail polish bottles decorative -->
       <div class="nail-bottles">
         <div class="bottle bottle-1"></div>
         <div class="bottle bottle-2"></div>
         <div class="bottle bottle-3"></div>
+        <div class="bottle bottle-4"></div>
+        <div class="bottle bottle-5"></div>
+        <div class="bottle bottle-6"></div>
+        <div class="bottle bottle-7"></div>
+        <div class="bottle bottle-8"></div>
+        <div class="bottle bottle-9"></div>
       </div>
     </div>
     
@@ -77,7 +81,7 @@
 }
 
 .card-background {
-@apply w-full h-full relative rounded-lg overflow-hidden shadow;
+  @apply w-full h-full relative rounded-lg overflow-hidden shadow;
 }
 
 .gradient-overlay {
@@ -86,17 +90,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 25%, #f7931e 50%, #c471ed 75%, #8a2be2 100%);
+  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 25%, #f7931e 40%, #c471ed 68%, #8a2be2 100%);
   opacity: 0.95;
 }
 
 .decorative-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  @apply absolute inset-0 overflow-hidden;
 }
 
 .heart {
@@ -105,57 +104,16 @@
   opacity: 0.2;
 }
 
-.heart-1 { 
-  top: 20%; 
-  right: 3.75rem; 
-}
-
-.heart-2 { 
-  top: 33.333333%; 
-  right: 25%; 
-  font-size: 10px; 
-}
-
-.heart-3 { 
-  top: 50%; 
-  right: 10%; 
-  font-size: 12px; 
-}
-
-.heart-4 { 
-  top: 66.666667%; 
-  right: 30%; 
-  font-size: 8px; 
-}
-
-.heart-5 { 
-  top: 3.75rem; 
-  right: 8.75rem; 
-  font-size: 6px; 
-}
-
-.heart-6 { 
-  top: 75%; 
-  right: 20%; 
-  font-size: 10px; 
-}
-
-.heart-7 { 
-  top: 40%; 
-  right: 5%; 
-  font-size: 7px; 
-}
-
 .nail-bottles {
   position: absolute;
   bottom: 1.25rem;
   right: 1.25rem;
   display: flex;
-  gap: 0.375rem;
+  gap: 0.1rem;
 }
 
 .bottle {
-  width: 0.375rem;
+  width: 0.2rem;
   height: 1rem;
   background-color: white;
   opacity: 0.3;
@@ -169,24 +127,22 @@
   top: -0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 0.625rem;
+  width: 0.4rem;
   height: 0.25rem;
   background-color: white;
   opacity: 0.25;
-  border-radius: 0.125rem;
+  /* border-radius: 0.125rem; */
 }
 
-.bottle-1 { 
-  height: 0.875rem; 
-}
-
-.bottle-2 { 
-  height: 1.125rem; 
-}
-
-.bottle-3 { 
-  height: 0.75rem; 
-}
+.bottle-1 { height: 0.875rem; }
+.bottle-2 { height: 1.125rem; }
+.bottle-3 { height: 0.75rem; }
+.bottle-4 { height: 1.25rem; }
+.bottle-5 { height: 0.9rem; }
+.bottle-6 { height: 1.05rem; }
+.bottle-7 { height: 1.15rem; }
+.bottle-8 { height: 0.95rem; }
+.bottle-9 { height: 1.3rem; }
 
 .card-content {
   position: relative;
@@ -200,9 +156,7 @@
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  @apply flex justify-between items-start;
 }
 
 .membership-badge {
@@ -245,10 +199,7 @@
 }
 
 .customer-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  @apply flex items-center gap-2 mt-16;
 }
 
 .tier-icon {
@@ -257,17 +208,11 @@
 }
 
 .customer-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  text-transform: capitalize;
+  @apply text-base font-semibold capitalize;
 }
 
 .card-number {
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0.8;
-  letter-spacing: 0.1em;
-  margin-top: auto;
+  @apply text-sm font-medium opacity-80 tracking-wide mt-auto;
 }
 
 .loyalty-indicator {
@@ -277,14 +222,7 @@
 }
 
 .points-text {
-  font-size: 2rem;
-  font-weight: 500;
-  opacity: 0.9;
-  /* background-color: white; */
-  background-opacity: 0.2;
-  padding: 0.125rem 0.375rem;
-  border-radius: 9999px;
-  backdrop-filter: blur(16px);
+  @apply text-2xl font-medium opacity-90 bg-opacity-20 rounded-full py-0.125rem px-0.375rem backdrop-blur-lg;
 }
 
 /* Mobile styles */
