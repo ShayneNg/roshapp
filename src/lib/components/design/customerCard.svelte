@@ -1,5 +1,6 @@
 
 <script lang="ts">
+  import LogoWhite from '$lib/components/layout/LogoWhite.svelte';
   export let customerName = '';
   export let membershipLevel = 'Premium';
   export let memberSince = '2024';
@@ -21,8 +22,8 @@
       <div class="heart heart-4" style="top: 66.666667%; right: 30%; font-size: 8px;">♥</div>
       <div class="heart heart-5" style="top: 40%; right: 5%; font-size: 7px;">♥</div>
 
-      <!-- Nail polish bottles decorative -->
-      <div class="nail-bottles">
+      <!-- Logo space moved to nail polish bottles -->
+      <div class="logo-space">
         <div class="bottle bottle-1"></div>
         <div class="bottle bottle-2"></div>
         <div class="bottle bottle-3"></div>
@@ -33,6 +34,11 @@
         <div class="bottle bottle-8"></div>
         <div class="bottle bottle-9"></div>
       </div>
+      
+      <!-- Loyalty points indicator -->
+      <div class="loyalty-indicator">
+        <div class="points-text">{loyaltyPoints} <br> points</div>
+      </div>
     </div>
     
     <!-- Card content -->
@@ -40,18 +46,10 @@
       <!-- Header with membership level and logo space -->
       <div class="card-header">
         <div class="membership-badge">
-          <span class="membership-number">36.6</span>
+          <span class="w-10 h-10 opacity-20"><LogoWhite /></span>
           <div class="flex flex-col">
             <span class="membership-text">{membershipLevel}</span>
             <span class="membership-sub">Since {memberSince}</span>
-          </div>
-        </div>
-        
-        <!-- Logo space -->
-        <div class="logo-space">
-          <div class="logo-placeholder">
-            <!-- Logo will go here -->
-            <span class="logo-text">LOGO</span>
           </div>
         </div>
       </div>
@@ -65,11 +63,6 @@
       <!-- Card number -->
       <div class="card-number">
         {cardNumber}
-      </div>
-      
-      <!-- Loyalty points indicator -->
-      <div class="loyalty-indicator">
-        <div class="points-text">{loyaltyPoints} <br> points</div>
       </div>
     </div>
   </div>
@@ -104,7 +97,7 @@
   opacity: 0.2;
 }
 
-.nail-bottles {
+.logo-space {
   position: absolute;
   bottom: 1.25rem;
   right: 1.25rem;
@@ -163,66 +156,19 @@
   @apply flex flex-row items-center space-x-2;
 }
 
-.membership-number {
-  @apply text-4xl font-extrabold;
-}
-
 .membership-text, 
 .membership-sub {
   @apply text-xs font-bold opacity-70;
 }
 
-.logo-space {
-  display: flex;
-  align-items: center;
-}
-
-.logo-placeholder {
-  width: 3.75rem;
-  height: 2.5rem;
-  background-color: white;
-  opacity: 0.15;
-  border-radius: 0.375rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(16px);
-  border: 1px solid white;
-  border-opacity: 0.2;
-}
-
-.logo-text {
-  font-size: 10px;
-  font-weight: 600;
-  opacity: 0.7;
-  letter-spacing: 0.1em;
-}
-
-.customer-info {
-  @apply flex items-center gap-2 mt-16;
-}
-
-.tier-icon {
-  font-size: 1.125rem;
-  opacity: 0.9;
-}
-
-.customer-name {
-  @apply text-base font-semibold capitalize;
-}
-
-.card-number {
-  @apply text-sm font-medium opacity-80 tracking-wide mt-auto;
-}
-
 .loyalty-indicator {
   position: absolute;
-  top: 1.25rem;
+  bottom: 1.25rem;
   right: 1.25rem;
 }
 
 .points-text {
-  @apply text-3xl font-extrabold opacity-90 rounded-full py-0.5 px-1.5;
+  @apply text-4xl font-extrabold opacity-90 rounded-full py-0.5 px-1.5 text-white;
 }
 
 /* Mobile styles */
