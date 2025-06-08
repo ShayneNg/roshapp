@@ -38,7 +38,7 @@
         <div class="membership-badge">
           <span class="membership-number">36.6</span>
           <span class="membership-text">{membershipLevel}</span>
-          <span class="membership-sub">Club</span>
+          <span class="membership-sub">Since {memberSince}</span>
         </div>
         
         <!-- Logo space -->
