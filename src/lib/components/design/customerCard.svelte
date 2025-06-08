@@ -74,11 +74,19 @@
 
 <style>
 .customer-card {
-  @apply w-full h-64 mx-auto;
+  width: 100%;
+  height: 16rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card-background {
-  @apply w-full h-full relative rounded-lg overflow-hidden shadow;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 .gradient-overlay {
@@ -92,7 +100,12 @@
 }
 
 .decorative-elements {
-  @apply absolute inset-0 overflow-hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 .heart {
@@ -153,16 +166,23 @@
 }
 
 .card-header {
-  @apply flex justify-between items-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .membership-badge {
-  @apply flex flex-row items-center space-x-2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .membership-text, 
 .membership-sub {
-  @apply text-xs font-bold opacity-70;
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.7;
 }
 
 .loyalty-indicator {
@@ -172,11 +192,19 @@
 }
 
 .points-text {
-  @apply text-white text-[2.25rem] font-extrabold opacity-90 rounded-full px-[0.375rem] py-[0.125rem];
+  color: white;
+  font-size: 2.25rem;
+  font-weight: 800;
+  opacity: 0.9;
+  border-radius: 9999px;
+  padding: 0.125rem 0.375rem;
 }
   
 .points-sub {
-  @apply text-white text-xs font-bold opacity-70;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.7;
 }
 /* Mobile styles */
 @media (max-width: 768px) {
