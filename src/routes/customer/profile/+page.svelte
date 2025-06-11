@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ProfileCard from '$lib/components/customer/ProfileCard.svelte';
+  import ProfileCard from '$lib/components/ux/ProfileCard.svelte';
 
   export let data;
 </script>

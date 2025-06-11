@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NotificationsCard from '$lib/components/customer/NotificationsCard.svelte';
+  import NotificationsCard from '$lib/components/ux/NotificationsCard.svelte';
 </script>
 
 <svelte:head>

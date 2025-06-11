@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import PaymentCard from '$lib/components/customer/PaymentCard.svelte';
+  import PaymentCard from '$lib/components/ux/PaymentCard.svelte';
 </script>
 
 <svelte:head>

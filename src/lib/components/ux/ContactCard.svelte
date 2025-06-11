@@ -1,7 +1,7 @@
 
 <script lang="ts">
   import Icon from '$lib/components/icons/Icon.svelte';
-  import Card from '$lib/components/ui/Card.svelte';
+  import Card from '$lib/components/design/Card.svelte';
   
   interface Props {
     width?: string;
