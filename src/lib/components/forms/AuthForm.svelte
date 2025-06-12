@@ -190,7 +190,11 @@
           placeholder="john.doe@example.com"
           bind:value={form.email}
           on:input={clearErrors}
-          class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          class="w-full h-11 px-3 py-2 text-base md:text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          autocomplete="email"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
           required
         />
       </div>
@@ -208,7 +212,11 @@
             placeholder="@JDoe"
             bind:value={form.username}
             on:input={clearErrors}
-            class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            class="w-full h-11 px-3 py-2 text-base md:text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            autocomplete="username"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
             required
           />
         </div>
@@ -226,7 +234,8 @@
           placeholder="Enter your password"
           bind:value={form.password}
           on:input={clearErrors}
-          class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          class="w-full h-11 px-3 py-2 text-base md:text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          autocomplete={type === 'login' ? 'current-password' : 'new-password'}
           required
         />
       </div>
@@ -244,7 +253,8 @@
             placeholder="Confirm your password"
             bind:value={form.confirmPassword}
             on:input={clearErrors}
-            class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            class="w-full h-11 px-3 py-2 text-base md:text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            autocomplete="new-password"
             required
           />
           
@@ -323,15 +333,49 @@
 
 <style lang="scss">
 .auth-form-container {
+  // Prevent mobile zoom and layout shifts
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  
+  // Mobile-specific fixes
+  @media (max-width: 768px) {
+    // Prevent zoom on input focus (iOS Safari)
+    input, select, textarea {
+      font-size: 16px !important;
+      -webkit-appearance: none;
+      -webkit-border-radius: 0;
+      border-radius: 0.375rem;
+      
+      // Prevent zoom behavior
+      &:focus {
+        zoom: 1;
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+    }
+    
+    // Prevent touch callouts and selection
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    // Prevent bounce scrolling
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
   // Ensure consistent form layout
   .error-container {
     // Always maintains space for errors to prevent layout shift
     transition: all 0.2s ease-in-out;
+    width: 100%;
   }
   
   .field-group {
     // Consistent field spacing
     position: relative;
+    width: 100%;
     
     // Focus states for better UX
     &:focus-within {
@@ -346,6 +390,7 @@
     border-top: 1px solid hsl(var(--border));
     padding-top: 1rem;
     margin-top: 1.5rem;
+    width: 100%;
   }
 }
 
