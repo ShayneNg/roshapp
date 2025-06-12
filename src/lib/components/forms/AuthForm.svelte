@@ -1,3 +1,4 @@
+
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { z } from 'zod';
@@ -25,7 +26,7 @@
     rememberMe: false
   };
 
-  // Error handling
+  // Error handling with consistent UI
   let errorMessage = '';
   let showError = false;
 
@@ -149,140 +150,236 @@
   }
 </script>
 
-<!-- Enhanced Form with clear separation -->
-<form 
-  method="POST" 
-  use:enhance={handleFormEnhance} 
-  class="space-y-5" 
-  bind:this={formEl}
-  on:submit={() => {
-    if (!validateForm()) {
-      return false;
-    }
-  }}
->
-  <!-- Security tokens -->
-  <input type="hidden" name="csrf" value={csrf || ''} />
-  <input type="hidden" name="type" value={type} />
+<!-- Enhanced Form with consistent layout -->
+<div class="auth-form-container w-full max-w-md mx-auto">
+  <form 
+    method="POST" 
+    use:enhance={handleFormEnhance} 
+    class="space-y-4" 
+    bind:this={formEl}
+    on:submit={() => {
+      if (!validateForm()) {
+        return false;
+      }
+    }}
+  >
+    <!-- Security tokens -->
+    <input type="hidden" name="csrf" value={csrf || ''} />
+    <input type="hidden" name="type" value={type} />
 
-  <!-- Error Display -->
-  {#if showError}
-    <div class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-      {errorMessage}
-    </div>
-  {/if}
-
-  <!-- Email Field (Always Required) -->
-  <div class="space-y-2">
-    <Label for="email">Email</Label>
-    <Input
-      id="email"
-      name="email"
-      type="email"
-      placeholder="john.doe@example.com"
-      bind:value={form.email}
-      on:input={clearErrors}
-      required
-    />
-  </div>
-
-  <!-- Username Field (Register Only) -->
-  {#if type === 'register'}
-    <div class="space-y-2">
-      <Label for="username">Username</Label>
-      <Input
-        id="username"
-        name="username"
-        type="text"
-        placeholder="@JDoe"
-        bind:value={form.username}
-        on:input={clearErrors}
-        required
-      />
-    </div>
-  {/if}
-
-  <!-- Password Field (Always Required) -->
-  <div class="space-y-2">
-    <Label for="password">Password</Label>
-    <Input
-      id="password"
-      name="password"
-      type="password"
-      placeholder="Enter your password"
-      bind:value={form.password}
-      on:input={clearErrors}
-      required
-    />
-  </div>
-
-  <!-- Remember Me (Login Only) -->
-  {#if type === 'login'}
-    <div class="flex items-center space-x-2">
-      <input
-        id="rememberMe"
-        name="rememberMe"
-        type="checkbox"
-        bind:checked={form.rememberMe}
-        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-      />
-      <Label for="rememberMe" class="text-sm font-normal">Remember me for 30 days</Label>
-    </div>
-  {/if}
-
-  <!-- Confirm Password Field (Register Only) -->
-  {#if type === 'register'}
-    <div class="space-y-2">
-      <Label for="confirm-password">Confirm Password</Label>
-      <Input
-        id="confirm-password"
-        name="confirmPassword"
-        type="password"
-        placeholder="Confirm your password"
-        bind:value={form.confirmPassword}
-        on:input={clearErrors}
-        required
-      />
-    </div>
-
-    <!-- Password Match Validation -->
-    {#if form.password && form.confirmPassword && form.password !== form.confirmPassword}
-      <p class="text-red-500 text-xs italic">Passwords do not match.</p>
-    {/if}
-  {/if}
-
-  <!-- Submit Button -->
-  <div class="space-y-2">
-    <Button class="w-full mt-2" type="submit" disabled={loading}>
-      {#if loading}
-        <span class="animate-spin mr-2">⏳</span>
-        {type === 'login' ? 'Signing In...' : 'Creating Account...'}
-      {:else}
-        {type === 'login' ? 'Sign In' : 'Create Account'}
+    <!-- Permanent Error Display Area - Always reserves space -->
+    <div class="error-container min-h-[48px] flex items-center justify-center">
+      {#if showError}
+        <div class="w-full p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md transition-all duration-200 ease-in-out">
+          {errorMessage}
+        </div>
       {/if}
-    </Button>
+    </div>
 
-    {#if type === 'login'}
-      <div class="text-center">
-        <a href="/auth/forgot-password" class="text-sm text-muted-foreground hover:text-primary underline">
-          Forgot your password?
-        </a>
+    <!-- Form Fields Container -->
+    <div class="form-fields space-y-4">
+      <!-- Email Field (Always Required) -->
+      <div class="field-group">
+        <Label for="email" class="text-sm font-medium text-foreground mb-2 block">
+          Email Address
+        </Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="john.doe@example.com"
+          bind:value={form.email}
+          on:input={clearErrors}
+          class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          required
+        />
       </div>
-    {/if}
-  </div>
-</form>
 
-<!-- Social Login Divider -->
-<div class="relative">
-  <div class="absolute inset-0 flex items-center">
-    <span class="w-full border-t"></span>
+      <!-- Username Field (Register Only) -->
+      {#if type === 'register'}
+        <div class="field-group">
+          <Label for="username" class="text-sm font-medium text-foreground mb-2 block">
+            Username
+          </Label>
+          <Input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="@JDoe"
+            bind:value={form.username}
+            on:input={clearErrors}
+            class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            required
+          />
+        </div>
+      {/if}
+
+      <!-- Password Field (Always Required) -->
+      <div class="field-group">
+        <Label for="password" class="text-sm font-medium text-foreground mb-2 block">
+          Password
+        </Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          bind:value={form.password}
+          on:input={clearErrors}
+          class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          required
+        />
+      </div>
+
+      <!-- Confirm Password Field (Register Only) -->
+      {#if type === 'register'}
+        <div class="field-group">
+          <Label for="confirm-password" class="text-sm font-medium text-foreground mb-2 block">
+            Confirm Password
+          </Label>
+          <Input
+            id="confirm-password"
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm your password"
+            bind:value={form.confirmPassword}
+            on:input={clearErrors}
+            class="w-full h-11 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            required
+          />
+          
+          <!-- Inline password validation for register -->
+          {#if form.password && form.confirmPassword && form.password !== form.confirmPassword}
+            <p class="text-red-500 text-xs mt-1 ml-1">Passwords do not match</p>
+          {/if}
+        </div>
+      {/if}
+
+      <!-- Remember Me Checkbox (Login Only) -->
+      {#if type === 'login'}
+        <div class="field-group flex items-center space-x-3 py-2">
+          <input
+            id="rememberMe"
+            name="rememberMe"
+            type="checkbox"
+            bind:checked={form.rememberMe}
+            class="h-4 w-4 rounded border-border text-primary focus:ring-primary/20 focus:ring-2"
+          />
+          <Label for="rememberMe" class="text-sm font-normal text-muted-foreground cursor-pointer">
+            Remember me for 30 days
+          </Label>
+        </div>
+      {/if}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section space-y-3 pt-2">
+      <Button 
+        class="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-md transition-colors disabled:opacity-50 disabled:pointer-events-none" 
+        type="submit" 
+        disabled={loading}
+      >
+        {#if loading}
+          <span class="flex items-center justify-center">
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {type === 'login' ? 'Signing In...' : 'Creating Account...'}
+          </span>
+        {:else}
+          {type === 'login' ? 'Sign In' : 'Create Account'}
+        {/if}
+      </Button>
+
+      {#if type === 'login'}
+        <div class="text-center">
+          <a 
+            href="/auth/forgot-password" 
+            class="text-sm text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
+          >
+            Forgot your password?
+          </a>
+        </div>
+      {/if}
+    </div>
+  </form>
+
+  <!-- Social Login Divider -->
+  <div class="relative my-6">
+    <div class="absolute inset-0 flex items-center">
+      <span class="w-full border-t border-border"></span>
+    </div>
+    <div class="relative flex justify-center text-xs uppercase">
+      <span class="bg-background text-muted-foreground px-3 font-medium">
+        Or continue with
+      </span>
+    </div>
   </div>
-  <div class="relative flex justify-center text-xs uppercase">
-    <span class="bg-background text-muted-foreground px-2">
-      Or continue with
-    </span>
-  </div>
+
+  <!-- Social Login Options -->
+  <AuthOptions />
 </div>
 
-<!-- Social Login Options -->
-<AuthOptions />
+<style lang="scss">
+.auth-form-container {
+  // Ensure consistent form layout
+  .error-container {
+    // Always maintains space for errors to prevent layout shift
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .field-group {
+    // Consistent field spacing
+    position: relative;
+    
+    // Focus states for better UX
+    &:focus-within {
+      label {
+        color: hsl(var(--primary));
+      }
+    }
+  }
+  
+  .action-section {
+    // Separates form actions visually
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+// Loading state improvements
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Smooth transitions for better UX
+input, button {
+  transition: all 0.2s ease-in-out;
+}
+
+// Focus improvements
+input:focus {
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+}
+
+// Consistent button states
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px hsl(var(--primary) / 0.1);
+}
+</style>
