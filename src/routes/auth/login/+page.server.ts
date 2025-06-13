@@ -12,14 +12,22 @@ export async function load({ locals }) {
     const roles = locals.user.roles || [];
     const firstRole = roles.length > 0 ? roles[0].toLowerCase() : 'customer';
 
-    let redirectPath = `/customer/${locals.user.id}`; // Default for customer role with user ID
+    // Create SEO-friendly username slug for redirect
+    const userSlug = locals.user.username
+      ?.toLowerCase()
+      ?.replace(/[^a-z0-9\s-]/g, '')
+      ?.replace(/\s+/g, '-')
+      ?.replace(/-+/g, '-')
+      ?.trim() || locals.user.id;
+
+    let redirectPath = `/customer/${userSlug}`; // Default for customer role with username
 
     if (firstRole === 'admin' || firstRole === 'manager') {
       redirectPath = '/app';
     } else if (firstRole === 'staff') {
       redirectPath = '/staff';
     } else if (firstRole === 'customer') {
-      redirectPath = `/customer/${locals.user.id}`;
+      redirectPath = `/customer/${userSlug}`;
     }
 
     throw redirect(302, redirectPath);
@@ -138,6 +146,13 @@ export const actions = {
       } else if (firstRole === 'staff') {
         redirectPath = '/staff';
       } else if (firstRole === 'customer') {
+        // Create SEO-friendly username slug for customer redirect
+        const userSlug = user.username
+          ?.toLowerCase()
+          ?.replace(/[^a-z0-9\s-]/g, '')
+          ?.replace(/\s+/g, '-')
+          ?.replace(/-+/g, '-')
+          ?.trim() || user.id;
         redirectPath = `/customer/${userSlug}`;
       }
 
