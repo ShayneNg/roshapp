@@ -12,24 +12,31 @@ export const load = ({ locals, cookies, url }) => {
     target = '/staff';
   }
 
-  // Set flash message via cookie with better configuration
-  const flashMessageData = {
-    type: 'error',
-    message: `Access denied. You do not have permission to view that page.`
-  };
+  // Only set flash message if this is actually a forbidden access attempt
+  // Check if the user is coming from a legitimate route or a restricted one
+  const referrer = url.searchParams.get('from');
+  const isLegitimateAccess = !referrer || referrer.includes('/customer/') || referrer.includes('/auth/');
   
-  console.log('🚫 FORBIDDEN ACCESS - Setting flash message cookie:', flashMessageData);
-  console.log('🚫 User roles:', roles);
-  console.log('🚫 Redirecting to:', target);
-  
-  cookies.set('flash_message', JSON.stringify(flashMessageData), {
-    path: '/',
-    httpOnly: false,
-    maxAge: 120, // 2 minutes for better debugging
-    sameSite: 'lax',
-    secure: false // Allow in development
-  });
+  if (!isLegitimateAccess) {
+    // Set flash message via cookie only for actual forbidden access
+    const flashMessageData = {
+      type: 'error',
+      message: `Access denied. You do not have permission to view that page.`
+    };
+    
+    console.log('🚫 FORBIDDEN ACCESS - Setting flash message cookie:', flashMessageData);
+    console.log('🚫 User roles:', roles);
+    console.log('🚫 Redirecting to:', target);
+    
+    cookies.set('flash_message', JSON.stringify(flashMessageData), {
+      path: '/',
+      httpOnly: false,
+      maxAge: 60, // 1 minute
+      sameSite: 'lax',
+      secure: false // Allow in development
+    });
+  }
 
   // Clean redirect without URL parameters
-  throw redirect(302, target);
+  throw redirect(302, target);rget);
 };

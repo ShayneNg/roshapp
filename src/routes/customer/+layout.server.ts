@@ -1,7 +1,7 @@
 
 import { redirect } from '@sveltejs/kit';
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, url }) => {
   // Check if user is authenticated
   if (!locals.session || !locals.user) {
     throw redirect(302, '/auth/login');
@@ -18,7 +18,9 @@ export const load = async ({ locals }) => {
   const isSuperAdmin = ['developer', 'ceo'].includes(normalizedRole);
 
   if (!isCustomer && !isSuperAdmin) {
-    throw redirect(302, '/forbidden');
+    // Add referrer info to forbidden redirect to help debug
+    const forbiddenUrl = `/forbidden?from=${encodeURIComponent(url.pathname)}`;
+    throw redirect(302, forbiddenUrl);
   }
   
   return {

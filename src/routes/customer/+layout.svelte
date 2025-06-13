@@ -8,6 +8,32 @@
   import CustomerCard from '$lib/components/design/customerCard.svelte';
   import Icon from '$lib/components/icons/Icon.svelte';
 
+  export let data;
+
+  // Clear any unwanted flash messages on customer layout mount
+  onMount(() => {
+    // Clear flash message cookie if it contains access denied message
+    const flashCookie = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('flash_message='));
+
+    if (flashCookie) {
+      try {
+        const cookieValue = flashCookie.split('=')[1];
+        const message = JSON.parse(decodeURIComponent(cookieValue));
+
+        // Clear access denied messages for customers in their own area
+        if (message.message && message.message.includes('Access denied')) {
+          document.cookie = 'flash_message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+          console.log('🧹 Cleared unwanted access denied flash message for customer');
+        }
+      } catch (error) {
+        // Clear malformed cookie
+        document.cookie = 'flash_message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+      }
+    }
+  });
+
   onMount(() => {
     setTimeout(() => {
       const flashMessage = getFlashMessage();
