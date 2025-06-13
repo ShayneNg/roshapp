@@ -49,7 +49,7 @@ export const load = async ({ locals, params }) => {
     customerData: {
       id: customerId,
       email: locals.user.email,
-      name: locals.user.email?.split('@')[0] || 'Customer',
+      name: locals.user.username || locals.user.email?.split('@')[0] || 'Customer',
       membershipLevel: 'Premium',
       memberSince: '2024',
       loyaltyPoints: 450,

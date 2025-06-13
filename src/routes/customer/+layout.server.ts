@@ -23,8 +23,17 @@ export const load = async ({ locals, url }) => {
     throw redirect(302, forbiddenUrl);
   }
   
+  // Create SEO-friendly username slug
+  const userSlug = locals.user.username
+    ?.toLowerCase()
+    ?.replace(/[^a-z0-9\s-]/g, '')
+    ?.replace(/\s+/g, '-')
+    ?.replace(/-+/g, '-')
+    ?.trim() || locals.user.id;
+  
   return {
     user: locals.user,
-    role: locals.role
+    role: locals.role,
+    userSlug
   };
 };

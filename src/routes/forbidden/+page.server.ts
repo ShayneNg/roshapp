@@ -5,7 +5,15 @@ export const load = ({ locals, cookies, url }) => {
   const roles = locals.user?.roles ?? [];
   const attemptedPath = url.searchParams.get('from') || 'a restricted page';
 
-  let target = `/customer/${locals.user?.id || ''}`;
+  // Create SEO-friendly username slug for customer redirect
+  const userSlug = locals.user?.username
+    ?.toLowerCase()
+    ?.replace(/[^a-z0-9\s-]/g, '')
+    ?.replace(/\s+/g, '-')
+    ?.replace(/-+/g, '-')
+    ?.trim() || locals.user?.id || '';
+
+  let target = `/customer/${userSlug}`;
   if (roles.includes('admin') || roles.includes('manager')) {
     target = '/app';
   } else if (roles.includes('staff')) {
