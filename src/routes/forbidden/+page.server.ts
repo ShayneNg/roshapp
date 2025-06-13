@@ -46,5 +46,5 @@ export const load = ({ locals, cookies, url }) => {
   }
 
   // Clean redirect without URL parameters
-  throw redirect(302, target);rget);
+  throw redirect(302, target);
 };
