@@ -20,14 +20,14 @@ export async function load({ locals }) {
       ?.replace(/-+/g, '-')
       ?.trim() || locals.user.id;
 
-    let redirectPath = `/customer/${userSlug}`; // Default for customer role with username
+    let redirectPath = `/customer/@${userSlug}`; // Default for customer role with @username
 
     if (firstRole === 'admin' || firstRole === 'manager') {
       redirectPath = '/app';
     } else if (firstRole === 'staff') {
       redirectPath = '/staff';
     } else if (firstRole === 'customer') {
-      redirectPath = `/customer/${userSlug}`;
+      redirectPath = `/customer/@${userSlug}`;
     }
 
     throw redirect(302, redirectPath);
@@ -149,7 +149,7 @@ export const actions = {
         // Create SEO-friendly username slug for customer redirect
         const { createSlug } = await import('$lib/server/urlRewriter');
         const userSlug = createSlug(user.username) || user.id;
-        redirectPath = `/customer/${userSlug}`;
+        redirectPath = `/customer/@${userSlug}`;
       }
 
       // Server-side redirect is more reliable

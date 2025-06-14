@@ -1,4 +1,3 @@
-
 import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, url }) => {
@@ -22,7 +21,7 @@ export const load = async ({ locals, url }) => {
     const forbiddenUrl = `/forbidden?from=${encodeURIComponent(url.pathname)}`;
     throw redirect(302, forbiddenUrl);
   }
-  
+
   // Create SEO-friendly username slug
   const userSlug = locals.user.username
     ?.toLowerCase()
@@ -30,7 +29,7 @@ export const load = async ({ locals, url }) => {
     ?.replace(/\s+/g, '-')
     ?.replace(/-+/g, '-')
     ?.trim() || locals.user.id;
-  
+
   return {
     user: locals.user,
     role: locals.role,

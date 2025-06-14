@@ -13,7 +13,7 @@ export const load = ({ locals, cookies, url }) => {
     ?.replace(/-+/g, '-')
     ?.trim() || locals.user?.id || '';
 
-  let target = `/customer/${userSlug}`;
+  let target = `/customer/@${userSlug}`;
   if (roles.includes('admin') || roles.includes('manager')) {
     target = '/app';
   } else if (roles.includes('staff')) {

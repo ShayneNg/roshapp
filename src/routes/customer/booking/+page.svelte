@@ -98,7 +98,7 @@
       <h1 class="text-3xl font-bold text-gray-900">My Bookings</h1>
       <p class="text-gray-600 mt-2">Manage your appointments and booking history</p>
     </div>
-    <Button href="/customer/booking/new" class="bg-pink-500 hover:bg-pink-600">
+    <Button href="/customer/@username/booking/new" class="bg-pink-500 hover:bg-pink-600">
       <Calendar class="h-4 w-4 mr-2" />
       New Booking
     </Button>
@@ -167,7 +167,7 @@
               </div>
 
               <div class="flex flex-wrap gap-2 pt-4 border-t">
-                <Button size="sm" variant="outline" href="/customer/booking/{booking.id}">
+                <Button size="sm" variant="outline" href="./booking/{booking.id}">
                   <Eye class="h-4 w-4 mr-2" />
                   View Details
                 </Button>
@@ -208,7 +208,7 @@
           <Calendar class="h-16 w-16 mx-auto mb-4 text-gray-300" />
           <h3 class="text-lg font-medium text-gray-900 mb-2">No upcoming appointments</h3>
           <p class="text-gray-600 mb-4">Ready to book your next nail service?</p>
-          <Button href="/customer/booking/new" class="bg-pink-500 hover:bg-pink-600">
+          <Button href="./booking/new" class="bg-pink-500 hover:bg-pink-600">
             Book Your First Appointment
           </Button>
         </div>
@@ -263,7 +263,7 @@
                     </Button>
                   {/if}
 
-                  <Button size="sm" variant="outline" href="/customer/booking/{booking.id}">
+                  <Button size="sm" variant="outline" href="./booking/{booking.id}">
                     View Receipt
                   </Button>
                 </div>
