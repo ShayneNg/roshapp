@@ -12,7 +12,7 @@ const CSRF_COOKIE_NAME = 'csrf_token';
 async function handleCustomerRouteRewriting(url: URL) {
   const path = url.pathname;
   
-  // Check if it's a customer route with username (not UUID)
+  // Check if it's a customer route with identifier
   const customerRouteMatch = path.match(/^\/customer\/([^\/]+)(.*)$/);
   if (customerRouteMatch) {
     const [, identifier, subPath] = customerRouteMatch;
@@ -20,19 +20,24 @@ async function handleCustomerRouteRewriting(url: URL) {
     // UUID regex pattern
     const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     
-    // If it's already a UUID, check if we should redirect to slug version
+    // If it's a UUID, redirect to username format
     if (UUID_REGEX.test(identifier)) {
       const slug = await getUserSlugById(identifier);
       if (slug) {
-        // Redirect to clean URL
-        throw redirect(301, `/customer/${slug}${subPath}`);
+        // Redirect to clean URL with username
+        throw redirect(301, `/customer/${slug}${subPath || ''}`);
       }
+      // If no slug found, continue with UUID (fallback)
+      return url;
     } else {
       // It's a username/slug, convert to UUID for internal routing
       const user = await getUserBySlug(identifier);
       if (user) {
-        // Rewrite URL internally to use UUID
-        url.pathname = `/customer/${user.id}${subPath}`;
+        // Rewrite URL internally to use UUID for file system routing
+        url.pathname = `/customer/${user.id}${subPath || ''}`;
+      } else {
+        // Username not found, might be invalid route
+        console.log(`❌ User not found for slug: ${identifier}`);
       }
     }
   }

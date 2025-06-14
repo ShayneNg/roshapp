@@ -147,12 +147,8 @@ export const actions = {
         redirectPath = '/staff';
       } else if (firstRole === 'customer') {
         // Create SEO-friendly username slug for customer redirect
-        const userSlug = user.username
-          ?.toLowerCase()
-          ?.replace(/[^a-z0-9\s-]/g, '')
-          ?.replace(/\s+/g, '-')
-          ?.replace(/-+/g, '-')
-          ?.trim() || user.id;
+        const { createSlug } = await import('$lib/server/urlRewriter');
+        const userSlug = createSlug(user.username) || user.id;
         redirectPath = `/customer/${userSlug}`;
       }
 
