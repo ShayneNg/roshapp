@@ -1,10 +1,9 @@
-
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
-  import { Calendar, Clock, MapPin, Phone, MessageSquare, Edit, X } from 'lucide-svelte';
+  import { Calendar, Clock, MapPin, Phone, Eye, Edit, X } from 'lucide-svelte';
 
   const upcomingBookings = [
     {
@@ -88,6 +87,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>My Bookings - Customer Portal</title>
+</svelte:head>
+
 <div class="space-y-6">
   <!-- Header -->
   <div class="flex items-center justify-between">
@@ -126,7 +129,7 @@
                 </Badge>
               </div>
             </CardHeader>
-            
+
             <CardContent class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-3">
@@ -134,18 +137,18 @@
                     <Calendar class="h-4 w-4 text-pink-500" />
                     <span class="font-medium">{booking.date}</span>
                   </div>
-                  
+
                   <div class="flex items-center gap-3 text-sm">
                     <Clock class="h-4 w-4 text-blue-500" />
                     <span class="font-medium">{booking.time}</span>
                   </div>
-                  
+
                   <div class="flex items-center gap-3 text-sm">
                     <MapPin class="h-4 w-4 text-green-500" />
                     <span class="font-medium">{booking.location}</span>
                   </div>
                 </div>
-                
+
                 <div class="space-y-3">
                   <div class="flex items-center gap-3 text-sm">
                     <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -155,7 +158,7 @@
                     </div>
                     <span class="font-medium">{booking.staff}</span>
                   </div>
-                  
+
                   <div class="text-sm">
                     <span class="text-gray-600">Price: </span>
                     <span class="font-bold text-green-600">${booking.price}</span>
@@ -168,7 +171,7 @@
                   <Eye class="h-4 w-4 mr-2" />
                   View Details
                 </Button>
-                
+
                 {#if booking.canReschedule}
                   <Button 
                     size="sm" 
@@ -179,12 +182,12 @@
                     Reschedule
                   </Button>
                 {/if}
-                
+
                 <Button size="sm" variant="outline" href="tel:+1234567890">
                   <Phone class="h-4 w-4 mr-2" />
                   Call Salon
                 </Button>
-                
+
                 {#if booking.canCancel}
                   <Button 
                     size="sm" 
@@ -241,14 +244,14 @@
                 </div>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <div class="flex items-center justify-between">
                 <div class="text-sm">
                   <span class="text-gray-600">Total paid: </span>
                   <span class="font-bold text-green-600">${booking.price}</span>
                 </div>
-                
+
                 <div class="flex gap-2">
                   {#if booking.canRebook}
                     <Button 
@@ -259,7 +262,7 @@
                       Book Again
                     </Button>
                   {/if}
-                  
+
                   <Button size="sm" variant="outline" href="/customer/booking/{booking.id}">
                     View Receipt
                   </Button>
@@ -277,105 +280,4 @@
       {/if}
     </TabsContent>
   </Tabs>
-</div>
-<script lang="ts">
-  import Icon from '$lib/components/icons/Icon.svelte';
-  
-  export let data;
-
-  const upcomingBookings = [
-    { 
-      service: 'Hair Cut', 
-      date: 'Jan 15, 2024', 
-      time: '2:00 PM', 
-      status: 'confirmed',
-      staff: 'Sarah Johnson'
-    },
-    { 
-      service: 'Hair Color', 
-      date: 'Jan 22, 2024', 
-      time: '10:00 AM', 
-      status: 'pending',
-      staff: 'Mike Smith'
-    }
-  ];
-</script>
-
-<svelte:head>
-  <title>Bookings - Customer Portal</title>
-</svelte:head>
-
-<div class="space-y-6">
-  <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-foreground">My Bookings</h1>
-    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-      <Icon name="Plus" size={16} class="mr-2" />
-      New Booking
-    </button>
-  </div>
-
-  <!-- Upcoming Bookings -->
-  <div class="space-y-4">
-    <h2 class="text-lg font-semibold text-foreground">Upcoming Appointments</h2>
-    <div class="space-y-3">
-      {#each upcomingBookings as booking}
-        <div class="bg-card rounded-lg border border-border p-6">
-          <div class="flex items-start justify-between">
-            <div class="flex gap-4">
-              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Icon name="Calendar" size={24} class="text-primary" />
-              </div>
-              <div>
-                <h3 class="font-semibold text-foreground">{booking.service}</h3>
-                <p class="text-sm text-muted-foreground">with {booking.staff}</p>
-                <div class="flex items-center gap-4 mt-2">
-                  <div class="flex items-center gap-1">
-                    <Icon name="Calendar" size={16} class="text-muted-foreground" />
-                    <span class="text-sm text-foreground">{booking.date}</span>
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <Icon name="Clock" size={16} class="text-muted-foreground" />
-                    <span class="text-sm text-foreground">{booking.time}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class={`px-2 py-1 rounded-full text-xs font-medium ${
-                booking.status === 'confirmed' 
-                  ? 'bg-success/10 text-success' 
-                  : 'bg-warning/10 text-warning'
-              }`}>
-                {booking.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-              </span>
-              <button class="text-muted-foreground hover:text-foreground transition-colors">
-                <Icon name="MoreVertical" size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      {/each}
-    </div>
-  </div>
-
-  <!-- Booking History -->
-  <div class="space-y-4">
-    <h2 class="text-lg font-semibold text-foreground">Booking History</h2>
-    <div class="space-y-3">
-      <div class="bg-card rounded-lg border border-border p-4">
-        <div class="flex items-center gap-4">
-          <div class="w-8 h-8 bg-success/20 rounded-full flex items-center justify-center">
-            <Icon name="CheckCircle" size={16} class="text-success" />
-          </div>
-          <div class="flex-1">
-            <p class="font-medium text-foreground">Hair Cut - Sarah Johnson</p>
-            <p class="text-sm text-muted-foreground">Jan 5, 2024 at 3:00 PM</p>
-          </div>
-          <button class="text-primary hover:text-primary/80 transition-colors text-sm">
-            Book Again
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
