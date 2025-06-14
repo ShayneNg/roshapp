@@ -26,9 +26,11 @@ async function handleCustomerRouteRewriting(url: URL) {
       if (slug) {
         // Redirect to clean URL with @username format
         throw redirect(301, `/customer/@${slug}${subPath || ''}`);
+      } else {
+        // No slug found for this UUID, continue with UUID (fallback)
+        console.log(`❌ No username found for UUID: ${identifier}`);
+        return url;
       }
-      // If no slug found, continue with UUID (fallback)
-      return url;
     } else if (identifier.startsWith('@')) {
       // It's a @username format, convert to UUID for internal routing
       const username = identifier.substring(1); // Remove @ prefix
@@ -36,9 +38,11 @@ async function handleCustomerRouteRewriting(url: URL) {
       if (user) {
         // Rewrite URL internally to use UUID for file system routing
         url.pathname = `/customer/${user.id}${subPath || ''}`;
+        console.log(`✅ Rewritten @${username} to UUID: ${user.id}`);
       } else {
-        // Username not found, might be invalid route
+        // Username not found, redirect to 404 or error page
         console.log(`❌ User not found for username: ${username}`);
+        throw redirect(302, '/forbidden');
       }
     } else {
       // Legacy username without @, redirect to @username format
@@ -46,6 +50,10 @@ async function handleCustomerRouteRewriting(url: URL) {
       if (user) {
         // Redirect to new @username format
         throw redirect(301, `/customer/@${identifier}${subPath || ''}`);
+      } else {
+        // Invalid username, redirect to error page
+        console.log(`❌ User not found for legacy username: ${identifier}`);
+        throw redirect(302, '/forbidden');
       }
     }
   }

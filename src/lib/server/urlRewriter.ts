@@ -16,15 +16,31 @@ export function createSlug(username: string): string {
     .trim();
 }
 
-// Get user by slug
+// Get user by slug (username)
 export async function getUserBySlug(slug: string) {
-  const users_result = await appDb
-    .select()
-    .from(users)
-    .where(eq(users.username, slug))
-    .limit(1);
-  
-  return users_result.length > 0 ? users_result[0] : null;
+  try {
+    if (!slug) {
+      console.log('❌ Empty slug provided to getUserBySlug');
+      return null;
+    }
+
+    const users_result = await appDb
+      .select()
+      .from(users)
+      .where(eq(users.username, slug))
+      .limit(1);
+    
+    if (users_result.length > 0) {
+      console.log(`✅ Found user for slug: ${slug}`);
+      return users_result[0];
+    } else {
+      console.log(`❌ No user found for slug: ${slug}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('❌ Error in getUserBySlug:', error);
+    return null;
+  }
 }
 
 // Get user by ID and return their slug
