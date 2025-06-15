@@ -6,7 +6,7 @@
   import { toast, Toaster } from 'svelte-sonner';
   import { page } from '$app/stores';
   import CustomerCard from '$lib/components/design/customerCard.svelte';
-  import QRCode from '$lib/components/ui/QRCode.svelte';
+  import QRCode from '$lib/components/design/QRCode.svelte';
   import Icon from '$lib/components/icons/Icon.svelte';
 
   export let data;
@@ -57,7 +57,7 @@
   }
 </script>
 
-<div class={`min-h-screen bg-background ${spacing.container}`}>
+<div class={`min-h-screen bg-background mt-8 ${spacing.container}`}>
   <RoleLayout allow={['customer']}>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Left Column: Main Content (2/3 width) -->
