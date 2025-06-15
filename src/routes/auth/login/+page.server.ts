@@ -154,7 +154,8 @@ export const actions = {
           return setFlashMessage(cookies, 'error', 'User profile not found');
         }
 
-        const redirectUrl = `/customer/${userSlug}?ref=middleware`;
+        // Set a session flag to indicate this is a legitimate redirect
+        const redirectUrl = `/customer/${userSlug}`;
         throw redirect(302, redirectUrl);
       }
 

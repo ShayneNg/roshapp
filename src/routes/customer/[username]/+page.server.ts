@@ -1,6 +1,6 @@
 
 import { redirect } from '@sveltejs/kit';
-import { getUserBySlug } from '$lib/server/urlRewriter';
+import { getUserBySlug, getUserSlugById } from '$lib/server/urlRewriter';
 
 export const load = async ({ locals, params, url }) => {
   // Check if user is authenticated
@@ -11,16 +11,16 @@ export const load = async ({ locals, params, url }) => {
   // Get the username from the URL parameter
   const username = params.username;
   
-  // Security check: only allow access through proper redirect from /customer/[id]
-  // Check if this request came from the middleware redirect
-  const referrer = url.searchParams.get('ref');
+  // Security check: ensure user is accessing their own profile or is a super admin
   const role = locals.role?.toLowerCase();
   const isSuperAdmin = ['developer', 'ceo'].includes(role);
   
-  // Only super admins can bypass the referrer check (for direct URL access)
-  if (!isSuperAdmin && referrer !== 'middleware') {
-    // Regular users trying to access directly should be redirected to proper flow
-    throw redirect(302, '/forbidden');
+  // For non-super admins, ensure they're accessing their own profile
+  if (!isSuperAdmin) {
+    const currentUserSlug = await getUserSlugById(locals.user.id);
+    if (currentUserSlug !== username) {
+      throw redirect(302, '/forbidden');
+    }
   }
 
   // Validate username and get user data
