@@ -2,6 +2,7 @@
 <script>
   import '../app.css';
   import { Toaster } from 'svelte-sonner';
+  import { ModeWatcher } from "mode-watcher";
   import { onMount } from 'svelte';
 
   onMount(() => {
@@ -11,6 +12,7 @@
 
 <main>
   <slot />
+  <ModeWatcher />
 </main>
 
 <Toaster 
