@@ -146,10 +146,8 @@ export const actions = {
       } else if (firstRole === 'staff') {
         redirectPath = '/staff';
       } else if (firstRole === 'customer') {
-        // Create SEO-friendly username slug for customer redirect
-        const { createSlug } = await import('$lib/server/urlRewriter');
-        const userSlug = createSlug(user.username) || user.id;
-        redirectPath = `/customer/@${userSlug}`;
+        // Redirect to [id] route which will act as middleware to username route
+        redirectPath = `/customer/${user.id}`;
       }
 
       // Server-side redirect is more reliable

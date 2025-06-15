@@ -1,5 +1,6 @@
 
 import { redirect } from '@sveltejs/kit';
+import { getUserSlugById } from '$lib/server/urlRewriter';
 
 // UUID v4 regex pattern for validation
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -36,24 +37,16 @@ export const load = async ({ locals, params }) => {
   if (isCustomer && customerId !== locals.user.id) {
     throw redirect(302, '/forbidden');
   }
-  
-  // For now, we'll use the authenticated user's data
-  // In a real app, you might want to fetch specific customer data based on the ID
-  // and check if the current user has permission to view this customer's data
-  
-  return {
-    user: locals.user,
-    role: locals.role,
-    customerId,
-    // You can add more customer-specific data here
-    customerData: {
-      id: customerId,
-      email: locals.user.email,
-      name: locals.user.username?.toLowerCase()?.replace(/[^a-z0-9\s-]/g, '')?.replace(/\s+/g, '-')?.replace(/-+/g, '-')?.trim() || locals.user.email?.split('@')[0] || 'Customer',
-      membershipLevel: 'Premium',
-      memberSince: '2024',
-      loyaltyPoints: 450,
-      // Add more customer-specific fields as needed
-    }
-  };
+
+  // This route now acts as middleware - immediately redirect to username route
+  const userSlug = await getUserSlugById(customerId);
+  if (!userSlug) {
+    throw redirect(302, '/forbidden');
+  }
+
+  // Add a short delay to control the flash time (optional)
+  // await new Promise(resolve => setTimeout(resolve, 100)); // 100ms flash
+
+  // Redirect to the username route with middleware reference
+  throw redirect(302, `/customer/${userSlug}?ref=middleware`);
 };

@@ -8,71 +8,10 @@ import type { Handle } from "@sveltejs/kit";
 
 const CSRF_COOKIE_NAME = 'csrf_token';
 
-// URL rewriting for customer routes
-async function handleCustomerRouteRewriting(url: URL) {
-  const path = url.pathname;
-  
-  // Check if it's a customer route with identifier
-  const customerRouteMatch = path.match(/^\/customer\/([^\/]+)(.*)$/);
-  if (customerRouteMatch) {
-    const [, identifier, subPath] = customerRouteMatch;
-    
-    // UUID regex pattern
-    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    
-    // If it's a UUID, redirect to @username format
-    if (UUID_REGEX.test(identifier)) {
-      const slug = await getUserSlugById(identifier);
-      if (slug) {
-        // Redirect to clean URL with @username format
-        throw redirect(301, `/customer/@${slug}${subPath || ''}`);
-      } else {
-        // No slug found for this UUID, continue with UUID (fallback)
-        console.log(`❌ No username found for UUID: ${identifier}`);
-        return url;
-      }
-    } else if (identifier.startsWith('@')) {
-      // It's a @username format, convert to UUID for internal routing
-      const username = identifier.substring(1); // Remove @ prefix
-      const user = await getUserBySlug(username);
-      if (user) {
-        // Rewrite URL internally to use UUID for file system routing
-        url.pathname = `/customer/${user.id}${subPath || ''}`;
-        console.log(`✅ Rewritten @${username} to UUID: ${user.id}`);
-      } else {
-        // Username not found, redirect to 404 or error page
-        console.log(`❌ User not found for username: ${username}`);
-        throw redirect(302, '/forbidden');
-      }
-    } else {
-      // Legacy username without @, redirect to @username format
-      const user = await getUserBySlug(identifier);
-      if (user) {
-        // Redirect to new @username format
-        throw redirect(301, `/customer/@${identifier}${subPath || ''}`);
-      } else {
-        // Invalid username, redirect to error page
-        console.log(`❌ User not found for legacy username: ${identifier}`);
-        throw redirect(302, '/forbidden');
-      }
-    }
-  }
-  
-  return url;
-}
+// No URL rewriting needed with middleware approach
 const ALLOWED_ORIGINS = ['https://your-domain.com']; // ← update this
 
 export const handle: Handle = async ({ event, resolve }) => {
-  // Handle URL rewriting for customer routes
-  try {
-    event.url = await handleCustomerRouteRewriting(event.url);
-  } catch (error) {
-    // If it's a redirect, let it through
-    if (error instanceof Response) {
-      return error;
-    }
-    // For other errors, continue normally
-  }
 	//
 	// ─── LAYER 6: CSRF PROTECTION (DISABLED) ───────────────────────────────────────
 	//
