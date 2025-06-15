@@ -6,7 +6,7 @@
   export let isLoading: boolean = false;
   export let hasError: boolean = false;
   export let upcomingBooking: any = null;
-  export let customerName: string = 'Customer';
+  export const customerName: string = 'Customer';
   export let size: 'sm' | 'md' | 'lg' = 'md';
   
   const sizeClasses = {

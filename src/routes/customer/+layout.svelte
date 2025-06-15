@@ -9,7 +9,7 @@
   import QRCode from '$lib/components/design/QRCode.svelte';
   import Icon from '$lib/components/icons/Icon.svelte';
 
-  export let data;
+  export const data = undefined;
 
   // Clear any unwanted flash messages on customer layout mount
   onMount(() => {
