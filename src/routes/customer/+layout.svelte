@@ -72,15 +72,14 @@
       <!-- Right Column: Loyal Card + QR Code (1/3 width) -->
       <div class="space-y-6">
         <!-- Customer Loyalty Card -->
-        <div class="sticky top-6 bg-card rounded-lg shadow-sm border border-border p-6">
-          <CustomerCard 
-            customerName={$page.data?.user?.email?.split('@')[0] || 'Valued Customer'}
-            membershipLevel="Premium"
-            memberSince="2024"
-            loyaltyPoints={450}
-            cardNumber="5699 8908 3326 5756"
-          />
-        </div>
+        <CustomerCard 
+          class="sticky top-6 bg-card rounded-lg shadow-sm border border-border p-6"
+          customerName={$page.data?.user?.email?.split('@')[0] || 'Valued Customer'}
+          membershipLevel="Premium"
+          memberSince="2024"
+          loyaltyPoints={450}
+          cardNumber="5699 8908 3326 5756"
+        />
 
         <!-- QR Code Section -->
         <div class="bg-card rounded-lg shadow-sm border border-border p-6">
