@@ -1,6 +1,8 @@
 // src/routes/auth/login/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 import { getUserByEmail } from '$lib/server/users';
+import { getUserSlugById } from '$lib/server/urlRewriter';
+import { setFlashMessage } from '$lib/utils/flashMessage';
 import { Argon2id } from 'oslo/password';
 import { auth } from '$lib/server/auth';
 import { z } from 'zod';
@@ -146,8 +148,14 @@ export const actions = {
       } else if (firstRole === 'staff') {
         redirectPath = '/staff';
       } else if (firstRole === 'customer') {
-        // Redirect to [id] route which will act as middleware to username route
-        redirectPath = `/customer/${user.id}`;
+        // Get user slug and redirect directly to username route
+        const userSlug = await getUserSlugById(user.id);
+        if (!userSlug) {
+          return setFlashMessage(cookies, 'error', 'User profile not found');
+        }
+
+        const redirectUrl = `/customer/${userSlug}?ref=middleware`;
+        throw redirect(302, redirectUrl);
       }
 
       // Server-side redirect is more reliable
