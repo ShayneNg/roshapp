@@ -1,1 +1,0 @@
-// No client-side role checking needed - handled by server-side layout
