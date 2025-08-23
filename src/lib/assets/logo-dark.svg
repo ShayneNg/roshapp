@@ -1,0 +1,31 @@
+<svg width="400" height="180" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- R -->
+  <path d="M35 40 Q35 15 60 15 H80 Q95 15 95 40 Q95 65 80 65 H60 Q35 65 35 40 Z" fill="#37b7c9"/>
+  <rect x="35" y="80" width="25" height="20" rx="10" fill="#fa9a1a"/>
+  <rect x="60" y="100" width="20" height="20" rx="10" fill="#ed3572" transform="rotate(45 70 110)" />
+  <!-- O -->
+  <circle cx="130" cy="55" r="35" fill="#fa9a1a"/>
+  <circle cx="130" cy="55" r="22" fill="#fff"/>
+  <path d="M155 70 Q160 80 155 100 Q150 120 132 120 Q115 120 110 100 Q105 80 110 70" fill="#37b7c9"/>
+  <!-- S -->
+  <path d="M180 50
+            Q180 30 200 30
+            Q220 30 220 50
+            Q220 70 200 70
+            Q180 70 180 90
+            Q180 110 200 110
+            Q220 110 220 90"
+        stroke="#894db7" stroke-width="18" fill="none"/>
+  <path d="M180 90
+            Q180 110 200 110
+            Q220 110 220 90"
+        stroke="#ed3572" stroke-width="18" fill="none"/>
+  <!-- H -->
+  <rect x="245" y="28" width="20" height="88" rx="10" fill="#37b7c9"/>
+  <rect x="285" y="28" width="20" height="88" rx="10" fill="#37b7c9"/>
+  <rect x="245" y="58" width="60" height="20" rx="10" fill="#fa9a1a"/>
+  <!-- Tagline: NAIL BEAUTIFUL BY US -->
+  <text x="65" y="155" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#25b381" letter-spacing="1">
+    NAIL BEAUTIFUL BY US
+  </text>
+</svg>
