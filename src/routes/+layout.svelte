@@ -1,14 +1,33 @@
-<script lang="ts">
-	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-	import Sidebar from '$lib/components/layouts/Sidebar-full.svelte';
+<!-- src/routes/+layout.svelte -->
+<script lang="ts" context="module">
+	/**
+	 * root layout load function
+	 * place to fetch session info & redirect if needed
+	 */
+	import type { LayoutLoad } from './$types';
 
-	let { children } = $props();
+	export const load: LayoutLoad = async ({ parent }) => {
+	// Compose session from parent (hook or root)
+	const { session } = await parent();
+
+	return { session };
+	};
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<script lang="ts">
+	export let data: { session: any };
+</script>
 
-{@render children?.()}
-<Sidebar />
+<body
+	class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen"
+>
+	{#if data.session?.user}
+	<slot />  <!-- User logged in, proceed -->
+	{:else}
+	<slot name="login" />  <!-- Restrict content, show login slot or blank -->
+	{/if}
+</body>
+
+<style>
+	/* Global body styles can go here if needed */
+</style>

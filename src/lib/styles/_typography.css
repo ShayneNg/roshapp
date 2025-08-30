@@ -1,0 +1,27 @@
+/* src/lib/styles/_typography.css */
+:root {
+    /* Font families */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    
+    /* Font sizes following your spacing system */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px - forms, sidebar */
+    --text-base: 1rem;       /* 16px - body text */
+    --text-lg: 1.125rem;     /* 18px - large body */
+    --text-xl: 1.25rem;      /* 20px - small headings */
+    --text-2xl: 1.5rem;      /* 24px - headings */
+    --text-3xl: 1.875rem;    /* 30px - large headings */
+    
+    /* Font weights */
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    
+    /* Line heights */
+    --leading-tight: 1.25;   /* headings */
+    --leading-normal: 1.5;   /* body text */
+    --leading-relaxed: 1.75; /* large text blocks */
+}

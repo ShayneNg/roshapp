@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { compactNavigation as navItems } from '$lib/nav-compact';
+    import { compactNavigation as navItems } from '$lib/navItems';
     import Icon from '$lib/components/Icon.svelte'; // your icon wrapper
 
     $: current = $page.url.pathname;
